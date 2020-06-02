@@ -8,6 +8,7 @@ type Res_type = record
       Pts, Len1, Len2 : integer;
      end;
 
+procedure Init;
 procedure ResetList(omat,kaikki,tyyli:integer;header:string;inv:boolean);
 {procedure ResetList(omat,kaikki,tyyli:integer;header:string); }
 
@@ -20,7 +21,7 @@ function Entry(Num, Pos, Who:integer; Name:string; Pts:longint; Len1, Len2:integ
 
 implementation
 
-uses { crt, }sj3unit, sj3graph, sj3help, sj3pcx, sj3lang;
+uses sj3unit, sj3graph, sj3help, sj3pcx, sj3lang, sdlport;
 
 var X,Y,LastPos,Page, Plus, OwnPlayers, Players, Phase : integer;
     columns : byte;
@@ -208,7 +209,7 @@ begin
 
   good:=false;
 
-  readkbd(ch,ch2);
+  SDLPort.WaitForKeyPress(ch,ch2);
 
   case ch of
   #13, #27 : begin status:=-1; good:=true; end;
@@ -447,9 +448,10 @@ begin
 
 end;
 
+procedure Init;
 begin
-
  ResetList(1,NumPl,-1,'',FALSE);
+end;
 
 end.
 

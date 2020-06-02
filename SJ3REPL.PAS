@@ -6,7 +6,7 @@ procedure replays(start:boolean;version:string;gdetail:byte);
 
 implementation
 
-uses {crt,} WinDos,SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang;
+uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport;
 
 
 procedure replays;
@@ -301,9 +301,9 @@ var filenames : array[0..500] of string[12];
 
      if (mode>3) then mode:=3;
 
-     if (keypressed) then
+     if (SDLPort.KeyPressed) then
       begin
-       readkbd(ch,ch2);
+       SDLPort.WaitForKeyPress(ch,ch2);
        if {(ch2=#80) or (ch2=#72) or} (upcase(ch)='P') then mode:=3;
        if (ch2=#77) then if (mode=1) then mode:=3 else mode:=1;
        if (ch2=#75) then if (mode=2) then mode:=3 else mode:=2;
@@ -364,11 +364,9 @@ var filenames : array[0..500] of string[12];
      if (Rturns<0) then begin mode:=3; RTurns:=0; end;
      if (Rturns>MaxTurns) then begin mode:=3; RTurns:=MaxTurns; end;
 
-      WaitRaster;
-
       AsetaPaletti;
 
-      Maki.Paivitaruutu;
+      DrawScreen;
 
    until (ch=#27);
 
@@ -382,38 +380,9 @@ end;
 
 
  procedure findreplays;
- var DirInfo : TSearchRec;
-     Attr : word;
-     temp : integer;
  begin
-
   NumReplays:=0;
-
-  for temp:=0 to 100 do filenames[temp]:='';
-
-  Attr:=0;
-
-  FindFirst('*.SJR', Attr, DirInfo);
-
-   while (DosError = 0) and (NumReplays < 100) do
-    begin
-
-     inc(NumReplays);
-
-     temp:=0;
-
-      while (DirInfo.Name[temp]<>'.') do
-       begin
-        filenames[NumReplays]:=filenames[NumReplays]+DirInfo.Name[temp];
-        inc(temp);
-       end;
-
-     FindNext(DirInfo);
-
-    end;
-
-   DosError:=0;
-
+  // TODO: Not yet ported
  end;
 
  procedure readreplayinfo;
@@ -642,7 +611,7 @@ if (start) then
 
       ch:=#1; ch2:=#1; oldindex:=index;
 
-      readkbd(ch,ch2);
+      SDLPort.WaitForKeyPress(ch,ch2);
 
       if (ch2=#77) or (ch2=#80) or (ch=' ') or (ch='+') then inc(index);
       if (ch2=#75) or (ch2=#72) or (ch='-') then dec(index);
@@ -690,20 +659,5 @@ if (start) then
  end;
 
 end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-begin
-
 
 end.

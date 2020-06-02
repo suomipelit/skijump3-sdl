@@ -1,4 +1,3 @@
-
   Unit      Maki;
 
 INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
@@ -11,13 +10,8 @@ INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
             Sivuja=16;
             SivuKoko:Word=Alue div Sivuja;
 
-            Graffa:EPtr=0; { osoite m„en grafiikkaan }
-            Video:EPtr=0; { osoite v„lipuskuriin }
-
             Lue:function(Osoite:LongInt):byte=nil; { lue tavu graffasta }
             Kirjoita:procedure(Osoite:LongInt;Arvo:byte)=nil; { }
-            PaivitaRuutu:procedure=nil; { kopioi piirtobufferin n„yt”lle }
-            PiirraSprite:procedure(SpriteData,X,Y:Word)=nil; { sprite }
             PaivitaKirjoitusSivu:procedure=nil;
 
   var       LinjanPituus:Array[0..YSize-1] of Word;
@@ -25,11 +19,13 @@ INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
 
             X,Y:LongInt;
 
+            Graffa:array of byte; { osoite mäen grafiikkaan }
+            Video:array of byte; { osoite välipuskuriin }
+
   procedure Tulosta;
   function  Alusta:Boolean;
   procedure Lopeta;
   procedure LukitseKirjoitusSivu(Sivu:LongInt);
-  procedure AllocLarge(var P:EPtr;Size:Longint);
 
   procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:single);
   procedure AsetaMoodi(M:Word);
@@ -38,19 +34,38 @@ INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
 
 IMPLEMENTATION {ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ}
 
-  Uses      WinAPI; {GlobalAlloc}
-
-
   const     SiirtoOsoite:LongInt=0; { m„en piirt„mist„ varten }
-            SivuPuskuri:pointer=nil; { -"- }
 
-     procedure KopioiKirjoitusSivu;far;external;
-     function  LueTavu(Osoite:LongInt):Byte;far;external;
-     procedure KirjoitaTavu(Osoite:LongInt;Arvo:byte);far;external;
-     procedure KopioiMaki(Osoite,Delta:LongInt);far;external;
-     procedure Sprite(SpriteData,X,Y:Word);far;external;
-     procedure KopioiRuutu;far;external;
-     {$l makilow.obj}
+procedure KopioiKirjoitusSivu;
+var index:LongInt;
+begin
+ for index:=0 to SivuKoko - 1 do
+  Graffa[SiirtoOsoite+index]:=Video[index];
+end;
+
+function LueTavu(Osoite:LongInt):Byte;
+begin
+ LueTavu:=Graffa[Osoite];
+end;
+
+procedure KirjoitaTavu(Osoite:LongInt;Arvo:byte);
+begin
+ Graffa[Osoite]:=Arvo;
+end;
+
+procedure KopioiMaki(Osoite,Delta:LongInt);
+var y_index,x_index,d:LongInt;
+begin
+ for y_index:=0 to (200 - 1) do
+ begin
+  for x_index:=0 to (320 - 1) do
+  begin
+   if (x_index+X >= LinjanPituus[y_index+Y]) then d:=delta else d:=0;
+
+   Video[y_index*320+x_index]:=Graffa[(Osoite+(y_index*XSize+x_index+X))+d];
+  end;
+ end;
+end;
 
   procedure LukitseKirjoitusSivu(Sivu:longint);
   begin     if (Sivu<Sivuja*2) then SiirtoOsoite:=(Sivu*SivuKoko);
@@ -63,25 +78,10 @@ IMPLEMENTATION {ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ}
             KopioiMaki(a,b);
             end;
 
-     procedure AllocLarge(var P:EPtr;Size:Longint);
-     var    Selector:Word;
-     begin  if (Size>$100000) then Size:=Size or $FFF;
-            Selector:=GlobalAlloc(gmem_fixed, Size);
-     asm    mov AX,$0008
-            mov BX,[Selector]
-            mov CX,word ptr [size+2]
-            mov DX,word ptr [size]
-            int $31
-            jnc @End
-            mov [Selector],0
-     @end:  end;
-            if (Selector=0) then RunError(203);
-            P:=Selector;
-            end;
-
-
 procedure AsetaMoodi(M:Word);
-assembler;asm mov ax,[M];int $10;end;
+  // Not needed in port
+begin
+end;
 
 function Profiili(x:integer):integer;
 var temp:integer;
@@ -94,7 +94,7 @@ begin
 
 end;
 
-procedure LaskeLinjat;
+procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:single);
 { linjojen pituudet voisi ladata nopeammin levylt„ ... }
 var       Y,X:LongInt;
           paikka:LongInt;
@@ -201,14 +201,10 @@ begin     for Y:=0 to Maki.YSize-1 do begin
 
   function  Alusta:Boolean;
   begin     Alusta:=True;
-            AllocLarge(Graffa,Alue*2+1024);
-            if(MaxAvail>=64000) then GetMem(SivuPuskuri,64000)
-               else RunError(203);
-            Video:=Seg(SivuPuskuri^);
-            PaivitaKirjoitusSivu:=KopioiKirjoitusSivu;
+            setLength(Graffa, Alue*2+1024);
+            setLength(Video, 64000);
+            PaivitaKirjoitusSivu:=  KopioiKirjoitusSivu;
             Kirjoita:=KirjoitaTavu;
-            PaivitaRuutu:=KopioiRuutu;
-            PiirraSprite:=Sprite;
             Lue:=LueTavu;
             end;
 

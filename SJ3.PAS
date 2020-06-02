@@ -1,6 +1,6 @@
 program Skijump3; { Reality Strikes }
 uses crt, dos, sj3graph, sj3pcx, sj3unit, sj3help, sj3info,
-     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl;
+     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sdlport;
 
 const
 
@@ -77,12 +77,6 @@ var
                              ja muuten se unohtuu... }
 
  ThisIsAHillRecord : integer;
-
-
-
-
-Procedure EGAVGADriverProc; external;
-{$L EGAVGA.OBJ}
 
 
 procedure MakeSendMe;
@@ -1481,17 +1475,15 @@ begin
 
 {   if (ex) then  balk(0); }
 
-   WaitRaster;
-
 {    if (ex) then  balk(1); }
 
-   Maki.PaivitaRuutu;
+   DrawScreen;
 
    ch:=#1;
 
-   if (keypressed) then
+   if (SDLPort.KeyPressed) then
     begin
-     readkbd(ch,ch2);
+     SDLPort.WaitForKeyPress(ch,ch2);
      if (ch=#0) and (ch2=#68) then begin cupslut:=true; ch:=#27; end;
      if (upcase(ch)=lch(60,1)) then
       begin
@@ -1605,18 +1597,17 @@ begin
 
 {  if (ex) then balk(0); }
 
-  WaitRaster;
  {    inc(Rturns); }
 
 {  if (ex) then balk(1); }
 
-  Maki.PaivitaRuutu;
+  DrawScreen;
 
   ch:=#0; ch2:=#0;
 
-  if (keypressed) then
+  if (SDLPort.KeyPressed) then
    begin
-    readkbd(ch,ch2);
+    SDLPort.WaitForKeyPress(ch,ch2);
     ch:=upcase(ch);
     if (ch=#0) and (ch2=#68) then begin cupslut:=true; ch:=#27; end;
     if (not cjumper) and ((kword(ch,ch2)=K[2]) or (ch=#13)) then out:=true; { liikkeelle }
@@ -1719,9 +1710,9 @@ begin
    if (Ch<>#27) then Ch:=#0;  { en tied„ muisteleeko se vanhoja }
    ch2:=#0;
 
-   if (Keypressed) then
+   if (SDLPort.KeyPressed) then
       begin
-       readkbd(ch,ch2);
+       SDLPort.WaitForKeyPress(ch,ch2);
        ch:=upcase(ch);
 
 {       if (cjumper) then ch:=#1; }
@@ -1747,7 +1738,7 @@ begin
 
         if (cjumper) then begin ch:=#0; ch2:=#0; end;
 
-        if (ch='P') then readkbd(ch,ch2);
+        if (ch='P') then SDLPort.WaitForKeyPress(ch,ch2);
 
       end;
 
@@ -2094,8 +2085,6 @@ begin
 
 {    if (ex) then balk(0); }
 
-    WaitRaster;
-
      RD[0,RTurns]:=byte(128+x-fx);
      RD[1,RTurns]:=byte(128+y-fy);
      RD[2,RTurns]:=JumperAnim;
@@ -2109,7 +2098,7 @@ begin
 
 {   if (matka>0) then writefont(10,10,1,'!'); }
 
-    Maki.PaivitaRuutu;
+    DrawScreen;
 
 {    if (matka<0) then delay(500); }
 
@@ -2137,9 +2126,12 @@ begin
      hp:=0;
      score:=0;
      landing:=1;
-     CStats[kierros,pel]:=hp;
-     stats[statsvictim,osakilpailu].RoundPts[kierros]:=score;
-     stats[statsvictim,osakilpailu].RoundLen[kierros]:=hp;
+     if (kierros >= 0) then
+      begin
+       CStats[kierros,pel]:=hp;
+       stats[statsvictim,osakilpailu].RoundPts[kierros]:=score;
+       stats[statsvictim,osakilpailu].RoundLen[kierros]:=hp;
+      end
     end else
      begin
       inc(Profile[actprofile].totaljumps);
@@ -2469,13 +2461,13 @@ begin
 
         Ch:=#0;
 
-        if (keypressed) then
+        if (SDLPort.KeyPressed) then
          begin
-          readkbd(ch,ch2);
+          SDLPort.WaitForKeyPress(ch,ch2);
          end;
         if (ch=#0) and (Ch2=#68) then begin cupslut:=true; ch:=#27; end;
         if (Ch=#27) or (Ch=#13) then Out:=True;
-        if (Ch='p') then readkbd(ch,ch2);
+        if (Ch='p') then SDLPort.WaitForKeyPress(ch,ch2);
 
         DeltaX:=Maki.X;
         DeltaY:=Maki.Y;
@@ -2568,8 +2560,6 @@ begin
 
 {        if (ex) then balk(0); }
 
-        WaitRaster;
-
          RD[0,RTurns]:=byte(128+x-fx);
          RD[1,RTurns]:=byte(128+y-fy);
          RD[2,RTurns]:=JumperAnim;
@@ -2580,7 +2570,7 @@ begin
 
 {        if (ex) then balk(1); }
 
-        Maki.PaivitaRuutu;
+        DrawScreen;
 
 {       delay(500); }
 
@@ -2745,9 +2735,9 @@ begin
 
        end
         else
-         if (keypressed) then
+         if (SDLPort.KeyPressed) then
           begin
-           readkbd(ch,ch2);
+           SDLPort.WaitForKeyPress(ch,ch2);
            if (ch=#0) and (ch2=#68) then cupslut:=true;
           end;
       end;
@@ -3485,7 +3475,7 @@ begin
 
   good:=false;
 
-  readkbd(ch,ch2);
+  SDLPort.WaitForKeyPress(ch,ch2);
 {  ch2:=#1; }
 
   case ch of
@@ -4801,7 +4791,7 @@ begin
 
     DrawScreen;
 
-    readkbd(ch,ch2);
+    SDLPort.WaitForKeyPress(ch,ch2);
 
      if (ch=#13) then { tsekataan ettei sit„ pelaajaa ole jo }
       begin
@@ -5589,12 +5579,15 @@ begin
 
  str1:=paramstr(1);
 
- case str1[2] of
-{ 'x' : ex:=true; }
-{ 't' : StartTest; }
- 'r' : ResetHiscore(1);
- 'z' : ResetHiscore(0);
- 'c' : ResetConfig;
+ if (length(str1) > 1) then
+ begin
+   case str1[2] of
+  { 'x' : ex:=true; }
+  { 't' : StartTest; }
+   'r' : ResetHiscore(1);
+   'z' : ResetHiscore(0);
+   'c' : ResetConfig;
+   end;
  end;
 
 end;
@@ -5726,10 +5719,20 @@ procedure alku;
 var temp : integer;
 begin
 
- writeln('SJ3 v',version,' by Ville K”n”nen 2011');
+ writeln('Ported to SDL2 by Suomipelit (https://suomipelit.github.io)');
+ writeln('');
+ writeln('New shortkeys:');
+ writeln(' * Alt+Enter          : Toggle fullscreen');
+ writeln(' * Alt+(Keypad) Plus  : Increase window size');
+ writeln(' * Alt+(Keypad) Minus : Decrease window size');
+ writeln(' * Alt+R              : Reset window if stretched');
+ writeln('');
+ writeln('-------');
+ writeln('');
+ writeln('SJ3 v',version,' by Ville Könönen 2011');
 
  write('- Loading ANIM.SKI');
-  LoadAnim('anim.ski');
+  LoadAnim('ANIM.SKI');
 
 (*
   for temp:=1 to MaxOwnPl do
@@ -5792,7 +5795,7 @@ end;
 procedure loppu;
 begin
 
- writeln('SJ3 v',version,' by Ville K”n”nen 2013');
+ writeln('SJ3 v',version,' by Ville Könönen 2013');
 
  GetNow(Now);
 
@@ -5829,7 +5832,7 @@ begin
 
  lopputext(version,Start,Now);
 
- readkbd(ch,ch2);
+ SDLPort.WaitForKeyPress(ch,ch2);
 
 end;
 
@@ -5838,9 +5841,14 @@ end;
 
 begin  { MAIN }
 
- randomize;
+ sj3lang.Init;
+ sj3list.Init;
+ sj3unit.Init;
+ tuuli.Init;
+ sj3info.Init;
+ lumi.Init;
 
- HeapLimit:=0; { suositeltiin... }
+ randomize;
 
  getdate(Today.Year,Today.Month,Today.Day,Today.DayofWeek);
  getnow(start);
@@ -5862,7 +5870,7 @@ begin  { MAIN }
 { regname:='THIS IS A PRIVATE VERSION';
   regnumber:='1234A'; }
 
- DetectVGA;
+ SDLPort.Init;
 
  alku;
 
@@ -5879,8 +5887,9 @@ begin  { MAIN }
 
 {  Valikko; }
 
-  Loppu;
+  SDLPort.Deinit;
 
+  Loppu;
 
 (*
   CloseFont;  { vapautetaan niiden k„ytt„m„ muisti }

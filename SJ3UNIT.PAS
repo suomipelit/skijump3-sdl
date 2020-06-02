@@ -4,6 +4,8 @@ Unit SJ3UNIT;
 
 interface
 
+procedure Init;
+
 const  NumPl = 75;  { montako pelaajaa on ylip„„t„„n }
        NumTeams = 15;
        MaxOwnPl = 10; { montako omaa pelaajaa voi olla }
@@ -203,9 +205,6 @@ procedure makevcode(version:string;reg:boolean);
 function ReadKey : char { in lieu of Crt.ReadKey } ;
 *)
 
-procedure readkbd(var tempch,tempch2:char);
-function KeyPressed : boolean;
-
 (*
 procedure Textcolor(col:byte);
 procedure Textbackground(col:byte);
@@ -217,7 +216,7 @@ procedure clrscr;
 
 implementation
 
-uses crt, dos, windos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx;
+uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport;
 
 {var osote : array [0..4000] of byte; }
 
@@ -256,31 +255,6 @@ function ReadKey : char ; assembler ; { toimii melkein }
    int 21h
   end {ReadKey};
 *)
-
-procedure readkbd;
- var w1 : word;
- begin
-  asm
-   mov AH,00h;
-   int 16h
-   mov w1,AX;
-  end {ReadKey};
-
- tempch:=chr(lo(w1));
- tempch2:=chr(hi(w1));
-
-end;
-
-
-function KeyPressed : boolean ; assembler ;
-  asm
-   mov AH,$01;
-   int $16
-   mov AL,TRUE;
-   JNZ @Ende;
-   mov AL,FALSE;
-  @Ende:
-  end;
 
   {
 procedure Textcolor(col:byte); begin end;
@@ -360,9 +334,9 @@ begin
   fillbox(xx,yy+6,xx+4,yy+6,col);
   DrawScreen;
 
- until (keypressed);
+ until (SDLPort.KeyPressed);
 
-  readkbd(tempch,tempch2);
+  SDLPort.WaitForKeyPress(tempch,tempch2);
 
   fillbox(xx,yy+6,xx+4,yy+6,bkcolor);
   writefont(xx,yy,tempch);
@@ -634,7 +608,7 @@ begin
   drawscreen;
 
   clearchs;
-  Readkbd(ch,ch2);
+  SDLPort.WaitForKeyPress(ch,ch2);
 
   oldindex:=index;
 
@@ -709,14 +683,15 @@ function LoadHill(var KeulaX:integer;nytmaki:integer;Acthill:hill_type):byte;
 var temp : integer;
     l  : longint;
     str1 : string;
-    result : byte;
+    res : byte;
 begin
-          result:=0;
+          res:=0;
 
           LataaPCX('LOAD.PCX',320*200,0,0);
           SiirraStandardiPaletti;
           AsetaPaletti;
-          move(mem[Graffa:0],mem[Video:0],64000);
+
+          WriteVideo;
 
 {          FillBox(0,0,319,199,242); }
 
@@ -765,7 +740,7 @@ begin
 
              if (nytmaki<=NumWCHills) then
               begin
-               result:=1;
+               res:=1;
                str1:='EXITING CUP.';
               end;
 
@@ -782,7 +757,7 @@ begin
 
           SavytaPaletti(1,acthill.bkbright);
 
-          Loadhill:=result;
+          Loadhill:=res;
 
 end;
 
@@ -852,7 +827,7 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
 
    clearchs; oldindex:=index;
 
-  if (keypressed) then readkbd(ch,ch2);
+  if (SDLPort.KeyPressed) then SDLPort.WaitForKeyPress(ch,ch2);
 
    case (ch2) of
    #72,#75 :{  if (cols=2) and (tempch2=#75) and (index>tab) then dec(index,tab)
@@ -2191,51 +2166,14 @@ end;
 
 
 procedure CheckExtraHills;
-var DirInfo : TSearchRec;
+var DirInfo : string;
     Attr : word;
     f1 : text;
     temp : integer;
     filenames : array[0..MaxExtraHills] of string[12];
 
 begin
-
- NumExtraHills:=0;
-
- for temp:=0 to MaxExtraHills do filenames[temp]:='';
-
- Attr:=0;
-
- FindFirst('*.SJH', Attr, DirInfo);
-
-  while (DosError = 0) and (NumExtraHills < MaxExtraHills) do
-   begin
-
-    inc(NumExtraHills);
-
-    temp:=0;
-
-     while (DirInfo.Name[temp]<>'.') do
-      begin
-       filenames[NumExtraHills]:=filenames[NumExtraHills]+DirInfo.Name[temp];
-       inc(temp);
-      end;
-
-    FindNext(DirInfo);
-
-   end;
-
-  DosError:=0;
-
- Assign(f1,'MOREHILL.SKI');
- ReWrite(f1);
-
- writeln(f1,NumExtraHills);
-
- for temp:=1 to NumExtraHills do
-  writeln(f1,filenames[temp]);
-
- Close(f1);
-
+ // TODO: Not yet ported
 end;
 
 
@@ -2674,7 +2612,7 @@ begin
 
 { if (place=1) then yy:=191; }
 
- while keypressed do readkbd(ch,ch2);
+ while SDLPort.KeyPressed do SDLPort.WaitForKeyPress(ch,ch2);
 
  tempboole:=false;
 
@@ -2786,7 +2724,7 @@ begin
   LoadSuit(col,0);
    AsetaPaletti;
 
-  readkbd(ch,ch2);
+  SDLPort.WaitForKeyPress(ch,ch2);
 
    if (ch=#0) then
     begin
@@ -3241,7 +3179,7 @@ begin
 
    gotoxy(32,2+a);
 
-   readkbd(ch,ch2);
+   SDLPort.WaitForKeyPress(ch,ch2);
 
     b:=a;
 
@@ -3270,20 +3208,15 @@ procedure NewHDs;
 var temp : integer;
 begin
 
- if (SizeOf(Hillinfo_type)*(NumWCHills+MaxExtraHills+1) > MaxAvail) then
-  begin
-   writeln ('SJ3 Error: Out of memory when loading extra hills.');
-   Waitforkey;
-   halt;
-  end;
-
  for temp:=0 to NumWCHills+MaxExtraHills do
   New(HD[temp]);
 
 end;
 
+procedure Init;
 begin
 
  NewHDs;
+end;
 
 end.

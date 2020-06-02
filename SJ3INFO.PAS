@@ -4,7 +4,9 @@ unit sj3info; { pelaaja & profiili-infoa }
 
 interface { -------------------------------------------------------------- }
 
-uses maki,{crt,} windos, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx;
+uses maki, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx, sdlport;
+
+procedure Init;
 
 const NumHiscores = 61; { 1-20=WC + 21-30=TC + 31-35=4h + 36-41=KOTH + 42-61=CC }
 
@@ -353,41 +355,9 @@ end;
 
 procedure FindCustoms(var NumCustoms:integer;
                       var Filenames:array of FileStr);
-
-var DirInfo : TSearchRec;
-    Attr : word;
-    temp3 : integer;
 begin
-
+ // TODO: Not yet ported
  NumCustoms:=0;
- for temp3:=0 to Maxcustoms do FileNames[temp3]:='';
-
- Attr:=0;
-
- FindFirst('*.SJC', Attr, DirInfo);
-
- while (DosError = 0) and (NumCustoms < maxcustoms) do
-  begin
-
-   inc(NumCustoms);
-
-   temp3:=0;
-
-   while (DirInfo.Name[temp3]<>'.') do
-    begin
-     filenames[NumCustoms]:=filenames[NumCustoms]+DirInfo.Name[temp3];
-     inc(temp3);
-    end;
-
-   if (filenames[NumCustoms] = 'TEMP') then
-    begin filenames[NumCustoms]:=''; dec(NumCustoms); end;
-
-   FindNext(DirInfo);
-
-  end;
-
-  DosError:=0;
-
 end;
 
 
@@ -596,7 +566,7 @@ var hill, x, y : integer;
     drawscreen;
 
     clearchs;
-    readkbd(ch,ch2);
+    SDLPort.WaitForKeyPress(ch,ch2);
 
     if (ch='+') or (ch=' ') or (ch2=#77)  or (ch2=#80) then inc(actcustom);
     if (ch='-') or (ch2=#75) or (ch2=#72) then dec(actcustom);
@@ -822,7 +792,7 @@ var hill, x, y : integer;
 
       clearchs;
 
-      readkbd(ch,ch2);
+      SDLPort.WaitForKeyPress(ch,ch2);
 
       if ((ch2=#71) or (ch2=#83)) then HillOrder[CupHills+1]:=1; { home }
       if (ch2=#79) then HillOrder[CupHills+1]:=Hills; { end }
@@ -933,7 +903,7 @@ begin
  l1:=0;  { checksum-laskuri }
  l2:=0;
 
- s:='names'+whatset+'.ski';
+ s:='NAMES'+whatset+'.SKI';
 
  assign(f4,s);
  {$I-}
@@ -1239,7 +1209,7 @@ begin
  for temp:=1 to NumProfiles do
   begin
    str1:=#1; l1:=0; l2:=0;
-   while (str1[1]<>'*') do readln(f1,str1);
+   while ((length(str1) < 1) or (str1[1]<>'*')) do readln(f1,str1);
 
    with Profile[temp] do
     begin
@@ -1676,7 +1646,7 @@ begin
 
   DrawScreen;
 
-  readkbd(ch,ch2);
+  SDLPort.WaitForKeyPress(ch,ch2);
 
   if (ch=#0) then
    begin
@@ -1839,7 +1809,7 @@ begin
    drawscreen;
 
     sch1:=#1; sch2:=#1;
-    readkbd(sch1,sch2);
+    SDLPort.WaitForKeyPress(sch1,sch2);
 
     if (sch1='+') or (sch2=#77) or (sch2=#80) then
      begin
@@ -2488,7 +2458,7 @@ begin
     SiirraStandardiPaletti;
     SpecialMainPaletti;
      AsetaPaletti;
-    move(mem[Graffa:0],mem[video:0],64000);
+    WriteVideo;
 
 (*
     StartSuit; { lataa ne hyppypukujen v„rit 190-200... }
@@ -2520,12 +2490,11 @@ begin
 end;
 
 
-
-
-
+procedure Init;
 begin
 
  NumProfiles:=1;
+end;
 
 end.
 

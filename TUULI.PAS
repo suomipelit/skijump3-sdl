@@ -2,6 +2,7 @@ Unit Tuuli;
 
 Interface
 
+procedure Init;
 procedure Piirra;
 procedure Hae;
 procedure Alusta(place:byte);
@@ -132,9 +133,10 @@ var s:string;
 
 end;
 
-
+procedure Init;
 begin
 
  Alusta(0);
+end;
 
 end.

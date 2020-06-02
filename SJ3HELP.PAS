@@ -36,17 +36,11 @@ function toansi(str1:string):string;
 
 implementation
 
-uses maki, sj3unit, crt, dos, sj3graph;
+uses maki, sj3unit, crt, dos, sj3graph, SDLPort;
 
 procedure Wait(C : integer) ;
-   var   T : byte ;
-       Tkr : byte absolute $40:$6C ;
-   begin
-    repeat
-     T := Tkr;
-     repeat until T<>Tkr;
-     Dec(C);
-    until (C<=0);
+begin
+  // TODO: Not yet ported
 end {Wait} ;
 
 
@@ -119,7 +113,7 @@ end;
 procedure putsaa;
 {var ch : char; }
  begin
-  while keypressed do readkbd(ch,ch2);
+  while SDLPort.KeyPressed do SDLPort.WaitForKeyPress(ch,ch2);
  end;
 
 procedure clearchs;
@@ -131,7 +125,7 @@ procedure waitforkey;
 {var ch : char; }
 begin
  putsaa;
- readkbd(ch,ch2);
+ SDLPort.WaitForKeyPress(ch,ch2);
 end;
 
 Function waitforkey2:boolean;
@@ -143,7 +137,7 @@ begin
 
  tempboole:=false;
 
- readkbd(ch,ch2);
+ SDLPort.WaitForKeyPress(ch,ch2);
 
  if (ch=#0) and (ch2=#68) then tempboole:=true;
 
@@ -287,7 +281,8 @@ var f1 : text;
    begin
     if temp mod 80 = 0 then writeln(f1);
 
-    write(f1,chr(mem[$b800:temp*2]));
+    // TODO: Not yet ported
+    //write(f1,chr(mem[$b800:temp*2]));
 
    end;
 

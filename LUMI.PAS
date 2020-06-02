@@ -3,11 +3,12 @@ Unit Lumi;
 
 INTERFACE
 
+procedure Init;
 
 const LumiMax=256;
 
 procedure VieLmaara(InLmaara:Word);
-procedure Update(var Buffer:Word;DeltaX,DeltaY,Tuuli:Integer;Draw:boolean);
+procedure Update(var Buffer:array of byte;DeltaX,DeltaY,Tuuli:Integer;Draw:boolean);
 
 
 IMPLEMENTATION
@@ -39,7 +40,7 @@ var  LH:array[0..LumiMax-1] of tLumi;
 
 
 
-procedure Update;
+procedure Update(var Buffer:array of byte;DeltaX,DeltaY,Tuuli:Integer;Draw:boolean);
 var i,j:integer;
     offset:word;
 
@@ -57,16 +58,18 @@ begin
          end;
          offset:=(x shr 10)+(Y shr 10)*320;
          if (offset<63679) and
-           (mem[Buffer:offset]>=TaustaMin) and
-           (mem[Buffer:offset+1]>=TaustaMin) and
-           (mem[Buffer:offset]<TaustaMax) and
-           (mem[Buffer:offset+1]<TaustaMax) then
+           (Buffer[offset]>=TaustaMin) and
+           (Buffer[offset+1]>=TaustaMin) and
+           (Buffer[offset]<TaustaMax) and
+           (Buffer[offset+1]<TaustaMax) then
 
            if (Style=1) then begin
-              memW[Buffer:offset]:=c1;
-              memW[Buffer:offset+320]:=c2;
+              Buffer[offset]:=c1;
+              Buffer[offset+1]:=c1 shr 8;
+              Buffer[offset+320]:=c2;
+              Buffer[offset+320+1]:=c2 shr 8;
 
-              end else mem[Buffer:offset]:=byte(c1);
+              end else Buffer[offset]:=byte(c1);
 
         end;
 
@@ -122,11 +125,10 @@ begin
 
 end;
 
-
-
-
+procedure Init;
 begin
 
    Reset;
+end;
 
 end.

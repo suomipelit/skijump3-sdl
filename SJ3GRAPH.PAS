@@ -2,13 +2,11 @@ unit SJ3Graph; { SJ3:n grafiikkarutiineja }
 
 interface
 
-procedure Waitraster;             (* Wait vertical retrace *)
-procedure WaitNotRetrace;         (* Wait when it's not in vert. retr. *)
 Procedure DrawScreen;
 Procedure DrawHillScreen;
 {procedure Splitscreen(korkeus:byte); }
 procedure CloseGraph;
-procedure DetectVGA;
+procedure Sprite(SpriteData:array of byte;X,Y:Word);
 procedure DrawAnim(x,y:integer;num:byte);
 procedure LoadAnim(filename:string);
 procedure PutPixel(x,y,c:integer);
@@ -28,6 +26,7 @@ procedure Box(x,y,x2,y2:word;col:byte);
 procedure Balk(st:byte);
 procedure NewScreen(style,color:byte);
 procedure alertbox;
+procedure WriteVideo;
 
 { procedure angle(x,y,a,b,c:integer); }
 
@@ -36,9 +35,9 @@ function NumofAnims:byte;
 
 implementation
 
-uses Maki, SJ3PCX, SJ3Help;
+uses Maki, SJ3PCX, SJ3Help, SDLPort;
 
-var Anim : array[0..200] of EPtr;
+var Anim : array[0..200] of array of byte;
     AnimP : array[0..200,0..1] of byte;
     NumAnim : byte;
 
@@ -47,33 +46,10 @@ begin
  NumofAnims:=NumAnim;
 end;
 
-procedure Waitraster; assembler;
-asm
-    mov dx,03dah
-@l1:
-    in al,dx
-    and al,08h
-    jnz @l1
-@l2:
-    in al,dx
-    and al,08h
-    jz  @l2
-end;
-
-
-procedure WaitNotRetrace; assembler;
-asm
-    mov dx,03dah
-@l:
-    in al,dx
-    and al,08h
-    jnz  @l
-end;
-
-
 Procedure DrawScreen;
 begin
- WaitRaster; Maki.Paivitaruutu;
+ SdlPort.WaitRaster;
+ SdlPort.Render(Video);
 end;
 
 Procedure DrawHillScreen;
@@ -93,6 +69,13 @@ begin
 
  fillarea(60,80,260,130,63);
 
+end;
+
+procedure WriteVideo;
+var index : LongInt;
+begin
+ for index:=0 to length(video) - 1 do
+  Video[index]:=Graffa[index];
 end;
 
 procedure NewScreen(style,color:byte);
@@ -209,25 +192,26 @@ begin
  AsetaMoodi($3);
 end;
 
-procedure DetectVGA;
-var error : byte;
-
+procedure Sprite(SpriteData:array of byte;X,Y:Word);
+var ysize, xsize, yindex, xindex : byte;
+    offset : integer;
 begin
- asm
-   mov  error,0
-   mov  ax,1a00h
-   int  10h
-   cmp  al,1ah
-   je   @a
-   mov  error,1
-@a:
- end;
+  ysize:=SpriteData[2] + (SpriteData[3] shl 8);
+  xsize:=(length(SpriteData) - 4) div ysize;
+  offset:=4;
 
- if (error=1) then begin writeln('No VGA found.'); halt; end;
-
+  for yindex:=0 to (ysize - 1) do
+  begin
+    for xindex:=0 to (xsize - 1) do
+     begin
+       if (SpriteData[offset] <> 0) and (X+xindex < 320) then
+       begin
+         Video[X+xindex+(Y+yindex)*320]:=SpriteData[offset];
+       end;
+       inc(offset);
+     end;
+  end;
 end;
-
-
 
 procedure DrawAnim(x,y:integer;num:byte);
 {var x1,y1 : integer; }
@@ -244,10 +228,10 @@ begin
 
  if (num>0) and (num<=numanim) then
   begin
-   ysize:=MemW[Anim[Num]:2]; { korkeus }
+   ysize:=Anim[Num][2] + (Anim[Num][3] shl 8);
 
    if (x>=0)  and (y>=0) and
-      (x<320) and (y<200-ysize) then Maki.PiirraSprite(Anim[num],x,y);
+      (x<320) and (y<200-ysize) then Sprite(Anim[num],x,y);
   end;
 
 end;
@@ -287,10 +271,13 @@ begin
 
 {  writeln(x,' ',y,' ',numanim); }
 
-  AllocLarge(Anim[NumAnim],x*y+4); { varataan tilaa spritelle }
+  setLength(Anim[NumAnim],x*y+4); { varataan tilaa spritelle }
 
-  MemW[Anim[NumAnim]:0]:=x; { leveys }
-  MemW[Anim[NumAnim]:2]:=y; { korkeus }
+  Anim[NumAnim][0]:=x;
+  Anim[NumAnim][1]:=x shr 8;
+
+  Anim[NumAnim][2]:=y;
+  Anim[NumAnim][3]:=y shr 8;
 
 {  writeln('info written.'); }
 
@@ -299,7 +286,7 @@ begin
     begin
      tempb:=ReadByte(f1);
      if (tempb=9) then tempb:=15; { suksen keskityspiste (kai?) }
-     Mem[Anim[NumAnim]:yy*x+xx+4]:=tempb; { data }
+     Anim[NumAnim][yy*x+xx+4]:=tempb;
     end;
 
   AnimP[numanim,0]:=ReadByte(f1);  { keskitt„misplussa x }
@@ -313,17 +300,19 @@ begin
    for temp:=72 to 83 do
     begin
      inc(NumAnim);
-     x2:=MemW[Anim[temp]:0];
-     y2:=MemW[Anim[temp]:2];
+     x2:=Anim[temp][0] + (Anim[temp][1] shl 8);
+     y2:=Anim[temp][2] + (Anim[temp][3] shl 8);
 
-     AllocLarge(Anim[NumAnim],x2*y2+4); { varataan tilaa }
+     setLength(Anim[NumAnim],x2*y2+4); { varataan tilaa }
 
-     MemW[Anim[NumAnim]:0]:=x2; { leveys }
-     MemW[Anim[NumAnim]:2]:=y2; { korkeus }
+     Anim[NumAnim][0]:=x2;
+     Anim[NumAnim][1]:=x2 shr 8;
+     Anim[NumAnim][2]:=y2;
+     Anim[NumAnim][3]:=y2 shr 8;
 
     for yy:=0 to y2-1 do
      for xx:=0 to x2-1 do
-      Mem[Anim[NumAnim]:yy*x2+xx+4]:=Mem[Anim[temp]:(y2-yy-1)*x2+xx+4];
+      Anim[NumAnim][yy*x2+xx+4]:=Anim[temp][(y2-yy-1)*x2+xx+4];
 
      AnimP[NumAnim,0]:=AnimP[temp,0];
      AnimP[NumAnim,1]:=y2-1-AnimP[temp,1];
@@ -344,7 +333,7 @@ begin
  if (x>=0) and (x<320) and (y>=0) and (y<200) then
   begin
    x1:=x; y1:=y;
-   mem[video:(y1*320)+x1]:=c;
+   video[(y1*320)+x1]:=c;
   end;
 
 end;
@@ -359,7 +348,7 @@ end;
 
 function GetPixel(x,y:word):byte;  { en tied„ toimiiko }
 begin
- GetPixel:=mem[video:y*320+x];
+ GetPixel:=video[y*320+x];
 end;
 
 procedure EWriteFont(xx,yy:integer;s:string);
@@ -370,9 +359,8 @@ end;
 
 function DoFont(xx,yy:integer;s:string;draw:boolean):word;
 var chh:char;
-    i,t : integer;
+    i,t,increment : integer;
     p : word;
-
 begin
 
  p:=0;  { siirtym„ }
@@ -423,7 +411,8 @@ begin
    inc(t);
    if (Draw) then drawanim(xx+p,yy,t); { t+? riippuu muista animeista! }
 {   inc(p,memW[Anim[t]:0]+1); }  { vanhoilla fonteilla }
-   inc(p,memW[Anim[t]:0]);
+   increment:=Anim[t][0] + (Anim[t][1] shl 8);
+   inc(p,increment);
   end;
 
  end;
@@ -461,15 +450,15 @@ begin
 
  for temp:=1 to 60 do
   begin
-   x:=memW[Anim[temp]:0];
-   y:=memW[Anim[temp]:2];
+   x:=Anim[temp][0] + (Anim[temp][1] shl 8);
+   y:=Anim[temp][2] + (Anim[temp][3] shl 8);
 
     for yy:=0 to y-1 do
      for xx:=0 to x-1 do
       begin
-       tempb:=Mem[Anim[temp]:(yy*x)+xx+4];
+       tempb:=Anim[temp][(yy*x)+xx+4];
        if (tempb <> 242) and (tempb <> 0) then
-        Mem[Anim[temp]:(yy*x)+xx+4]:=col;
+        Anim[temp][(yy*x)+xx+4]:=col;
       end;
   end;
 
@@ -504,7 +493,7 @@ begin
 
      scr:=(temp1*320)+temp2;
 
-     col:=Mem[Video:scr];
+     col:=Video[scr];
      new:=col;
 
      ax:=(scr mod 320) mod sizex;
@@ -518,7 +507,7 @@ begin
 
      count:=(ay*sizex)+ax;
 
-     if (new>242) and (new<246) and (Mem[Anim[index]:count+4] <> 0) then inc(new,5);
+     if (new>242) and (new<246) and (Anim[index][count+4] <> 0) then inc(new,5);
 
 {     inc(ax); if (ax>=19) then
       begin
@@ -529,7 +518,7 @@ begin
 
 {     inc(count); if (count>=19*12) then count:=0; }
 
-     Mem[Video:scr]:=new;
+     Video[scr]:=new;
 
    end;
 
@@ -551,7 +540,7 @@ var xx,yy : word;
 begin
    for yy:=y to y2 do
     for xx:=x to x2 do
-     mem[video:xx + yy shl 8 + yy shl 6]:=col;
+     video[xx + yy shl 8 + yy shl 6]:=col;
     {  mem[video:(yy*320)+xx]:=col; }
 
 end;
@@ -576,7 +565,7 @@ end;
 
 procedure Balk(st:byte);
 begin
-  port[$3c8]:=0; port[$3c9]:=63*st; port[$3c9]:=0; port[$3c9]:=0;
+  // Not needed in port
 end;
 
 (*
@@ -586,6 +575,5 @@ begin
 end;
 *)
 
-begin
 end. { end unit }
 

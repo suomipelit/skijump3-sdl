@@ -25,7 +25,7 @@ function LataaPCX(name:string;picsize:longint;Page:word;mirror:byte):boolean;
 
 implementation
 
-uses Maki;
+uses Maki, SDLPort;
 
 const BufSize=2048;
       ReplaceMenu : array[0..6*2*3] of byte =
@@ -91,12 +91,14 @@ const BufSize=2048;
         {10,10,54, 54,10,10, 10,35,10 }
           0,47,52, 51,51,51, 38,38,38, 63,63,63, 0);
 
-var   Paletti:Array[0..255,0..2] of byte;
+var   Paletti:SDLPort.TPalette;
       PelastaAlkuosa:Array[0..255*3] of byte;
 
 
-procedure AsetaPaletti;assembler;
-asm Mov SI,offset Paletti;Mov DX,03c8h;Mov AX,0;Out DX,AL;Inc DX;Mov CX,768;Rep OutSB;end;
+procedure AsetaPaletti;
+begin
+ SDLPort.SetPalette(Paletti);
+end;
 
 
 procedure TallennaAlkuosa(alue:byte);
@@ -323,12 +325,18 @@ end;
 function LataaPCX(name:string;picsize:longint;Page:word;mirror:byte):boolean;
 
 var   DiskBuffer:Pointer;
+      dbp: pbyte;
       f:file;
       bp:integer;
       pc:word;
       wp:longint;
       i : integer;
       b1,b2:byte;
+
+function PtrConversion(p:pointer):pbyte;
+begin
+  PtrConversion:={%H-}pbyte(p);
+end;
 
 function GetNextByte:byte;
 begin
@@ -340,7 +348,8 @@ begin
      else blockread(f,DiskBuffer^,BufSize);
    end;
 
- GetNextByte:=mem[seg(DiskBuffer^):bp];
+ dbp:=PtrConversion(DiskBuffer+bp);
+ GetNextByte:=dbp^;
  inc(bp);
 
 end;
@@ -353,8 +362,8 @@ begin
    temp:=(pc mod Maki.XSize);
    x:=671-temp;
    if (x<0) then x:=1024+x;
-   mem[Video:((pc div Maki.XSize)*Maki.XSize)+x]:=b;
-  end else mem[Video:pc]:=b;
+   Video[((pc div Maki.XSize)*Maki.XSize)+x]:=b;
+  end else Video[pc]:=b;
 
   inc(wp);
   inc(pc);
@@ -387,7 +396,7 @@ begin
   end;
 
  seek(f,128);
-  if (IOresult<>0) or (ofs(DiskBuffer^)<>0) then LataaPCX:=false else
+  if (IOresult<>0) then LataaPCX:=false else
    begin
     wp:=0; { "write position" }
     bp:=BufSize; { "buffer position" }
@@ -415,7 +424,5 @@ begin
 
 end;
 
-
-begin
 end.
 

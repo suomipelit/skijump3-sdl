@@ -3,6 +3,7 @@ Unit sj3lang;
 Interface
 
 { procedure ResetLanguage; }
+procedure Init;
 procedure LoadLanguage(languageindex:byte);
 function lrstr(start,stop:integer):string;
 function lnstr(index:integer):string;
@@ -81,8 +82,7 @@ begin
 
    if (eof(f1)) then out:=true
                 else readln(f1,str1);
-
-   if (str1[1]='*') then
+   if (length(str1) > 0) and (str1[1]='*') then
     begin
      inc(numlanguages);
      readln(f1,str1);
@@ -116,7 +116,7 @@ begin
   if (eof(f1)) then out:=true
                else readln(f1,str1);
 
-  if (str1[1]='*') and (str1[2] = chr(languageindex+64)) then
+  if (length(str1) > 0) and (str1[1]='*') and (str1[2] = chr(languageindex+64)) then
    begin { oikea kieli l”ytyi! }
     index:=1;
     out:=true;
@@ -133,7 +133,7 @@ begin
                 else readln(f1,str1);
 
 
-   if (str1[1]='*') then out:=true;  { kiitti, riitt„„ }
+   if (length(str1) > 0) and (str1[1]='*') then out:=true;  { kiitti, riitt„„ }
 
    if (not out) then
     begin
@@ -169,20 +169,14 @@ procedure NewLangs;
 var temp : integer;
 begin
 
- if (SizeOf(LangStr)*(numstr+1) > MaxAvail) then
-  begin
-   writeln ('SJ3 Error: Out of memory when loading languages.');
-   readln;
-   halt;
-  end;
-
  for temp:=0 to NumStr do New(plstr[temp]);
 
 end;
 
+procedure Init;
 begin
-
  NewLangs;
  ResetLanguage;
+end;
 
 end.
