@@ -3047,7 +3047,7 @@ begin
    out.second:=diff-(diff div 60)*60;
 
   gotoxy(2,2);
-  cwrite(15,'- You played SJ3 v'+version+' for');
+  cwrite(15,'- You played SJ3 v'+version+' (beta SDL2 port) for');
 
   if (out.hour>0) then
    begin
@@ -3076,9 +3076,8 @@ begin
   writeln('. ');
 
  gotoxy(2,4);
- cwriteln(8,'- Remember to send the SENDME.TXT result file ');
- write('   to '); cwrite(15,'ville@nomasi.com');
- cwrite(8,' for the Universal Hall of Fame.');
+ cwriteln(8,'- Play original DOS version if you aim for the');
+ cwrite(8,'   Universal Hall of Fame.');
 
  gotoxy(2,7);
  cwriteln(15,'- Be sure to check out the Official Ski Jump International');

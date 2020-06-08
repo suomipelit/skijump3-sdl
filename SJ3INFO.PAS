@@ -2337,8 +2337,10 @@ begin
   writeln(f2);
   writeln(f2,'.END_OF_SENDME.TXT');
   writeln(f2);
-  writeln(f2,'Please send me to vkononen@cc.hut.fi');
-  writeln(f2,'Remember to use your real whole name, no nicknames are allowed.');
+  writeln(f2,'NOTE: This file is generated for legacy reasons. You need to play');
+  writeln(f2,'      original DOS version in order to participate in Universal');
+  writeln(f2,'      Hiscores of SJ3! Please do not send this file.');
+  writeln(f2);
   writeln(f2,'The Universal Hiscore List @ http://nomasi.com/sj3');
 
  close(f2);
