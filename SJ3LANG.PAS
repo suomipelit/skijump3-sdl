@@ -105,7 +105,7 @@ begin
 
  for temp:=0 to NumStr do plstr[temp]^:='?';
 
- assign(f1,'langbase.ski');
+ assign(f1,'LANGBASE.SKI');
  reset(f1);
 
  out:=false;
