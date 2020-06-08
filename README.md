@@ -13,15 +13,16 @@ closed DOS version to qualify.
 
 ## Build
 
-Currently only DOS build is supported.
+This repository is for SDL2 port. If you would like to build or play
+original Skijump International 3 on DOS, take a look at [original
+version](https://github.com/suomipelit/skijump3) instead.
 
-### Compiling for DOS
+### Compiling with Free Pascal
 
-Install [DOSBox](https://www.dosbox.com/) and Borland Pascal 7.0
-compiler.
+Build has been tested on Windows 10.
 
-Navigate to root of Ski Jump International 3 repository.
-
-Set `BP_PATH` variable to point to the compiler, e.g. `SET BP_PATH=C:\BP`
-
-Execute `COMP.BAT`. Start created `SJ3.EXE`.
+You can find instructions how to compile Pascal SDL2 applications from
+[Free Pascal meets SDL
+site](https://www.freepascal-meets-sdl.net/sdl-tutorials/). You can
+either install just Free Pascal Compiler or Lazarus IDE which bundles
+editor and the compiler.
