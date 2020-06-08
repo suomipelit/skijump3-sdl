@@ -1,0 +1,86 @@
+
+
+                                   ski jump international v3
+                S J 3              (c) ville könönen 1994-
+
+                                   http://www.nomasi.com/sj3/
+
+    _THE GUILTY PARTIES_
+    ^^^^^^^^^^^^^^^^^^^^
+      
+    Concept, Design, Programming,
+     Graphics, Webpages and What Not..................Ville Könönen
+
+    Additional Programming & Graphics.................Lasse Makkonen
+
+    Account Managers..................................Morten Indahl
+                                                      Stas Szczurek
+                                                      
+    Translations......................................Ville Könönen
+                                                      Sebastian Rönnlund
+                                                      Johan Steen
+                                                      Kenneth Aune Moum
+                                                      Ottmar Roth
+                                                      The Ant
+                                                      Maciej Krzyzanowski
+                                                      Mikk Hein
+                                                      Jan Habrdle
+                                                      Michal Hapala
+                                                      Cyril Koechlin
+                                                      Caroline Fedry
+                                                      Hermanni Virtanen
+                                                      Vittorio di Vincentis
+                                                      Filip Wojcieszyn
+                                                      Allan Hovland
+                                                      Tomislav Pavlovic
+                                                      Ivan Milenkovic
+
+    Beta Testers......................................Hannu Ahokas 
+                                                      Juha Kupiainen
+                                                      Kenneth Aune Moum
+                                                      Janne Pullinen
+                                                      Matias Pusa
+                                                      Ingve Rosseland
+                                                      Kimmo Yliriesto
+                                                      Mario Mali Kolic
+                                                      Jyri Memonen
+                                                      Simon Bernad
+                                                      Martin Pelz
+                                                      Kari Painio
+                                                      Pavel Skerlj
+  
+    The author would like to personally thank the following:
+
+    Lasse Makkonen          Oddvar Reiakvam
+    Mikko Aalto             Ville Rautamo
+    Janne Heinonen          Rennie Watt
+    Simo Virokannas         Markus Könönen
+    Johannes Lahti          Helsinki University of Technology
+    Toni Välitorppa          and especially it's Computing Centre!
+    Reijo Kalenius          Anssi Leinonen
+    Family Könönen          Toni Turtinen
+    Family Voima            Ilpo Korkko
+    Jukka Hujanen           Teppo Jalava
+    Mika Siltala            Janne Ruuttunen
+    Marko Mustonen          Antti Peisa
+    Kimmo Yliriesto         Seppo Tolonen
+    Denthor                 Mad Mario Kolic
+    Rauli Arjatsalo         Eric Hagfors
+    Karol Nowak             Antti "SWA" Suhonen
+    Maciek Laskowski        Mateusz Krasucki    
+    Märt Muttika            Inge Borthne
+    
+    + all the nice people who have took the time to mail me
+      w/ comments and stuff in the last few years.
+
+    & especially all the wonderful people who used a bit of time and money
+      to register SJ3 & SJ2!  Without your effort none of this would exist!  
+      Thank you all very much.
+
+    Programs used during the development of SJ3:
+     Borland Pascal 7.0 (c) Borland International
+     Deluxe Paint 2.3E (c) Electronic Arts
+     Irfanview 32-bit 3.15 (c) Irfan Skiljan
+     EditPad 3.5.1 (c) Jan Goyvaerts
+
+

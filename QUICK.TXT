@@ -1,0 +1,44 @@
+        
+ 
+                                   ski jump international v3
+                S J 3              (c) ville könönen 1994-
+
+                                   http://www.nomasi.com/sj3/
+
+        _QUICK GUIDE_
+        ^^^^^^^^^^^^^
+
+        Keys during jump and flight:
+
+        Up Arrow .................. Take-Off
+        Right Arrow ............... Rotate forward
+
+                                        (to minimize air-resistance)
+
+        Left Arrow ................ Rotate backward
+        T or t..................... Telemark- landing (one foot in front)
+
+                                         (slower and more risky to perform,
+                                          but you score better style points)
+
+        R or r .................... Two footed- landing (feet parallel)
+
+                                         (faster and safer to do, but
+                                          style points will be reduced.
+                                          A must for very long jumps)
+
+        Esc ....................... Universal Escape-key
+        F10 ....................... Terminates current cup
+                                    WARNING! USE WITH CAUTION!
+                                    Doesn't ask anything, just quits the
+                                    cup or season in progress
+
+
+	Keys for viewing Replay:
+
+        Right Arrow.................Play Forward
+        Left Arrow..................Play Backward
+        P or p......................Pause
+        + (plus key)................Increase Play Speed
+        - (minus key)...............Decrease Play Speed
+        Esc or F10..................Leave Replay

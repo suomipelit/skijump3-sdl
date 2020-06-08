@@ -1,0 +1,382 @@
+
+
+                                   ski jump international v3
+                S J 3              (c) ville könönen 1994-
+
+                                   http://www.nomasi.com/sj3/
+
+
+       _VERSION UPDATES_
+       ^^^^^^^^^^^^^^^^^
+       
+    Version 3.13                                          21.03.2011
+    %%%%%%%%%%%%
++ Another super secret release. Just a few fixes to make life easier
+  in "online" competitions.  
+  + No qualifications in Custom Cups
+  + Only the 10 best quality automatically in the SJ3 World Cup
+  + Possibility to reset wind in single player Custom Cups with F5.
+
+  
+    Version 3.12                                          11.02.2006
+    """"""""""""
++ A very small update just before the 2006 Winter Olympics in Torino.
+  Fixed a few holes that might have enabled cheating in SJ3 
+  competitions.
++ The menu system was improved a bit for more efficient use.
++ A few small internal bugs fixed
+  
+
+    Version 3.11                                          31.12.2003
+    ============
+
++ Small update with full high score compability to previous versions.
++ COMPETITIONS thru new and improved CUSTOM HILL SETS.  Now best 20
+  results are recorded in SJC files and you can join competitions at
+  SJ3 home page by sending the CUSTOMS.TXT file.  Good!
++ An option to automatically save all hill record replays, so you'll
+  never miss to record that super jump.
++ You can add your real name to your PROFILE, so you don't have to 
+  fill them in every time you send your SENDME's and CUSTOMS' too.
++ A few new languages; Serbian and Croatian added to the roster.
++ Lots of internal improvements especially with result lists.
++ New Windows Installer is use.
+
+    Version 3.10                                          01.02.2002
+    ------------
+
+* An UPDATE version to v3.00 with some cool little improvements, but
+  the high scores and hill records are still totally comparable!
++ PROFILES - instead of just jumper names - is one of the more major
+  improvements.  Now some extra data of your jumper can be saved 
+  and later viewed!  The color of the skis can now also be changed.
+  It's also possible to REPLACE a computer jumper in the jumping 
+  roster.
++ REPLAYS - of your finest (or worst) flights can now be saved and
+  analyzed later on.  You can also share your greatest jumps with
+  the rest of the ski jumping world by sending them to me.
++ The HILL RECORDS of the Extra Hills are now saved into the hill files 
+  (*.SJH) themselves and they can be viewed from the Hill Records List.  
+  And also, the old limit of 20 Extra Hills has been raised to 1000.
++ GOALS for jumping far can now be set from the Setup menu as there is
+  a small flag drawn by the hill where your goal is on that particular hill.
+  You can even download the goals to match those universal hill records!
+  Mr. Seppo Tolonen is the father of this concept, max respect!
++ CUSTOM HILL SETS - can now be saved in the revised Custom Hill 
+  Selection Screen, a best result from each _saved_ set is also 
+  recorded!
++ The KNOCK-OUT system will be used in the Four Hills Competition, you 
+  can disable this in the Setup menu, if you think it sucks.
++ It's finally possible to CUSTOMIZE the KEYS used for jumping.  
+  Available thru the Setup menu.  Also a keymap of the keys needed is 
+  shown at every first competition.
++ Also the position of the WIND METER on the screen can be changed.
++ The hill records and sendme.txt have new thing called A.H.I or
+  ALL HILL INDEX, this is a percentage of how much your hill records
+  are above the critical points of the hill.  The bigger the better.
++ There's a small INTRODUCTION to the game when you first start it up.
++ You can adjust the STARTGATE from where jumper starts in the 
+  Practice mode only.  The larger value, the higher speed.
++ SNOW FALL - is improved and now takes the wind into consideration!
++ The new Jumpers Profile system has enabled a host of new races to
+  be added to the Universal Hall of Fame at the SJ3 home page.  Check
+  them out and keep sending those Sendme's!
++ A few bugs fixed from v3.00: the Custom World Cup showed the Four 
+  Hills list after 8 competitions without asking, the game sometimes 
+  crashed when signing up 8 players in the Team Cup and error 
+  messages have been somewhat improved.
+
+
+
+    Version 3.00                                            01.10.2000
+    ~~~~~~~~~~~~
+
++ Finally, THE NEXT GENERATION of computer simulated ski jumping!
+  Ski Jump Interational v3.00 brings a lot of new and improved stuff.
+
++ NEW SCROLLING SYSTEM - with all new eye-pleasing graphics enabling
+  longer and more realistic jumps than ever.
+
++ 20 NEW HILLS - and all in real places!
+
++ MULTI-LANGUAGE-SUPPORT!  As a truly international game, SJ3 will 
+  speak Your language! 
+
++ WATCH THE COMPUTER JUMPERS go at it
+
++ KING OF THE HILL - a brand new form of competition!  The idea is to
+  jump against human or computer jumpers so that the worst jumper of
+  each round is eliminated.  This is continued until only one jumper
+  is remaining - the King of the Hill.  Muchos gracias to Mr. Ilpo
+  Korkko who (sort of) came up with the idea!
+
++ by popular demand, THE HILL MAKER - build hills yourself and jump 
+  in them too.  Or you jump in hills you downloaded from the 
+  SJ3 homepage, the possibilities are (nearly) endless.  See the 
+  MANUAL.TXT for more info on this stunning new feature.
+
++ CUSTOM WORLD CUP - choose the hills want to take the world's finest
+  jumpers to compete in.  Choose from the 20 original hills and 
+  up to 20 extra hills.
+  
++ NEW POINTS SYSTEM - points awarded to the jumper in the SJ3 World Cup
+  are now according to the FIS system, which gives points to the 30 best
+  jumpers with the winner getting 100 points.
+
++ QUALIFYING ROUNDS - and joint placings are in full effect also.  
+
++ NEW MENUS - now in cool blue
+
++ BIGGER HISCORE LISTS - World Cup Top 10 --> Top 20!
+  Team Cup Top 5 --> Top 10!  And the all new Top 5 4Hills list!
+
++ MORE STATS - The statistics page has changed a little with even more
+  stats for your enjoyment.
+
++ TOP 5 AT THE MOMENT has been added to the Team Cup Competition also.
+
++ JOINTOP - has been updated
+
++ The crypting system has been changed somewhat.  It's should be even more
+  tamper-proof this time around.  Also now the Automatic Hiscore List
+  Updater checks for authentity also. So don't edit those SENDME.TXT's!
+
++ Error messages should be a bit better.
+
+
+    Version 2.10                                            18.05.1998
+    ^^^^^^^^^^^^
+  Again, lots of new stuff:
++ TOP 5 AT THE MOMENT - Now you can be better aware of the current
+  situation, since the current Top 5 and the points needed to reach first
+  place (NOTE! _at the moment_, not necesseraly at the end of the round!)
+  are shown on the screen.  See the FAQ file for questions.
++ JUMPER ANIMATION - It may look a little rough, but it's surely better
+  than the former "stick-man".  Adds some more feel to the game.  And in
+  the _registered_ version you can also choose the color of your jumpsuit.
++ FOUR HILLS - 4Hills of the Americas has been added as an automatic part
+  of the SJ2 World Cup consisting of round 7 to 10.  You can also play
+  the 4Hills separately from the Main Menu.
++ JOINTOP.EXE - This little program allows you to combine two TOPTEN.SKI
+  files into one.  Usage: JOINTOP <1. input file> <2.input file> <outfile>
++ Also your jumping order number is shown before the first round jump (xx).
+  Number 50 is first to jump and naturally number 1 the last.
++ The Scoreboard and the At the Moment screen's results can be shown
+  as differentials. (120.3, -2.3, -3.5...).  Just switch it on from
+  the Setup menu.  (it is not default)
++ A few new backdrops for Sao Paolo by Mr. Toni V„litorppa and for Caracas by
+  Mr. Simo Virokannas.  Some new stuff in Nairobi too.
++ There also a FAQ file now.  Before you mail me with some
+  question check if someone else has already asked the same thing.
++ You are able to _zero_ as well as _reset_ the hiscores from the High Scores
+  menu.
++ There was a minor bug with the style points system.  It occasionally left
+  out the wrong two style points.  The problem has been fixed now.
+  Thanks to all those sharp-eyed people who pointed this out.
++ I got rid of that Stats from last season Main Menu option.  Was anybody
+  using it?
++ Oops.  There was still some Finnish language left in the Team Cup stats.
+  Corrected that one.
+
+
+    Version 2.00                                            18.12.1997
+    ^^^^^^^^^^^^
++ The new generation of ski jump simulation!!!  (Holy Moly!)
+  Lots of new stuff, from a scrolling screen to a realistic wind effect
+  Most of the changes are in the actual jumping process:
+  - scrolling screen; the "camera" follows the jumper during flight
+  - more colorful backgrounds
+  - realistic wind, which has a great effect on the length of the jump.
+    See MANUAL.TXT for more details
+  - jumping made more realistic, jumping obeys the laws of physics
+    a little bit more
+  - up to 10 human players can sign up
+  - two human teams can sign up in Team Competition
+
++ There is a REGISTERED version available.  Please see REGISTER.TXT
+  on how to impress your friends and own a registered version of SJ2!
+
+  The SHAREWARE version will have all kinds of irritating limitations:
+  - the number of players is limited to two (2)
+  - no team competition for you, man
+  - You are allowed to try out the game for 30 days before
+    you have to register.  It's the law, dude, obey it!
+
+  Please do everybody a favor, REGISTER,  it's very cheap and easy.
+  See REGISTER.TXT on how be super cool and register SJ2!
+
++ To avoid misuse and increase the reliability of the TOPTEN.SKI file,
+  it has been crypted with a highly complex crypting mechanism :)
+  Seriously, it does work, so don't try to alter the file
++ the program creates a SENDME.TXT file automatically when you exit SJ2.
+  Send this file to vkononen@cc.hut.fi to be a part of the Universal Hiscore
+  List.  (Don't try to edit this file either)
++ The date and time of record scores are stored and showed now
++ Some minor changes to the menus
+
+    Version 1.71 (International)                               4.3.1996
+    -------------
+* First International version. Still under heavy construction... Sit tight.
+  To avoid discriminating non-finnish speaking ski jumping fans,
+  the language of further versions will be _english_  (Sori, j„tk„t)
+
+
+    Versio 1.71                                                20.2.1996
+    -----------
+
+* Pelaajien ja joukkueen nimet tallentuvat nyt automaattisesti pelist„
+  poistuttaessa. Kiitokset Sami Saloselle ehdotuksesta.
+* Maailmanlaajuisen SJ-Top 20-listan kokoamista varten on peliin lis„tty
+  uusi toiminto.
+  Painamalla S-n„pp„int„ KUNNIATAULUT- ruudussa, tallentuu ruudun tieto
+  ENKAT- nimiseen tiedostoon, joka _pit„„_ sitten l„hett„„ tekij„lle.
+  Idea on ker„t„ SJ-kotisivulle Top-20 Lartzancup-sijoitusta ja
+  universaalit m„kienn„tykset. Eli l„hett„k„„ t„m„ ENKAT- niminen tiedosto
+  osoitteeseen vkononen@snakemail.hut.fi
+  Vastaavasti painamalla S-n„pp„int„ TILASTOT- ruudussa, tallentuu ruudun
+  tieto SKABA- nimiseen tiedostoon. T„m„ tiedosto on hy”dyllinen, jos
+  sattuu tulemaan vaikka loistava kausi ja haluaa j„tt„„ jonkinn„k”ist„
+  todistusaineistoa kaudestaan tulevaa spekulointia varten.
+  Tietenkin t„ss„ kuten muussakin peliin liittyv„ss„ toiminnassa luotetaan
+  sokeasti l„hett„j„n tietojen rehellisyyteen.
+* Ulkoasua on paranneltu jonkin verran... mm. ASETUKSET- ruutu ym...
+* Joukkuem„ke„ paranneltu snadisti
+
+    Versio 1.7b                                                 6.1.1996
+    -----------
+* Joukkuem„en tilastoissa ollut pienoinen fiba on t„ten korjattu.
+  Muutakin pient„ s„l„„ on repareerailtu. (?)
+
+    Versio 1.7                                                  27.12.1995
+    ----------
+* Paljon muutoksia: Joukkuem„kicup on syntynyt! Nelj„ pelaajaa, kuusi
+  m„ke„, todella kova kilpailu. Se on viel„ kehityksen alla, mutta ihan
+  pelattavassa kunnossa.
+* V„h„n animaation yrityst„... Se on v„h„n surkea - anteeksi. Se oli
+  pirun vaikea tehd„, eik„ se n„yt„ oikein hyv„lt„ viel„k„„n.
+  Yrit„n tehd„ siit„ paremman tulevaisuudessa.
+  Sen saa (onneksi) p„„lle/pois Asetukset-valikossa.
+* Kent„lt„ tulleen palautteen johdosta kaatumisriskiprosentteja alastulossa
+  on helpotettu hieman. Tsekkaa uudet prosentit SJ.DOC:sta... (eiv„t ne ole
+  nyt niin kauheasti muuttuneet)
+* Mukana on uusi tiedosto CONFIG.SKI. Siell„ s„ilytet„„n Asetukset-valikon
+  tietoja. Ennen ne tiedot olivat TOPTEN.SKI:n per„ss„. Nyt on helpompi
+  s„ilytt„„ vanhat enn„tykset uuden version tullessa.
+* Lartzan SKIJUMP-kotisivu on nyt pystyss„! Sinne tulee sitten imuroitavaksi
+  aina uusi versio. Sinne tulee my”s kaikkea muuta SJ-s„l„„...
+  Se sivu on viel„ aika alkutekij”iss„„n, mutta yrit„n pist„„ sinne kaikkea
+  mielenkiintoista t„ss„ pitkin talvea. Palaute - kuten aina - on eritt„in
+  tervetullutta.
+  Osoite on: http://www.hut.fi/~vkononen/sj.html
+             """""""""""""""""""""""""""""""""""
+
+    Versio 1.62                                                 29.11.1995
+    -----------
+* T„ysin ep„m„„r„inen versionumerointi jatkuu... :)
+* Lis„„ tilastoja. LartzanCup-tilastoissa sarakkeet 1 ja 2 (ei 12) kertovat
+  mahdollisen ep„onnistumisen syyn yhdell„ kirjaimella.
+
+  Jos syy miksi hyppy ei kulkenut oli:
+
+        Syy:                            Kirjain:
+        Ponnistus liian ajoissa........ P
+        Alastulo liian my”h„ss„........ A
+        Kaatui huonoa onneaan.......... K
+        Ei osallistunut (eli ESC)...... E
+        Jotain hyv„„kin:
+        Hypp„si uuden m„kienn„tyksen .. M
+
+* F10-superpakon„pp„in on nyt olemassa. K„ytett„v„ VAROEN!!!
+  Se ei kysy yht„„n mit„„n, vaan keskeytt„„ v„litt”m„sti LartzanCupin!
+  Eli nyt ei tarvitse r„mpytt„„ ESCi„ kauan jos haluaa keskeytt„„ Cupin.
+* SJ.DOC on nyt jonkinmoinen yleisk„ytt”ohjeyritys...
+  PIKAOHJE.DOC on vaan pikan„pp„inohje.
+* Alastulon kaatumismahdollisuusprosentteja on taasen muutettu...
+  Nyt lyhyet pysyy helpommin pystyss„ ja paljon yli kriittisen venyv„t
+  hypyt taas riskialttiimpia kaatumiselle. Katso taulukko SJ.DOC:ista.
+  Varsinkin t„h„n kohtaan kaipaisin palautetta!
+  Kaatuuko se liian helposti?
+* Muuta pikku fixi„...
+
+    Versio 1.6                                                  12.11.1995
+    ----------                                                  (Hyv„ Isi!)
+
+* T„rkein: testauksessa tuli ilmi, ett„ peli„ (lentoa) on voitava hidastaa,
+  no nyt sit„ voi. Asetuksissa on hidastusarvo niminen juttu, sielt„ voi
+  s„„t„„ hidastuksen suuruutta. Nopea 486dx tarvitsee arvon 25-30. Hitaampi
+  kuin 386dx ei varmaankaan tarvitse hidastusta ollenkaan...
+  -> Kun ensimm„isen kerran k„ynnist„t SKIJUMPin, sopiva hidastusarvo
+  yritet„„n laskea monimutkaisella algoritmilla, kuitenkin s„„t”„ on hyv„
+  suorittaa... Jos tulos on mielest„si p„in persett„, voit kokeilla k„ynnist„„
+  SKIJUMP komennolla SJ -L, jolloin ohjelma yritt„„ uudelleen m„„ritt„„
+  sopivaa hidastusta koneellesi.
+* Ohjelman alussa tehty n„ppishidastus on poistettu. Luulin joskus ennen ett„
+  hypp„„minen helpottuu kun n„ppis on nopea. Olen tullut toisiin aatoksiin.
+* Nyt saa tilastot (mielenkiintoiset) ilmestym„„n automaattisesti joka skaban
+  j„lkeen asetuksesta Tilastot.
+* Sit„ h”lm”„ SINI.TXT-taulukkoa ei en„„ ole. Ei se hy”dytt„nyt mit„„n.
+  Heitin sen kuusen yli Norjaan... viuuh... plumpis!
+  
+
+    Versio 1.5                                                  29.10.1995
+    ----------
+* Kuvat kaikki PCX-muodossa. Vihdoin. Huomattavasti levy-yst„v„llisempi.
+* Kun kerran paletitkin meniv„t samaan syssyyn, t„t„h„n voisi levitt„„ sitten
+  pikkuhiljaa... ensin testataan niin perkeleesti...
+* ei viel„k„„n kattavaa DOC:ia, mutta simppeli.doc on jo aika kattava itsess„„n
+* EXE:n nimi muutettu SJ.EXE:ksi, ja paketti SJx.xx.ZIP:ksi
+* Tekij„„ saa kiinni Internetist„: vkononen@snakemail.hut.fi
+* Virheilmoitukset ihan selkokielell„
+
+
+    Versio 1.3                                                  23.5.1995
+    ----------
+* 15 m„ke„ eli t„ysi Pohjois-Espoon m„kiturnee!!! Whoa!
+* Kaikkea pient„ fixi„...
+
+    Versio 1.11                                                 16.3.1995
+    -----------
+* Kaatuminen tehty snadisti paremman n„k”iseksi
+* Hypp„„j„ on nyt v„h„n toisen n„k”inen... realistisempi?
+* Koekierros
+* Dorka Sinitaulukko messiss„... (SINI.TXT) ...poistunee...
+  Pascalin Sin-funktio on niin pirun hidas...
+* Alam„en laskusysteemi„ on muutettu, voi olla rumempi kuin ennen,
+  mutta kukas sit„ nyt katselee...
+
+    Versio 1.1                                                  20.1.1995
+    ----------
+* Ponnistus- ja lentoprosessia hieman muutettu - ihan tajuttomat hypyt eiv„t
+  en„„ ole mahdollisia
+* Liian aikaisin ponnistaminen ei rankaise NIIN pahasti, mutta kuitenkin...
+* Lis„„ m„ki„ (huimia lentom„ki„ ja raakoja pikkum„ki„)
+* Lis„„ tuulenpuuskia (tuuli tulossa ehk„ jo seuraavaan...)
+* SUURI muutos alastuloon, hypp„„j„ kaatuu HUOMATTAVASTI helpommin
+  telemarkilla alasotettuja pitki„ hyppyj„ ( >Kr.piste ). Katso SKIJUMP.DOCista
+  kaatumisprosentit. YLIpitk„t hypytkin joutunee ottamaan alas tasajalkaa...
+  (jos Kr.p = 121, niin on mahdollista pysy„ pystyss„ noin 145 metrin hyppy)
+* Tilastot, lis„„ spekuloinnin mahdollisuuksia...
+* Pient„ fixi„... kuten tavallista
+
+    Versio 1.02á                                                 7.11.1994
+    -----------
+* Ensimm„inen levitett„v„ versio... (sis. UPDATE.DOC, ei viel„
+  SKIJUMP.DOCia, en ole jaksanut kirjoittaa...)
+* Viel„ testin alla(ja .DOC uupuu), siksi á-merkint„.
+* TopTen - kymmenen kauneinta - lista
+* K„„nnetty hyppyj„rjestys (1.kier:MC-pisteet, 2.kier:1.kierroksen pisteet)
+* K„ytt„j„yst„v„llisyytt„
+* Bugeja fiksailtu (as usual)
+
+    Versio 1.01á                                                18.10.1994
+    -----------
+* 1-4 pelaajaa
+* LartzanCup-systeemi
+* V„h„n paremman n„k”inen ja ehk„ mukavampikin k„ytt„„
+* Bugeja fiksailtu taasen
+
+    Versio 1.00á                                                15.9.1994
+    -----------
+* Ihan perusversio
+
+
