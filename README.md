@@ -7,6 +7,10 @@
 Huge thanks for original author Ville Könönen for open-sourcing this
 absolute classic gem from the good old DOS days.
 
+**Note:** Please note that hill records from open sourced version are
+not accepted in any of the hiscore lists. You need to play original
+closed DOS version to qualify.
+
 ## Build
 
 Currently only DOS build is supported.
