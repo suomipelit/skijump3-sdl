@@ -5,6 +5,7 @@ interface
   type TPalette = Array[0..255,0..2] of byte;
 
   procedure Init;
+  procedure DeinitGraphics;
   procedure Deinit;
 
   procedure SetPalette(input : TPalette);
@@ -137,7 +138,7 @@ begin
   timer := SDL_AddTimer(1, TimerCallback, nil);
 end;
 
-procedure Deinit;
+procedure DeinitGraphics;
 begin
   SDL_RemoveTimer(timer);
   SDL_FreeSurface(originalSurface);
@@ -145,7 +146,10 @@ begin
   SDL_DestroyTexture(displayTexture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
+end;
 
+procedure Deinit;
+begin
   SDL_Quit;
 end;
 

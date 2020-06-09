@@ -5832,7 +5832,9 @@ begin
 
  lopputext(version,Start,Now);
 
- SDLPort.WaitForKeyPress(ch,ch2);
+ repeat
+  SdlPort.Wait(10);
+ until Crt.KeyPressed
 
 end;
 
@@ -5887,9 +5889,11 @@ begin  { MAIN }
 
 {  Valikko; }
 
-  SDLPort.Deinit;
+  SDLPort.DeinitGraphics;
 
   Loppu;
+
+  SDLPort.Deinit;
 
 (*
   CloseFont;  { vapautetaan niiden k„ytt„m„ muisti }
