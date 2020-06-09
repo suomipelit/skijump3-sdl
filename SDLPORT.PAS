@@ -14,6 +14,8 @@ interface
   function KeyPressed : boolean;
   procedure WaitForKeyPress(var ch1, ch2 : char);
 
+  procedure Wait(ms : integer);
+
 implementation
 
   uses sdl2;
@@ -219,6 +221,11 @@ begin
       windowResized := true;
     end;
 
+    if (event.type_= SDL_QUITEV) then
+    begin
+      Halt;
+    end;
+
     if event.type_= SDL_KEYDOWN then
     begin
       pressed:=true;
@@ -332,6 +339,11 @@ begin
     end;
     SDL_Delay(10);
   end;
+end;
+
+procedure Wait(ms : integer);
+begin
+  SDL_Delay(ms);
 end;
 
 end.

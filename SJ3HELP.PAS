@@ -40,7 +40,7 @@ uses maki, sj3unit, crt, dos, sj3graph, SDLPort;
 
 procedure Wait(C : integer) ;
 begin
-  // TODO: Not yet ported
+  SdlPort.Wait(C);
 end {Wait} ;
 
 
