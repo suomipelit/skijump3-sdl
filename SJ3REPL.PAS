@@ -6,7 +6,7 @@ procedure replays(start:boolean;version:string;gdetail:byte);
 
 implementation
 
-uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport;
+uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport, SysUtils;
 
 
 procedure replays;
@@ -380,9 +380,33 @@ end;
 
 
  procedure findreplays;
+ var DirInfo : TSearchRec;
+     temp : integer;
  begin
+
   NumReplays:=0;
-  // TODO: Not yet ported
+
+  for temp:=0 to 100 do filenames[temp]:='';
+
+  if FindFirst ('*.SJR',faAnyFile,DirInfo)=0 then
+  begin
+    repeat
+      if (NumReplays < 100) then
+      begin
+        temp:=1;
+
+        inc(NumReplays);
+
+        while (DirInfo.Name[temp]<>'.') do
+        begin
+          filenames[NumReplays]:=filenames[NumReplays]+DirInfo.Name[temp];
+          inc(temp);
+        end;
+      end;
+    Until FindNext(DirInfo)<>0;
+
+    FindClose(DirInfo);
+  end;
  end;
 
  procedure readreplayinfo;
@@ -436,14 +460,14 @@ end;
   temp:=0;
   inc(temp,Startx*2+Starty);
   inc(temp,maxturns*3);
-  if (nytmaki<=numwchills) then inc(temp,nytmaki*131);
-  inc(temp,valuestr(hillfilename,3)*3);
+  if (nytmaki<=numwchills) then inc(temp,word(nytmaki*131));
+  inc(temp,word(valuestr(hillfilename,3)*3));
   inc(temp,Acthill.profile);
-  inc(temp,(realhp+2)*69);
+  inc(temp,word((realhp+2)*69));
   inc(temp,flstart+flstop);
-  inc(temp,(HRx+HRy)*2);
-  inc(temp,valuestr(author,2));
-  inc(temp,startgate*1412);
+  inc(temp,word((HRx+HRy)*2));
+  inc(temp,word(valuestr(author,2)));
+  inc(temp,word(startgate*1412));
 
   countcheck:=temp xor 3675433;
  end;
