@@ -1076,20 +1076,20 @@ begin
    check:=0;
    writeln(f1,RStartX); writeln(f1,RStartY); inc(check,RStartx*2+RStarty);
    writeln(f1,RTurns); inc(check,Rturns*3);
-   writeln(f1,nytmaki); if (nytmaki<=numwchills) then inc(check,word(nytmaki*131));
+   writeln(f1,nytmaki); if (nytmaki<=numwchills) then inc(check,smallint(nytmaki*131));
    str1:='HILLBASE';
    if (nytmaki>NumWCHills) then str1:=hillfile(nytmaki-NumWCHills);
    writeln(f1,str1); inc(check,word(valuestr(str1,3)*3));
    writeln(f1,Acthill.profile); inc(check,Acthill.profile);
    writeln(f1,lmaara);
-   writeln(f1,hp);  inc(check,word((hp+2)*69));
+   writeln(f1,hp);  inc(check,smallint((hp+2)*69));
    writeln(f1,RFLStart);
    writeln(f1,RFLStop);  inc(check,rflstart+rflstop);
-   writeln(f1,WRx); writeln(f1,WRy); inc(check,word((WRx+WRy)*2));
+   writeln(f1,WRx); writeln(f1,WRy); inc(check,smallint((WRx+WRy)*2));
    writeln(f1,Profile[actprofile].suitcolor);
    writeln(f1,Profile[actprofile].skicolor);
 
-   writeln(f1,author); inc(check,word(valuestr(author,2)));
+   writeln(f1,author); inc(check,valuestr(author,2));
    writeln(f1,name);
    writeln(f1,dayandtime(Today,Now));
    writeln(f1,integer(mcliivi));
@@ -1098,7 +1098,7 @@ begin
    if (wcup) then t1:=cupstyle+1;
    if (jcup) then t1:=4;
    if (koth) then t1:=5;
-   writeln(f1,t1); inc(check,word(t1*1412));
+   writeln(f1,t1); inc(check,smallint(t1*1412));
 
    writeln(f1,check xor 3675433);
    writeln(f1,'0');
