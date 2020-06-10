@@ -101,7 +101,7 @@ begin
             SDL_WINDOWPOS_UNDEFINED,
             xRes * windowMultiplier,
             yRes * windowMultiplier,
-            SDL_WINDOW_SHOWN);
+            SDL_WINDOW_SHOWN or SDL_WINDOW_RESIZABLE);
   if window = nil then Halt;
 
   renderer := SDL_CreateRenderer(window, -1, 0);
@@ -122,8 +122,6 @@ begin
                  xRes,
                  yRes);
   if displayTexture = nil then Halt;
-
-  //SDL_SetWindowResizable(window, SDL_TRUE);
 
   RefreshRendering();
 
