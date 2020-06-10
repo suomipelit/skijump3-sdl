@@ -123,7 +123,7 @@ begin
                  yRes);
   if displayTexture = nil then Halt;
 
-  SDL_SetWindowResizable(window, SDL_TRUE);
+  //SDL_SetWindowResizable(window, SDL_TRUE);
 
   RefreshRendering();
 
