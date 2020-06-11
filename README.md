@@ -1,6 +1,6 @@
 # Ski Jump International v3 (SDL2 port)
 
-![Cover](https://github.com/suomipelit/skijump3-sdl/blob/master/COVER.PNG)
+![Cover](https://github.com/suomipelit/suomipelit.github.io/blob/master/gifs/sj3.gif)
 
 [Skijump International v3 website](https://www.nomasi.com/sj3/)
 
@@ -25,9 +25,6 @@ closed DOS version](https://www.nomasi.com/sj3/download.html) to
 qualify.
 
 ## Differences compared to DOS version
-
-See [issues](https://github.com/suomipelit/skijump3-sdl/issues) for
-currently missing features (there aren't many).
 
 Port attempts to be carbon copy of original DOS version, even to such
 extent that you can share configuration files. Only minor bugs like
