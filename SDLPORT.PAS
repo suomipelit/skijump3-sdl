@@ -104,7 +104,7 @@ begin
 
   if SDL_Init( SDL_INIT_VIDEO or SDL_INIT_TIMER ) < 0 then HALT;
 
-  window := SDL_CreateWindow('SJ3',
+  window := SDL_CreateWindow('Ski Jump International v3',
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             xRes * windowMultiplier,
