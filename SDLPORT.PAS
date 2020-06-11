@@ -305,6 +305,8 @@ begin
         if (keyPressed < SDLK_CAPSLOCK) then ch1:=char(keyPressed);
 
         Case keyPressed of
+          SDLK_F10 : ch2:=#68;
+
           SDLK_LEFT : ch2:=#75;
           SDLK_RIGHT : ch2:=#77;
           SDLK_UP : ch2:=#72;
