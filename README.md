@@ -1,6 +1,10 @@
 # Ski Jump International v3 (SDL2 port)
 
-![Cover](https://github.com/suomipelit/suomipelit.github.io/blob/master/gifs/sj3.gif)
+**This is a pre-release, do not redistribute!**
+
+[Repository](https://github.com/suomipelit/skijump3-sdl)
+
+![Cover](https://raw.githubusercontent.com/suomipelit/suomipelit.github.io/master/gifs/sj3.gif)
 
 [Skijump International v3 website](https://www.nomasi.com/sj3/)
 
