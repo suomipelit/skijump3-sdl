@@ -104,7 +104,8 @@ type Stat_type = record
      Hour, Minute, Second, Sec100 : Word;
     end;
 
-var NumExtraHills, NumHills, Vcode : byte;
+var NumHills, Vcode : byte;
+    NumExtraHills : word;
 
 {function getch(xx,yy:integer;bkcolor:byte):char;}
 procedure getch(xx,yy:integer;bkcolor:byte;var tempch,tempch2:char);
@@ -216,7 +217,7 @@ procedure clrscr;
 
 implementation
 
-uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport;
+uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, SysUtils;
 
 {var osote : array [0..4000] of byte; }
 
@@ -1563,7 +1564,7 @@ begin
      Halt;
     end else
      begin
-      beep(1);
+      sj3help.beep(1);
 
       AsetaMoodi($3);
 
@@ -2166,14 +2167,47 @@ end;
 
 
 procedure CheckExtraHills;
-var DirInfo : string;
+var DirInfo : TSearchRec;
     Attr : word;
     f1 : text;
     temp : integer;
     filenames : array[0..MaxExtraHills] of string[12];
 
 begin
- // TODO: Not yet ported
+ NumExtraHills:=0;
+
+ for temp:=0 to MaxExtraHills do filenames[temp]:='';
+
+ if FindFirst ('*.SJH',faAnyFile,DirInfo)=0 then
+ begin
+   repeat
+     if (NumExtraHills < MaxExtraHills) then
+     begin
+       temp:=1;
+
+       inc(NumExtraHills);
+
+       while (DirInfo.Name[temp]<>'.') do
+       begin
+         filenames[NumExtraHills]:=filenames[NumExtraHills]+DirInfo.Name[temp];
+         inc(temp);
+       end;
+     end;
+   Until FindNext(DirInfo)<>0;
+
+   FindClose(DirInfo);
+ end;
+
+ Assign(f1,'MOREHILL.SKI');
+ ReWrite(f1);
+
+ writeln(f1,NumExtraHills);
+
+ for temp:=1 to NumExtraHills do
+  writeln(f1,filenames[temp]);
+
+ Close(f1);
+
 end;
 
 
