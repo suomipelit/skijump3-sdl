@@ -10,7 +10,7 @@ const
 
 var
 
- version : string[10];
+ version, version_full : string[10];
 
  ActHill : hill_type;
 
@@ -5662,7 +5662,7 @@ begin
 
   drawfullmain;
 
-  MainMenuText(0,version);
+  MainMenuText(0,version_full);
 
 {  index:=MakeMenu(30,69,110,10,8,index,243,0,6); }
 
@@ -5830,7 +5830,7 @@ begin
  unregendtext;
 {$ENDIF}
 
- lopputext(version,Start,Now);
+ lopputext(version_full,Start,Now);
 
  repeat
   SdlPort.Wait(10);
@@ -5856,6 +5856,7 @@ begin  { MAIN }
  getnow(start);
 
  version:='3.13';
+ version_full:=version+'-'+SdlPort.GetVersion;
 
 (* ex:=true;    { expert-mode } *)
 

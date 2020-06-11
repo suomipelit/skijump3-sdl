@@ -3081,7 +3081,7 @@ begin
    out.second:=diff-(diff div 60)*60;
 
   gotoxy(2,2);
-  cwrite(15,'- You played SJ3 v'+version+' (beta SDL2 port) for');
+  cwrite(15,'- You played SJ3 v'+version+' for');
 
   if (out.hour>0) then
    begin

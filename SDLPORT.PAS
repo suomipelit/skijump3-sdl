@@ -4,6 +4,8 @@ interface
 
   type TPalette = Array[0..255,0..2] of byte;
 
+  function GetVersion : string;
+
   procedure Init;
   procedure DeinitGraphics;
   procedure Deinit;
@@ -20,7 +22,8 @@ interface
 implementation
 
   uses sdl2;
-  const xRes = 320;
+  const version: string = 'SP0';
+        xRes = 320;
         yRes = 200;
         targetFrames = 70;
         aspect: real = xRes / yRes;
@@ -88,6 +91,11 @@ procedure ResetWindowSize;
 begin
   SDL_SetWindowSize(window, xRes * windowMultiplier, yRes * windowMultiplier);
   windowResized := true;
+end;
+
+function GetVersion: string;
+begin
+  GetVersion := version;
 end;
 
 procedure Init;
