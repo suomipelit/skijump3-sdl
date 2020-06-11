@@ -267,30 +267,6 @@ begin
 
 end;
 
-
-
-Procedure savescreen(str1:string);
-var f1 : text;
-    temp : integer;
- begin
-  assign(f1,str1);
-
- ReWrite(f1);
-
-  for temp:=0 to 1999 do
-   begin
-    if temp mod 80 = 0 then writeln(f1);
-
-    // TODO: Not yet ported
-    //write(f1,chr(mem[$b800:temp*2]));
-
-   end;
-
-
- Close(f1);
-
- end;
-
 Function txtp(jokuluku:longint):string;
 var str1 : string;
 begin
