@@ -302,6 +302,13 @@ begin
           end;
         end;
 
+        // Some nordic characters
+        Case char(keyPressed) of
+          #228 : begin ch1:=#132; ch2:=#36; exit end; // a with diaeresis
+          #246 : begin ch1:=#148; ch2:=#39; exit end; // a with ring above
+          #229 : begin ch1:=#134; ch2:=#26; exit end; // o with diaeresis
+        end;
+
         if (keyPressed < SDLK_CAPSLOCK) then ch1:=char(keyPressed);
 
         Case keyPressed of
