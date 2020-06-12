@@ -58,7 +58,6 @@ end;
 
 
 procedure beep(beeptapa:byte);
-var t1, t2 : Time;
 begin
 (*
  sound(1000*beeptapa);
@@ -167,7 +166,6 @@ begin
 end;
 
 function pcomp(score,sij:longint):longint;
-var temp : longint;
 begin
  pcomp:=(score*51)+50-sij;
 { pcomp:=score*51; }

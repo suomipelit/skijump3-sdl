@@ -235,7 +235,6 @@ function writecustom(SetFile:string;sortby:byte;
                      HillOrder:array of integer;CupHills:integer):integer;
 
 var temp,result : integer;
-    str1:string;
     checksum, code : longint;
     f2 : text;
 
@@ -396,7 +395,7 @@ procedure selectcustomhills(var sortby:byte;var CupHills:integer;
                             var SetFile:string);
 
 
-var hill, x, y : integer;
+var hill, y : integer;
 {    max : byte; }
     tempstr : string;
     temphi : Hiscore;
@@ -700,8 +699,7 @@ var hill, x, y : integer;
 
 
  function saveset:integer; { palauttaa: 0 - save onnistui, 1 - ei }
- var f1 : text;
-     result,temp : integer;
+ var result,temp : integer;
      str1 : string;
    {  tempch,tempch2 : char; }
 
@@ -776,9 +774,8 @@ var hill, x, y : integer;
  procedure doselection;
  var loop, loop2 : integer;
      str1 : string;
-     leave : boolean;
      {ch, ch2 : char; }
-     hills,tempb : byte;
+     hills : byte;
 
   begin
 
@@ -1131,7 +1128,6 @@ procedure defaultprofile(index:integer;phase:byte);
 var temp : integer;
     count, count2 : byte;
     ok : boolean;
-    str1 : string;
 
 begin
 
@@ -1213,7 +1209,7 @@ procedure LoadProfiles;
 var f1 : text;
     temp : integer;
     str1 : string;
-    l1, l2 : longint;
+    l1 : longint;
 begin
 
 {$IFDEF REG}
@@ -1237,7 +1233,7 @@ begin
 
  for temp:=1 to NumProfiles do
   begin
-   str1:=#1; l1:=0; l2:=0;
+   str1:=#1; l1:=0;
    while ((length(str1) < 1) or (str1[1]<>'*')) do readln(f1,str1);
 
    with Profile[temp] do
@@ -1286,7 +1282,6 @@ procedure WriteProfiles;
 var f1 : text;
     temp : integer;
     str1 : string;
-    l1, l2 : longint;
 begin
 
  str1:='PLAYERS.SKI';
@@ -1392,7 +1387,7 @@ end;
 
 
 procedure drawsuitski(index,phase:integer);
-var x,xl,y, temp : integer;
+var x,xl,y : integer;
 begin
 
  LoadSuit(Profile[index].suitcolor,0);
@@ -1642,8 +1637,7 @@ end;
 
 
 procedure selectreplace(index:integer);
-var x,y, temp : integer;
-    ok, leave : boolean;
+var x,y : integer;
     value : integer;
 {    ch,ch2 : char; }
 begin
@@ -1653,7 +1647,6 @@ begin
 
  x:=fontlen(lstr(308))+170;
  y:=44;
- leave:=false;
 
  repeat
 
@@ -1799,7 +1792,6 @@ end;
 
 procedure chooseseecomps(var seecomps:byte);
 var sch1, sch2 : char;
-    temp : integer;
     index : byte;
     leave : boolean;
     str1 : string;
@@ -1966,7 +1958,7 @@ end;
 
 
 procedure profiles;
-var oldindex, index, temp, x : integer;
+var oldindex, index, temp : integer;
     entries : integer;
     temp2 : integer;
     leave : boolean;
@@ -2107,7 +2099,7 @@ var f2 : text;
     str1, realname : string;
     sortby : byte;
     anywritten : boolean;
-    apu1, apu2, apu3 : integer;
+    apu1, apu2 : integer;
     laskuri, ahi, code : longint;
     NumCustoms : integer;
     Files : array [0..MaxCustoms] of FileStr;

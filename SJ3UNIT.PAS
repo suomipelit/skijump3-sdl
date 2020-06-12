@@ -266,7 +266,7 @@ procedure clrscr; begin end;
   }
 
 procedure makevcode(version:string;reg:boolean);
-var pos,return : byte;
+var pos : byte;
 begin
 
  pos:=2; { v3.11 !!! }
@@ -350,9 +350,6 @@ end;
 
 {function getch(xx,yy:integer;bkcolor:byte):char;}
 procedure getch(xx,yy:integer;bkcolor:byte;var tempch,tempch2:char);
-var run : integer;
-    col : byte;
-
 begin
 
   fillbox(xx-2,yy-2,xx+6,yy+8,bkcolor);
@@ -368,7 +365,6 @@ end;
 
 function getstr(xx,yy,maxlength:integer;oldstr:string;bkcolor:byte):string;
 var newstr : string;
-    count : integer;
     out : boolean;
     cx : integer;
 {    tempch, tempch2 : char; }
@@ -377,7 +373,6 @@ begin
  out:=false;
 
  newstr:=oldstr;
- count:=length(newstr);
 
   repeat
 
@@ -419,7 +414,6 @@ end;
 
 function getstr2(xx,yy,maxchars:integer;oldstr:string;bkcolor:byte):string;
 var newstr : string;
-    count : integer;
     out : boolean;
     cx : integer;
 {    tempch, tempch2 : char; }
@@ -428,7 +422,6 @@ begin
  out:=false;
 
  newstr:=oldstr;
- count:=length(newstr);
 
   repeat
 
@@ -632,7 +625,6 @@ end;
 
 
 procedure DrawLumi(delx,dely,wind:integer;lmaara:word;draw:boolean);
-var temp : integer;
 begin
 
 { temp:=(tuuli div abs(tuuli))*(random(abs(tuuli)) div 10);
@@ -655,8 +647,6 @@ end;
 
 procedure kothchallenge(x:integer;kothpack:byte);
 var temp : integer;
-    col1, col2 : byte;
-    str1 : string;
     y : integer;
 begin
 
@@ -770,7 +760,6 @@ var{ tempch1,tempch2 : char; }
     xx,yy : integer;
     out,fill,putkeen : boolean;
     boxcol : byte;
-    cols : byte;
     del : boolean;
     oldindex : integer;
     thing : integer;
@@ -801,7 +790,6 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
  3,7 : putkeen:=true;
  end;
 
- cols:=1;
 { if (phase=2) then cols:=2; }
 
 { index:=1; }
@@ -1187,7 +1175,6 @@ procedure writehill(var f1:text;h:hill_type;index,phase:integer);
  { phase: 0 - tavallinen, 1 - ei profiilin checkkausta (HR:t) }
 var a,c : integer;
     b : byte;
-    temp : integer;
     l1, l2 : longint;
 
 begin
@@ -1427,14 +1414,12 @@ end;
 function LoadInfo(nytmaki:integer;
                  var hill:hill_type):byte;
 
-var result : byte;
-    f1 : text;
+var f1 : text;
     a,c : integer;
     b : byte;
     str1 : string;
     l1,l2,l3,l4 : longint;
     temp : integer;
-    good : boolean;
 
  procedure checkfile(phase:integer);
  var filename : string;
@@ -1618,7 +1603,6 @@ var temp : integer;
     xx, xx2, yy : integer;
     str1 : string;
     oldhill : hill_type;
-    f2  : text;
 
  procedure getnum(var thisnum:byte;low,high:byte);
  var code : integer;
@@ -1831,7 +1815,6 @@ var result : byte;
 {    ch, ch2 : char; }
     xx, yy : integer;
     leave2 : boolean;
-    f2 : text;
 begin
 
  result:=0;
@@ -2168,7 +2151,6 @@ end;
 
 procedure CheckExtraHills;
 var DirInfo : TSearchRec;
-    Attr : word;
     f1 : text;
     temp : integer;
     filenames : array[0..MaxExtraHills] of string[12];
@@ -2215,10 +2197,9 @@ end;
 
 procedure LoadHillInfo;  { t„ll„ ladataan mnimet ja kri -taulut kuntoon }
 var f1 : text;
-    result,temp : byte;
+    temp : byte;
     NowHill : hill_type;
     filename : string;
-    i : integer;
 
 begin
 
@@ -2306,9 +2287,7 @@ end;
 
 
 procedure WriteExtras; { kirjoitetaan extrahillsien hillrecit }
-var f1 : text;
-    temp, index : integer;
-    h : Hill_type;
+var temp, index : integer;
 begin
 
  for temp:=1 to NumExtraHills do
@@ -2398,8 +2377,7 @@ const show = 18;
 
 var h : hill_type;
     filestr : string;
-    command : string[79];
-    items, temp, temp2, index, index2 : integer;
+    items, temp, temp2, index : integer;
     create, next, prev : byte;
 
     start : integer;

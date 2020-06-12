@@ -216,7 +216,7 @@ end;
 procedure DrawAnim(x,y:integer;num:byte);
 {var x1,y1 : integer; }
 { var xsize,ysize : word; }
-  var xsize,ysize : integer;
+  var ysize : integer;
 
 begin
 

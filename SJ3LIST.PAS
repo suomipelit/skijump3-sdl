@@ -27,7 +27,7 @@ var X,Y,LastPos,Page, Plus, OwnPlayers, Players, Phase : integer;
     columns : byte;
     setcol1,setcol2,setcol3 : byte;
     status : integer;
-    InvBack, stop,{ FirstEntry, }FirstPage : boolean;
+    InvBack, { FirstEntry, }FirstPage : boolean;
     HeaderStr : string;
 
 {
@@ -271,7 +271,6 @@ end;
 
 
 procedure addy(amount:integer);
-var tempch : char;
 begin
 
  if (amount=0) then inc(y,plus) else inc(y,amount);

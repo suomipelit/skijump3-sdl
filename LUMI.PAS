@@ -41,7 +41,7 @@ var  LH:array[0..LumiMax-1] of tLumi;
 
 
 procedure Update(var Buffer:array of byte;DeltaX,DeltaY,Tuuli:Integer;Draw:boolean);
-var i,j:integer;
+var i:integer;
     offset:word;
 
 begin
@@ -82,7 +82,7 @@ Begin GetColor:=(random(4)+232)+(random(4)+232) shl 8;end;
 
 
 procedure Reset;
-var i,j:integer;
+var i:integer;
 
 begin for i:=0 to SineLgt do Sine[i]:=Round(sin(i*pi*2/SineLgt)*SivuLiike);
       for i:=0 to LumiMax-1 do with LH[i] do

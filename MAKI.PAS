@@ -97,7 +97,6 @@ end;
 procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:single);
 { linjojen pituudet voisi ladata nopeammin levylt„ ... }
 var       Y,X:LongInt;
-          paikka:LongInt;
           c : byte;
           FormerY : integer;
           hp,x2,y2 : longint;

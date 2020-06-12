@@ -27,7 +27,7 @@ var filenames : array[0..500] of string[12];
     Author, Name : NameStr;
     When : TimeStr;
     HillFilename : string[12];
-    laskuri,check,mycheck : longint;
+    laskuri,mycheck : longint;
     RD : array[0..4,0..1000] of byte;
     mcliivi : boolean;
 
@@ -44,10 +44,8 @@ var filenames : array[0..500] of string[12];
 
      str1 : string;
 
-     x, y, fx, fy, sx, sy, deltax, deltay : integer;
+     x, y, sx, sy, deltax, deltay : integer;
      keulax, keulay : integer;
-
-     kr : integer;
 
      XY : array[0..1,0..1000] of integer;
 {     ch, ch2 : char; }
@@ -99,8 +97,6 @@ var filenames : array[0..500] of string[12];
 
    { LoadInfo(nytmaki,ActHill); }
 
-   kr:=acthill.kr;
-
    ch:=#1;
 
    X:=StartX;
@@ -151,7 +147,7 @@ var filenames : array[0..500] of string[12];
 
    AsetaPaletti;
 
-   sx:=0; sy:=0; fx:=0; fy:=0;
+   sx:=0; sy:=0;
 
    KeulaX:=XY[0,FLStart];
    KeulaY:=XY[1,FLStart];
@@ -166,9 +162,6 @@ var filenames : array[0..500] of string[12];
 
     if (mode>0) then
      begin
-
-      fx:=x;
-      fy:=y;
 
       ch:=#1; ch2:=#1;
 

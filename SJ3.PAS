@@ -223,11 +223,6 @@ end;
 
 
 procedure ResetHiscore(kerroin:byte);
-var temp : integer;
-    name : NameStr;
-    len : integer;
-    time : TimeStr;
-
 begin
 
  GetNow(Now);
@@ -496,11 +491,9 @@ end;
 
 
 procedure setupmenu;
-var xx,yy : integer;
-    index : array[0..4] of integer;
+var index : array[0..4] of integer;
 {    ch,ch2 : char; }
     str1, str2 : string;
-    ystr, nstr : string[10];
     f3 : text;
     ok, out : boolean;
     temp : integer;
@@ -509,9 +502,6 @@ begin
 
  for temp:=0 to 4 do index[temp]:=1;
  screen:=0;
-
- ystr:='YES';
- nstr:='NO';
 
  Out:=False;
 
@@ -787,12 +777,12 @@ var { SoundOn : array[0..5] of boolean; }
 
 {    KeulaX : integer; }
 
-    paras,parasp : integer;
+    paras : integer;
 
     kor,matka,px,pxk,py,t,pl,kkor {,makikulma} : single;
 
     umatka, ukor, upx : single;
-    ux, uy : integer;
+    ux : integer;
 
     kulma1, kulmas, hp, x, y, height : integer;
 
@@ -1256,7 +1246,7 @@ begin
 
  x:=0; y:=0; sx:=0; sy:=0; fx:=0; fy:=0;  { Former X & Y }
  hp:=0;
- paras:=0; parasp:=0; { treenijuttuja }
+ paras:=0; { treenijuttuja }
 
  KeulaY:=Profiili(KeulaX);  { helpottaa vaan }
 
@@ -2242,7 +2232,6 @@ begin
       if (score>paras) then { harjoituskamaa }
        begin
         paras:=score;
-        parasp:=hp;
        end;
 
       if (kierros=-10) then pisteet[NumPl+1]:=score;
@@ -3798,8 +3787,7 @@ end;
 procedure updaterecords(sortby:byte);
 var final, cscreen : boolean;
     str1 : string;
-    t1, pts, who, temp2 : integer;
-    temp : byte;
+    t1, who, temp2 : integer;
     oldhi : Hiscore;
 
 
@@ -3883,11 +3871,10 @@ procedure lista(vaihe:byte);
           { monta :         kaikki,    qualit,    qualit,  >4pts     >MCpist }
 
 var t1,t2, pts : longint;
-    ldiff, valiviiva, leave : boolean;
+    valiviiva, leave : boolean;
     who, prev, next, temp, temp2 : integer;
-    monta : byte;
     shown, needtoshow : integer;
-    str1,extra : string;
+    extra : string;
     oknow : boolean;
     templuett : array[0..NumPl+1] of byte;
 
@@ -3936,9 +3923,6 @@ end;
   3 : temp:=2;
   4 : temp:=3;
   end;
-
-  ldiff:=diff;
-  if (vaihe=4) then ldiff:=diffwc;
 
   resetlist(pmaara, NumPl, temp, donewheader(vaihe), InvBack);
   if (compactlist) then compactsign;
@@ -4372,7 +4356,6 @@ end;
 
 procedure showpairs(phase:byte); { 0-esittely, 1-tuloksien kanssa }
 var temp,temp2,who : integer;
-    extra : string;
 
  procedure drawstuff(column,row,item:byte);
   var xx,yy,plus:integer;
@@ -4563,8 +4546,6 @@ end;
 
 
 procedure training;
-var temp : integer;
-
 begin
 
  osakilpailu:=0;
@@ -4671,7 +4652,6 @@ end;
 procedure startkoth;
 var temp, index : integer;
     realindex : integer;
-    str1 : string;
 begin
 
    koth:=true;
@@ -4756,7 +4736,7 @@ end;
 
 
 procedure choosekoth;
-var temp, x, y : integer;
+var temp, y : integer;
 {    ch2 : char; }
 
 begin
@@ -4941,7 +4921,7 @@ end;
 
 
 procedure getteam(num:byte); { 0 - tekee ekan, 1 - tokan... }
-var xx,yy, temp : integer;
+var xx, temp : integer;
 begin
 
  xx:=30;
@@ -5606,7 +5586,7 @@ begin
 end;
 
 procedure JumpMenu;
-var x, y, num, temp, index : integer;
+var index : integer;
 
 begin
 
@@ -5637,9 +5617,7 @@ end;
 
 
 procedure MainMenu;
-var s : string;
-    temp,x,y : integer;
-    index : integer;
+var index : integer;
 
 begin
 
@@ -5716,7 +5694,6 @@ end;
 
 
 procedure alku;
-var temp : integer;
 begin
 
  writeln('Ported to SDL2 by Suomipelit (https://suomipelit.github.io)');

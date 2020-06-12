@@ -63,7 +63,6 @@ end;
 
 procedure ResetLanguage;
 var f1 : text;
-    temp : integer;
     str1 : string;
     out : boolean;
 begin
@@ -99,7 +98,7 @@ procedure LoadLanguage(languageindex:byte);
 var f1 : text;
     code, index, temp : integer;
     first, out : boolean;
-    str1, str2 : string;
+    str1 : string;
 
 begin
 
