@@ -54,15 +54,21 @@ begin
 end;
 
 procedure KopioiMaki(Osoite,Delta:LongInt);
-var y_index,x_index,d:LongInt;
+var y_index,x_index,input,line,output,d:LongInt;
 begin
+ output:=0;
  for y_index:=0 to (200 - 1) do
  begin
+  input:=Osoite+y_index*XSize+X;
+  line:=LinjanPituus[y_index+Y];
+
   for x_index:=0 to (320 - 1) do
   begin
-   if (x_index+X >= LinjanPituus[y_index+Y]) then d:=delta else d:=0;
+   if (x_index+X >= line) then d:=delta else d:=0;
 
-   Video[y_index*320+x_index]:=Graffa[(Osoite+(y_index*XSize+x_index+X))+d];
+   Video[output]:=Graffa[input+d];
+   inc(input);
+   inc(output);
   end;
  end;
 end;
