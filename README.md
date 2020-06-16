@@ -1,5 +1,7 @@
 # Ski Jump International v3 (SDL2 port)
 
+[Repository](https://github.com/suomipelit/skijump3-sdl)
+
 ![Cover](https://github.com/suomipelit/suomipelit.github.io/blob/master/gifs/sj3.gif)
 
 [Skijump International v3 website](https://www.nomasi.com/sj3/)
@@ -66,3 +68,8 @@ SDL"](https://www.freepascal-meets-sdl.net/sdl-tutorials/) also for
 Windows. You can either install just Free Pascal Compiler or Lazarus
 IDE which bundles editor and the compiler.
 
+## Releases
+
+**Version 1 - 2020-06-16**
+
+- Initial release
