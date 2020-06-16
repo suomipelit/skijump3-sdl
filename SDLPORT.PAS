@@ -22,7 +22,7 @@ interface
 implementation
 
   uses sdl2;
-  const version: string = 'SP0';
+  const version: string = 'SP1';
         xRes = 320;
         yRes = 200;
         targetFrames = 70;
