@@ -1,5 +1,9 @@
 # Ski Jump International v3 (SDL2 port)
 
+[![Build Status](https://api.travis-ci.org/suomipelit/skijump3-sdl.svg?branch=master)](https://travis-ci.org/suomipelit/skijump3-sdl)
+[![Downloads](https://img.shields.io/github/downloads/suomipelit/skijump3-sdl/total.svg)](https://github.com/suomipelit/skijump3-sdl/releases)
+[![Latest release](http://img.shields.io/github/release/suomipelit/skijump3-sdl.svg)](https://github.com/suomipelit/skijump3-sdl/releases/latest)
+
 [Repository](https://github.com/suomipelit/skijump3-sdl)
 
 ![Cover](https://github.com/suomipelit/suomipelit.github.io/blob/master/gifs/sj3.gif)
@@ -43,9 +47,6 @@ some buffer overflows have been fixed.
 
 ## Build
 
-[![Build
-Status](https://travis-ci.org/suomipelit/skijump3-sdl.svg?branch=master)](https://travis-ci.org/suomipelit/skijump3-sdl)
-
 Build has been tested on Windows 10 and Linux using Free Pascal
 Compiler.
 
@@ -70,6 +71,6 @@ IDE which bundles editor and the compiler.
 
 ## Releases
 
-**Version 1 - 2020-06-16**
+**[Version 1](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp1) - 2020-06-16**
 
 - Initial release
