@@ -5594,7 +5594,7 @@ begin
 
  repeat
 
-  MainMenuText(1,version);
+  MainMenuText(1,version_full);
 
   index:=MakeMenu(11,97,108,12,6,index,8,4,0);
 
