@@ -71,6 +71,10 @@ IDE which bundles editor and the compiler.
 
 ## Releases
 
+**[WIP - Version 2](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp1) - 2020-MM-DD**
+
+- [Improve input handling of special keys](https://github.com/suomipelit/skijump3-sdl/pull/13)
+
 **[Version 1](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp1) - 2020-06-16**
 
 - Initial release
