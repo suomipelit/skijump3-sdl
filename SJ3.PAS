@@ -2453,10 +2453,11 @@ begin
         if (SDLPort.KeyPressed) then
          begin
           SDLPort.WaitForKeyPress(ch,ch2);
+          ch:=upcase(ch);
          end;
         if (ch=#0) and (Ch2=#68) then begin cupslut:=true; ch:=#27; end;
         if (Ch=#27) or (Ch=#13) then Out:=True;
-        if (Ch='p') then SDLPort.WaitForKeyPress(ch,ch2);
+        if (Ch='P') then SDLPort.WaitForKeyPress(ch,ch2);
 
         DeltaX:=Maki.X;
         DeltaY:=Maki.Y;
