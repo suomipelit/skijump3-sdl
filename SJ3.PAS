@@ -5816,8 +5816,20 @@ begin
 
 end;
 
+procedure Close;
+begin
+  SDLPort.DeinitGraphics;
 
+  Loppu;
 
+  SDLPort.Deinit;
+end;
+
+procedure CloseAndHalt;
+begin
+  Close;
+  Halt;
+end;
 
 begin  { MAIN }
 
@@ -5852,6 +5864,7 @@ begin  { MAIN }
   regnumber:='1234A'; }
 
  SDLPort.Init;
+ SDLPort.SetCloseCallback(CloseAndHalt);
 
  alku;
 
@@ -5868,11 +5881,7 @@ begin  { MAIN }
 
 {  Valikko; }
 
-  SDLPort.DeinitGraphics;
-
-  Loppu;
-
-  SDLPort.Deinit;
+  Close;
 
 (*
   CloseFont;  { vapautetaan niiden k„ytt„m„ muisti }

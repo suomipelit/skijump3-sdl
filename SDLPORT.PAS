@@ -3,6 +3,7 @@ unit SDLPort;
 interface
 
   type TPalette = Array[0..255,0..2] of byte;
+  type TCloseCallback = procedure;
 
   function GetVersion : string;
 
@@ -10,6 +11,7 @@ interface
   procedure DeinitGraphics;
   procedure Deinit;
 
+  procedure SetCloseCallback(callback : TCloseCallback);
   procedure SetPalette(input : TPalette);
   procedure Render(buffer : array of byte);
   procedure WaitRaster;
@@ -42,6 +44,7 @@ implementation
 
       timer: TSDL_TimerID;
       frameCount, lastFrameCount, subFrameCount, lastFrameTick: LongInt;
+      closeCallback: TCloseCallback;
 
 function TimerCallback(interval: UInt32; param: Pointer): UInt32; cdecl;
 var frameIntervalMs, nowMs : LongInt;
@@ -142,6 +145,8 @@ begin
   lastFrameTick := SDL_GetTicks();
 
   timer := SDL_AddTimer(1, TimerCallback, nil);
+
+  closeCallback := nil;
 end;
 
 procedure DeinitGraphics;
@@ -170,6 +175,11 @@ begin
   end;
 
   SDL_SetPaletteColors(originalSurface^.format^.palette, @palette, 0, 256);
+end;
+
+procedure SetCloseCallback(callback : TCloseCallback);
+begin
+  closeCallback:=callback;
 end;
 
 procedure Render(buffer : array of byte);
@@ -233,7 +243,10 @@ begin
 
     if (event.type_= SDL_QUITEV) then
     begin
-      Halt;
+      if Assigned(closeCallback) then
+      begin
+        closeCallback;
+      end;
     end;
 
     if event.type_= SDL_KEYDOWN then
