@@ -71,6 +71,10 @@ IDE which bundles editor and the compiler.
 
 ## Releases
 
+**[Version 3](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp3) - 2020-11-22**
+
+- Graceful shutdown with save when closing with window close button
+
 **[Version 2](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp2) - 2020-11-08**
 
 - [Improve input handling of special keys](https://github.com/suomipelit/skijump3-sdl/pull/13)
