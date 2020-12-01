@@ -28,7 +28,7 @@ implementation
         xRes = 320;
         yRes = 200;
         targetFrames = 70;
-        aspect: real = xRes / yRes;
+        aspectRes: real = xRes / yRes;
 
   var windowMultiplier: integer;
       window: PSDL_Window;
@@ -41,6 +41,7 @@ implementation
 
       windowResized: boolean;
       fullScreen: boolean;
+      aspect: real;
 
       timer: TSDL_TimerID;
       frameCount, lastFrameCount, subFrameCount, lastFrameTick: LongInt;
@@ -92,7 +93,7 @@ end;
 
 procedure ResetWindowSize;
 begin
-  SDL_SetWindowSize(window, xRes * windowMultiplier, yRes * windowMultiplier);
+  SDL_SetWindowSize(window, xRes * windowMultiplier, Round(yRes * windowMultiplier * aspectRes / aspect));
   windowResized := true;
 end;
 
@@ -104,6 +105,7 @@ end;
 procedure Init;
 begin
   windowMultiplier := 2;
+  aspect := aspectRes;
 
   if SDL_Init( SDL_INIT_VIDEO or SDL_INIT_TIMER ) < 0 then HALT;
 
@@ -334,6 +336,15 @@ begin
                   ResetWindowSize;
                   exit
                 end;
+              end;
+            SDL_SCANCODE_A :
+              begin
+                if (aspect <> aspectRes) then
+                  aspect := aspectRes
+                else
+                  aspect := 4 / 3;
+                ResetWindowSize;
+                exit;
               end;
           end;
         end;

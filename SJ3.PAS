@@ -5704,6 +5704,7 @@ begin
  writeln(' * Alt+(Keypad) Plus  : Increase window size');
  writeln(' * Alt+(Keypad) Minus : Decrease window size');
  writeln(' * Alt+R              : Reset window if stretched');
+ writeln(' * Alt+A              : Toggle 4:3 aspect ratio');
  writeln('');
  writeln('-------');
  writeln('');

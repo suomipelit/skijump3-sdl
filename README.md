@@ -44,6 +44,7 @@ some buffer overflows have been fixed.
 | Alt+(Keypad) Plus | Increase window size |
 | Alt+(Keypad) Minus | Decrease window size |
 | Alt+R | Reset window if stretched |
+| Alt+A | Toggle 4:3 aspect ratio |
 
 ## Build
 
