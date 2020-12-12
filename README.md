@@ -1,6 +1,6 @@
 # Ski Jump International v3 (SDL2 port)
 
-[![Build Status](https://api.travis-ci.org/suomipelit/skijump3-sdl.svg?branch=master)](https://travis-ci.org/suomipelit/skijump3-sdl)
+![Build](https://github.com/suomipelit/skijump3-sdl/workflows/Build/badge.svg)
 [![Downloads](https://img.shields.io/github/downloads/suomipelit/skijump3-sdl/total.svg)](https://github.com/suomipelit/skijump3-sdl/releases)
 [![Latest release](http://img.shields.io/github/release/suomipelit/skijump3-sdl.svg)](https://github.com/suomipelit/skijump3-sdl/releases/latest)
 
