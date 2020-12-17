@@ -46,6 +46,12 @@ some buffer overflows have been fixed.
 | Alt+R | Reset window if stretched |
 | Alt+A | Toggle 4:3 aspect ratio |
 
+### Command line parameters
+
+| Command | Short |  Description |
+| --- | --- | --- |
+| --sw-rendering | -s | Enforce SW rendering |
+
 ## Build
 
 Build has been tested on Windows 10 and Linux using Free Pascal

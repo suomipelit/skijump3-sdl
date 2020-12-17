@@ -23,7 +23,7 @@ interface
 
 implementation
 
-  uses sdl2;
+  uses sdl2, getopts;
   const version: string = 'SP3+';
         xRes = 320;
         yRes = 200;
@@ -46,6 +46,37 @@ implementation
       timer: TSDL_TimerID;
       frameCount, lastFrameCount, subFrameCount, lastFrameTick: LongInt;
       closeCallback: TCloseCallback;
+
+      swRendering: boolean;
+
+procedure GetArguments;
+var c : char;
+    optionindex : Longint;
+    options : array[1..1] of TOption;
+
+begin
+  with options[1] do
+  begin
+    name:='--sw-rendering';
+    has_arg:=0;
+    flag:=nil;
+    value:=#0;
+  end;
+  c:=#0;
+  optionindex:=0;
+  repeat
+    c:=getlongopts('s', @options[1], optionindex);
+    case c of
+      #0 : begin
+        if (options[optionindex].name = '--sw-rendering') then
+        begin
+          swRendering := true;
+        end;
+      end;
+      's' : swRendering := true;
+    end; { case }
+  until c=endofoptions;
+end;
 
 function TimerCallback(interval: UInt32; param: Pointer): UInt32; cdecl;
 var frameIntervalMs, nowMs : LongInt;
@@ -103,9 +134,14 @@ begin
 end;
 
 procedure Init;
+var rendererFlags : UInt32;
 begin
+  rendererFlags := 0;
   windowMultiplier := 2;
   aspect := aspectRes;
+  swRendering := false;
+
+  GetArguments;
 
   if SDL_Init( SDL_INIT_VIDEO or SDL_INIT_TIMER ) < 0 then HALT;
 
@@ -117,7 +153,12 @@ begin
             SDL_WINDOW_SHOWN or SDL_WINDOW_RESIZABLE);
   if window = nil then Halt;
 
-  renderer := SDL_CreateRenderer(window, -1, 0);
+  if (swRendering = true) then
+  begin
+    rendererFlags := rendererFlags OR SDL_RENDERER_SOFTWARE;
+  end;
+
+  renderer := SDL_CreateRenderer(window, -1, rendererFlags);
   if renderer = nil then Halt;
 
   // 8-bit surface for original data
