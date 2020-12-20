@@ -78,6 +78,11 @@ IDE which bundles editor and the compiler.
 
 ## Releases
 
+**[Version 4](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp4) - 2020-12-20**
+
+- [Add support for aspect ratio correction](https://github.com/suomipelit/skijump3-sdl/pull/15)
+- Support SW rendering with command line parameter
+
 **[Version 3](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp3) - 2020-11-22**
 
 - Graceful shutdown with save when closing with window close button
