@@ -1,0 +1,53 @@
+name: Build (macOS)
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+  DMGDIR: /tmp/sj3-dmg
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install fpc sdl2
+        git clone https://github.com/ev1313/Pascal-SDL-2-Headers
+
+    - name: Build
+      run: fpc -Mtp -k-L$(brew --prefix sdl2)/lib -k-lSDL2 -k-framework -kOpenGL -k-framework -kCocoa -Fu./Pascal-SDL-2-Headers/ SJ3.PAS
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Bundle .app and .dmg
+      run: |
+        SRCDIR=$(pwd)
+        APPDIR=$(mktemp -d)
+        mkdir -p "$DMGDIR"
+        git clone https://github.com/akx/appify /tmp/appify
+        cd /tmp/appify
+        python -m appify --executable $SRCDIR/SJ3 --bundle $APPDIR/SJ3.app --icon-png $SRCDIR/icon.png
+        cp -a $SRCDIR/*.PCX $SRCDIR/*.SKI $APPDIR/SJ3.app/Contents/Resources/
+        hdiutil create $DMGDIR/SJ3_tmp.dmg -ov -volname "SJ3" -fs HFS+ -srcfolder "$APPDIR"
+        hdiutil convert $DMGDIR/SJ3_tmp.dmg -format UDZO -o $DMGDIR/SJ3.dmg
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: SJ3.dmg
+        path: /tmp/sj3-dmg/SJ3.dmg
+
+    defaults:
+      run:
+        shell: bash
