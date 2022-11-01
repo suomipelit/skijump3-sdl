@@ -444,7 +444,7 @@ begin
             SDLK_LEFTBRACKET : keyPressed:=TSDL_KeyCode('{');
             SDLK_RIGHTBRACKET : keyPressed:=TSDL_KeyCode('}');
             SDLK_SEMICOLON : keyPressed:=SDLK_COLON;
-            {SDLK_QUOTE} TSDL_KeyCode('''') : keyPressed:=SDLK_QUOTEDBL; // bug in ev1313/Pascal-SDL-2-Headers - wrong value of SDLK_QUOTE
+            SDLK_QUOTE : keyPressed:=SDLK_QUOTEDBL;
             SDLK_BACKQUOTE : keyPressed:=TSDL_KeyCode('~');
             SDLK_BACKSLASH : keyPressed:=TSDL_KeyCode('|');
             SDLK_COMMA : keyPressed:=SDLK_LESS;
