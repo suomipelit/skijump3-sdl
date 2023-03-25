@@ -146,6 +146,7 @@ function LoadInfo(nytmaki:integer;
                   var hill:hill_type):byte;
 
 procedure choosewindplace(var place:byte);
+function WindPlaceName(place:byte):string;
 
 procedure SetupItem(index,screen,entries:byte;str1:string);
 
@@ -2247,19 +2248,9 @@ begin
  for apu1:=1 to winds do
   begin
    yy:=apu1*10+34;
-   { 390-top, 391-middle, 392-bottom, 393-left, 394-center, 395-right, 396-jpr }
    case apu1 of
-    1 : str1:=lstr(392)+'-'+lstr(393);
-    2 : str1:=lstr(391)+'-'+lstr(393);
-    3 : str1:=lstr(392)+'-'+lstr(395);
-    4 : str1:=lstr(392)+'-'+lstr(394);
-    5 : str1:=lstr(391)+'-'+lstr(395);
-    6 : str1:=lstr(390)+'-'+lstr(395);
-    7 : str1:=lstr(390)+'-'+lstr(394);
-    8 : str1:=lstr(390)+'-'+lstr(393);
-    9 : str1:=lstr(396)+': '+lstr(390);    { oikeasti 11 }
-   10 : str1:=lstr(396)+': '+lstr(391);    { 12 }
-   11 : str1:=lstr(396)+': '+lstr(392);    { 13 }
+    1..8: str1:=WindPlaceName(apu1);
+    9..11: str1:=WindPlaceName(apu1+2);
    end;
 
    fontcolor(246);
@@ -2283,6 +2274,24 @@ begin
 
   if (index>0) then place:=index;
 
+end;
+
+function WindPlaceName(place:byte):string;
+begin
+   { 390-top, 391-middle, 392-bottom, 393-left, 394-center, 395-right, 396-jpr }
+   case place of
+    1 : WindPlaceName:=lstr(392)+'-'+lstr(393);
+    2 : WindPlaceName:=lstr(391)+'-'+lstr(393);
+    3 : WindPlaceName:=lstr(392)+'-'+lstr(395);
+    4 : WindPlaceName:=lstr(392)+'-'+lstr(394);
+    5 : WindPlaceName:=lstr(391)+'-'+lstr(395);
+    6 : WindPlaceName:=lstr(390)+'-'+lstr(395);
+    7 : WindPlaceName:=lstr(390)+'-'+lstr(394);
+    8 : WindPlaceName:=lstr(390)+'-'+lstr(393);
+   11 : WindPlaceName:=lstr(396)+': '+lstr(390);
+   12 : WindPlaceName:=lstr(396)+': '+lstr(391);
+   13 : WindPlaceName:=lstr(396)+': '+lstr(392);
+   end;
 end;
 
 
