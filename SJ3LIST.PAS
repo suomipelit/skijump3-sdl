@@ -118,17 +118,16 @@ begin
    if (InvBack) then { tota pit„„ tsiigata viel„... }
     begin
 
+     if (FirstPage) then
+      begin
+       SiirraStandardiPaletti;
+       TallennaAlkuosa(0);
+       SavytaPaletti(0,40);
+       AsetaPaletti;
+       FirstPage:=False;
+      end;
+
      DrawHillScreen;
-
-    if (FirstPage) then
-     begin
-      SiirraStandardiPaletti;
-      TallennaAlkuosa(0);
-      SavytaPaletti(0,40);
-      AsetaPaletti;
-      FirstPage:=False;
-     end;
-
      DrawAnim(5,2,62); { logo kehiin }
 
     end
