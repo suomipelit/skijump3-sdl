@@ -1805,7 +1805,7 @@ begin
   fillbox(74,79,246,133,248);
   fillbox(75,80,245,132,243);
 
-  writefont(85,85,lstr(219));
+  writefont(85,85,lstr(220));
   fontcolor(241);
   writefont(85,95,lstr(150));
 
