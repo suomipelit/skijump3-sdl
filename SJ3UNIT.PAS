@@ -843,8 +843,8 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
 
    case (ch) of
    '0'..'9' : index:=ord(ch)-48;
-   'A'..'F' : if (phase<>6) then index:=ord(ch)-55; { me halutaan ett„ E on edit }
-   'a'..'f' : index:=ord(ch)-87;
+   'A'..'K' : if (phase<>6) then index:=ord(ch)-55; { me halutaan ett„ E on edit }
+   'a'..'k' : index:=ord(ch)-87;
    end;
 
    if (index<=0) or (index>items) then
