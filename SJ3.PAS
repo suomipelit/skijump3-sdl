@@ -77,6 +77,7 @@ var
                              ja muuten se unohtuu... }
 
  ThisIsAHillRecord : integer;
+ LMaara : word;
 
 
 procedure MakeSendMe;
@@ -799,7 +800,6 @@ var { SoundOn : array[0..5] of boolean; }
 
     riski, laskuri : longint;
     tyylip : array[1..7] of integer;
-    LMaara : word;
 {    LStyle : byte; }
 
     score : integer;
