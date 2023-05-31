@@ -32,6 +32,8 @@ interface
   procedure CustomRandomize(seed : cardinal);
   function CustomRandom(file_, line : String; range: longint): longint;
 
+  var FrameTracingEnabled : boolean;
+
 implementation
 
   uses sdl2, getopts, sysutils;
@@ -59,6 +61,8 @@ implementation
       closeCallback: TCloseCallback;
 
       swRendering: boolean;
+
+      tracedFrameNum: LongInt;
 
 procedure GetArguments;
 var c : char;
@@ -150,6 +154,9 @@ end;
 procedure Init;
 var rendererFlags : UInt32;
 begin
+  frameTracingEnabled := False;
+  tracedFrameNum := -1;
+
   rendererFlags := 0;
   windowMultiplier := 2;
   aspect := aspectRes;
@@ -240,13 +247,23 @@ begin
 end;
 
 procedure Render(buffer : array of byte);
-var pixels : Pointer;
-    pitch : LongInt;
+var pixels   : Pointer;
+    pitch    : LongInt;
+    framefile :  File of Byte;
 begin
   if (windowResized) then
   begin
     RefreshRendering();
     windowResized := false;
+  end;
+
+  if FrameTracingEnabled then begin
+    inc(tracedFrameNum);
+    Assign(framefile, 'frames/' + Format('%.6d', [tracedFrameNum]) + '.dat');
+    Rewrite(framefile);
+    BlockWrite(framefile, buffer, Sizeof(buffer));
+    BlockWrite(framefile, palette, Sizeof(palette));
+    Close(framefile);
   end;
 
   SDL_RenderClear(renderer);

@@ -1114,6 +1114,7 @@ end;
 
 
 begin
+ FrameTracingEnabled := True;
  Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_alkaa', pel);
  Trace({$I %FILE%}, {$I %LINE%}, 'eka', eka);
  Trace({$I %FILE%}, {$I %LINE%}, 'lmaara', lmaara);
