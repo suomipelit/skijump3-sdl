@@ -27,7 +27,7 @@ INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
   procedure Lopeta;
   procedure LukitseKirjoitusSivu(Sivu:LongInt);
 
-  procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:single);
+  procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:double);
   procedure AsetaMoodi(M:Word);
   function Profiili(x:integer):integer;
 
@@ -100,7 +100,7 @@ begin
 
 end;
 
-procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:single);
+procedure LaskeLinjat(var KeulaX:integer;kr:integer;pk:double);
 { linjojen pituudet voisi ladata nopeammin levylt„ ... }
 var       Y,X:LongInt;
           c : byte;

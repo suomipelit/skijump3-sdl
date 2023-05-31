@@ -774,15 +774,15 @@ var { SoundOn : array[0..5] of boolean; }
 
     kr : integer;
     ponnistus : integer;
-    qx : single;
+    qx : double;
 
 {    KeulaX : integer; }
 
     paras : integer;
 
-    kor,matka,px,pxk,py,t,pl,kkor {,makikulma} : single;
+    kor,matka,px,pxk,py,t,pl,kkor {,makikulma} : double;
 
-    umatka, ukor, upx : single;
+    umatka, ukor, upx : double;
     ux : integer;
 
     kulma1, kulmas, hp, x, y, height : integer;

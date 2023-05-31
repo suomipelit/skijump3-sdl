@@ -5,9 +5,9 @@ interface
 var ch, ch2 : char; { n„ppisglobaalit }
 
 procedure beep(beeptapa:byte);
-function round(r:single):longint;
+function round(r:double):longint;
 
-function nsqrt(x:single):single;
+function nsqrt(x:double):double;
 procedure putsaa;
 procedure clearchs;
 procedure waitforkey;
@@ -44,7 +44,7 @@ begin
 end {Wait} ;
 
 
-function round(r:single):longint;
+function round(r:double):longint;
 var l : longint;
 begin
  l := trunc(r);
@@ -96,8 +96,8 @@ function HexW(W: word): string; {Word}
        HexChars[(W and $000F)];
     end;
 
-function nsqrt(x:single):single;
-var temp : single;
+function nsqrt(x:double):double;
+var temp : double;
 begin
 
  temp:=sqrt(abs(x));
