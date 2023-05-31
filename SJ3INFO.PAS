@@ -849,7 +849,7 @@ var hill, y : integer;
           if (cuphills>=20) then loop2:=maxcustomhills;
           for loop:=cuphills+1 to loop2 do
            begin
-            HillOrder[loop]:=random(20)+1;
+            HillOrder[loop]:=CustomRandom({$I %FILE%}, {$I %LINE%}, 20)+1;
             dohill(loop,2);
            end;
          CupHills:=loop2;
@@ -1059,7 +1059,7 @@ begin
 
  for temp:=1 to NumWCHills do
   begin
-   name:=nimet[1+random(6+random(10))]+'ÿ';
+   name:=nimet[1+CustomRandom({$I %FILE%}, {$I %LINE%}, 6+CustomRandom({$I %FILE%}, {$I %LINE%}, 10))]+'ÿ';
    len:=round(hillkr(temp)/0.94)*10*kerroin;
    time:=dayandtime(Today,Now);
    SetHRinfo(temp,name,len,time);
@@ -1068,7 +1068,7 @@ begin
  if (NumExtraHills>0) then
   for temp:=1 to NumExtraHills do
    begin
-    name:=nimet[1+random(6+random(10))]+'ÿ';
+    name:=nimet[1+CustomRandom({$I %FILE%}, {$I %LINE%}, 6+CustomRandom({$I %FILE%}, {$I %LINE%}, 10))]+'ÿ';
     len:=round(hillkr(temp+NumWCHills)/0.94)*10*kerroin;
     time:=dayandtime(Today,Now);
     SetHRinfo(temp+NumWCHills,name,len,time);

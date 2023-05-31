@@ -21,9 +21,20 @@ interface
 
   procedure Wait(ms : integer);
 
+  procedure Trace(file_, line, context : String; value : boolean); overload;
+  procedure Trace(file_, line, context : String; value : integer); overload;
+  procedure Trace(file_, line, context : String; value : longint); overload;
+  procedure Trace(file_, line, context : String; value : single); overload;
+  procedure Trace(file_, line, context : String; value : double); overload;
+  procedure TraceKeypress(ch1, ch2 : char); overload;
+  procedure TraceRandom(file_, line : String; range, value : longint); overload;
+
+  procedure CustomRandomize(seed : cardinal);
+  function CustomRandom(file_, line : String; range: longint): longint;
+
 implementation
 
-  uses sdl2, getopts;
+  uses sdl2, getopts, sysutils;
   const version: string = 'SP4';
         xRes = 320;
         yRes = 200;
@@ -273,6 +284,69 @@ begin
   end;
 end;
 
+var TraceFile: Text;
+    TraceOpen: boolean;
+
+procedure EnsureTraceFile;
+begin
+   if not TraceOpen then
+   begin
+       Assign(TraceFile, 'Trace.txt');
+       Rewrite(TraceFile);
+       TraceOpen := True;
+   end;
+end;
+
+procedure Trace(file_, line, context : String; value : boolean); overload;
+begin
+   EnsureTraceFile;
+   if value then WriteLn(TraceFile, file_, ':', line, ' ', context, ' bool true')
+   else WriteLn(TraceFile, file_, ':', line, ' ', context, ' bool false');
+   Flush(TraceFile);
+end;
+
+procedure Trace(file_, line, context : String; value : integer); overload;
+begin;
+   EnsureTraceFile;
+   WriteLn(TraceFile, file_, ':', line, ' ', context, ' i32 ', value);
+   Flush(TraceFile);
+end;
+
+procedure Trace(file_, line, context : String; value : longint); overload;
+begin;
+   EnsureTraceFile;
+   WriteLn(TraceFile, file_, ':', line, ' ', context, ' i32 ', value);
+   Flush(TraceFile);
+end;
+
+procedure Trace(file_, line, context : String; value : single); overload;
+begin;
+   EnsureTraceFile;
+   WriteLn(TraceFile, file_, ':', line, ' ', context, ' f32 ', value);
+   Flush(TraceFile);
+end;
+
+procedure Trace(file_, line, context : String; value : double); overload;
+begin;
+   EnsureTraceFile;
+   WriteLn(TraceFile, file_, ':', line, ' ', context, ' f64 ', value);
+   Flush(TraceFile);
+end;
+
+procedure TraceKeypress(ch1, ch2 : char); overload;
+begin
+   EnsureTraceFile;
+   WriteLn(TraceFile, ':', ' Keypress ', Ord(ch1), ' ', Ord(ch2));
+   Flush(TraceFile);
+end;
+
+procedure TraceRandom(file_, line : String; range, value : longint); overload;
+begin
+   EnsureTraceFile;
+   WriteLn(TraceFile, file_, ':', line, ' Random ', range, ' ', value);
+   Flush(TraceFile);
+end;
+
 function KeyPressed : boolean;
 var event : TSDL_Event;
     pressed: boolean;
@@ -316,6 +390,7 @@ begin
       end;
     end;
   end;
+  Trace({$I %FILE%}, {$I %LINE%}, 'KeyPressed', pressed);
   KeyPressed:=pressed
 end;
 
@@ -359,17 +434,20 @@ begin
             SDL_SCANCODE_RETURN :
               begin
                 toggleFullscreen;
+                TraceKeypress(ch1, ch2);
                 exit
               end;
             SDL_SCANCODE_R :
               begin
                 ResetWindowSize;
+                TraceKeypress(ch1, ch2);
                 exit
               end;
             SDL_SCANCODE_KP_PLUS, SDL_SCANCODE_EQUALS :
               begin
                 windowMultiplier := windowMultiplier + 1;
                 ResetWindowSize;
+                TraceKeypress(ch1, ch2);
                 exit
               end;
             SDL_SCANCODE_KP_MINUS, SDL_SCANCODE_MINUS :
@@ -378,6 +456,7 @@ begin
                 begin
                   windowMultiplier := windowMultiplier - 1;
                   ResetWindowSize;
+                  TraceKeypress(ch1, ch2);
                   exit
                 end;
               end;
@@ -388,6 +467,7 @@ begin
                 else
                   aspect := 4 / 3;
                 ResetWindowSize;
+                TraceKeypress(ch1, ch2);
                 exit;
               end;
           end;
@@ -395,25 +475,27 @@ begin
 
         // Special cases for key combinations used throughout the game.
         // Check for Right Alt/AltGr first, since pressing it can make Left Ctrl look as pressed too.
-        if ((keyMod and KMOD_MODE) > 0) then exit;
-        if ((keyMod and KMOD_RALT) > 0) then exit;
+        if ((keyMod and KMOD_MODE) > 0) then begin TraceKeypress(ch1, ch2); exit; end;
+        if ((keyMod and KMOD_RALT) > 0) then begin TraceKeypress(ch1, ch2); exit; end;
         if ((keyMod and KMOD_LALT) > 0) then
         begin
           Case keyPressed of
-            SDLK_x: begin ch1:=#0; ch2:=#45; exit end; {ALT-X}
+            SDLK_x: begin ch1:=#0; ch2:=#45; TraceKeypress(ch1, ch2); exit end; {ALT-X}
           else
-            exit
+            TraceKeypress(ch1, ch2);
+            exit;
           end;
         end;
         if ((keyMod and KMOD_CTRL) > 0) then
         begin
           Case keyPressed of
-            SDLK_c: begin ch1:=#3; exit end; {CTRL-C}
+            SDLK_c: begin ch1:=#3; TraceKeypress(ch1, ch2); exit end; {CTRL-C}
           else
-            exit
+            TraceKeypress(ch1, ch2);
+            exit;
           end;
         end;
-        if ((keyMod and KMOD_GUI) > 0) then exit;
+        if ((keyMod and KMOD_GUI) > 0) then begin TraceKeypress(ch1, ch2); exit; end;
 
         // Handle conversion of letters to uppercase.
         // Convert only if Caps Lock is off and Shift is pressed or vice versa.
@@ -454,7 +536,8 @@ begin
             SDLK_PERIOD : keyPressed:=SDLK_GREATER;
             SDLK_SLASH : keyPressed:=SDLK_QUESTION;
           else
-            exit
+            TraceKeypress(ch1, ch2);
+            exit;
           end;
         end;
 
@@ -466,7 +549,7 @@ begin
             SDLK_KP_2 : keyPressed:=SDLK_DOWN;
             SDLK_KP_3 : keyPressed:=SDLK_PAGEDOWN;
             SDLK_KP_4 : keyPressed:=SDLK_LEFT;
-            SDLK_KP_5 : begin ch1:=#0; ch2:=#76; exit end;
+            SDLK_KP_5 : begin ch1:=#0; ch2:=#76; TraceKeypress(ch1, ch2); exit end;
             SDLK_KP_6 : keyPressed:=SDLK_RIGHT;
             SDLK_KP_7 : keyPressed:=SDLK_HOME;
             SDLK_KP_8 : keyPressed:=SDLK_UP;
@@ -508,20 +591,20 @@ begin
           32..126 : ch1:=chr(keyPressed);
 
           // Special characters supported by the game, OEM 865 nordic encoding is used for ch1 values
-          196 : begin ch1:=#142; exit end; // A with diaeresis
-          197 : begin ch1:=#143; exit end; // A with ring above
-          198 : begin ch1:=#146; exit end; // AE
-          214 : begin ch1:=#153; exit end; // O with diaeresis
-          216 : begin ch1:=#157; exit end; // O with stroke
-          220 : begin ch1:=#154; exit end; // U with diaeresis
-          223 : begin ch1:=#225; exit end; // sharp s
+          196 : begin ch1:=#142; TraceKeypress(ch1, ch2); exit end; // A with diaeresis
+          197 : begin ch1:=#143; TraceKeypress(ch1, ch2); exit end; // A with ring above
+          198 : begin ch1:=#146; TraceKeypress(ch1, ch2); exit end; // AE
+          214 : begin ch1:=#153; TraceKeypress(ch1, ch2); exit end; // O with diaeresis
+          216 : begin ch1:=#157; TraceKeypress(ch1, ch2); exit end; // O with stroke
+          220 : begin ch1:=#154; TraceKeypress(ch1, ch2); exit end; // U with diaeresis
+          223 : begin ch1:=#225; TraceKeypress(ch1, ch2); exit end; // sharp s
 
-          228 : begin ch1:=#132; ch2:=#36; exit end; // a with diaeresis
-          229 : begin ch1:=#134; ch2:=#26; exit end; // a with ring above
-          230 : begin ch1:=#145; exit end; // ae
-          246 : begin ch1:=#148; ch2:=#39; exit end; // o with diaeresis
-          248 : begin ch1:=#158; exit end; // o with stroke
-          252 : begin ch1:=#129; exit end; // u with diaeresis
+          228 : begin ch1:=#132; ch2:=#36; TraceKeypress(ch1, ch2); exit end; // a with diaeresis
+          229 : begin ch1:=#134; ch2:=#26; TraceKeypress(ch1, ch2); exit end; // a with ring above
+          230 : begin ch1:=#145; TraceKeypress(ch1, ch2); exit end; // ae
+          246 : begin ch1:=#148; ch2:=#39; TraceKeypress(ch1, ch2); exit end; // o with diaeresis
+          248 : begin ch1:=#158; TraceKeypress(ch1, ch2); exit end; // o with stroke
+          252 : begin ch1:=#129; TraceKeypress(ch1, ch2); exit end; // u with diaeresis
         end;
 
         Case keyPressed of
@@ -575,6 +658,7 @@ begin
           SDLK_y : ch2:=#21;
           SDLK_z : ch2:=#44;
         end;
+        TraceKeypress(ch1, ch2);
         exit;
       end;
     end;
@@ -587,5 +671,36 @@ begin
   SDL_Delay(ms);
 end;
 
-end.
+var RandState : cardinal;
+    RandSteps : cardinal;
 
+procedure CustomRandomize(seed : cardinal);
+begin
+   RandState := seed;
+   RandSteps := 0;
+end;
+
+function NextRandState: cardinal;
+begin
+  RandState := RandState * 134775813 + 1;
+  RandSteps := RandSteps + 1;
+  NextRandState := RandState;
+end;
+
+{
+function CustomRandom: extended; overload; inline;
+begin
+  CustomRandom := IM * 2.32830643653870e-10;
+end;
+}
+
+function CustomRandom(file_, line : String; range: longint): longint;
+var
+   result : longint;
+begin
+   result := NextRandState * range shr 32;
+   TraceRandom(file_, line, range, result);
+   CustomRandom := result;
+end;
+
+end.

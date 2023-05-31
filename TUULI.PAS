@@ -14,7 +14,7 @@ var voim,windy, value : integer;
 
 Implementation
 
-uses SJ3Graph, SJ3Help;
+uses SJ3Graph, SJ3Help, SDLPort;
 
 var tsuun : boolean;      { kiinnostaako n„m„ kaikkia? }
     traja1, traja2 : integer;
@@ -65,15 +65,15 @@ procedure Alusta(place:byte);
 var temp1,temp2 : byte;
 begin
 
-  temp1:=random(180);    { Tuulen rajoja }
-  temp2:=random(120);
+  temp1:=CustomRandom({$I %FILE%}, {$I %LINE%}, 180);    { Tuulen rajoja }
+  temp2:=CustomRandom({$I %FILE%}, {$I %LINE%}, 120);
   windy:=temp2;          { ns. tuulisuusindeksi }
 
   traja1:=temp1-temp2;
   traja2:=temp1+temp2;
-  tkulma:=random(temp2*2)+traja1;
-  voim:=random(50);
-  if random(2)=0 then tsuun:=true else tsuun:=false;
+  tkulma:=CustomRandom({$I %FILE%}, {$I %LINE%}, temp2*2)+traja1;
+  voim:=CustomRandom({$I %FILE%}, {$I %LINE%}, 50);
+  if CustomRandom({$I %FILE%}, {$I %LINE%}, 2)=0 then tsuun:=true else tsuun:=false;
 
   AsetaPaikka(place);
 
@@ -86,8 +86,8 @@ begin
 
  if (tsuun) and (tkulma>traja2) then tsuun:=false;
   if (tsuun=false) and (tkulma<traja1) then tsuun:=true;
-   if (random(50)=0) then tsuun:=not tsuun;
- if (tsuun) then tkulma:=tkulma+(random(4)/5) else tkulma:=tkulma-(random(4)/5);
+   if (CustomRandom({$I %FILE%}, {$I %LINE%}, 50)=0) then tsuun:=not tsuun;
+ if (tsuun) then tkulma:=tkulma+(CustomRandom({$I %FILE%}, {$I %LINE%}, 4)/5) else tkulma:=tkulma-(CustomRandom({$I %FILE%}, {$I %LINE%}, 4)/5);
 
 end;
 

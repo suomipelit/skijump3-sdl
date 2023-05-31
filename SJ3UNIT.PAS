@@ -983,8 +983,8 @@ begin
   if (grade<10) then cstr[0]:=cstr[1]; { jos kupat n„es }
   if (grade=1) then cstr[3]:=lstr(index+35);
 
-  cstr[1]:=cstr[random(2)];
-  cstr[2]:=cstr[random(2)+2];
+  cstr[1]:=cstr[CustomRandom({$I %FILE%}, {$I %LINE%}, 2)];
+  cstr[2]:=cstr[CustomRandom({$I %FILE%}, {$I %LINE%}, 2)+2];
 
   cstr[1]:=cstr[1]+'*'+cstr[2];
 
@@ -2558,10 +2558,10 @@ begin
  end;
 }
 
- case random(5) of
+ case CustomRandom({$I %FILE%}, {$I %LINE%}, 5) of
  0,1,2 : temp1:=0;
  3   : temp1:=1;
- 4   : temp1:=random(4)+1;
+ 4   : temp1:=CustomRandom({$I %FILE%}, {$I %LINE%}, 4)+1;
  end;
 
 
@@ -2772,7 +2772,7 @@ begin
  insert(str1,str2,2);
  str1:=chr(65+((jarj xor 33) mod 19));  { tarkistusluku j„rjestyksest„ }
  insert(str1,str2,3);
- str1:=chr(68+random(6));  { ihan vaan satunnainen kirjain }
+ str1:=chr(68+CustomRandom({$I %FILE%}, {$I %LINE%}, 6));  { ihan vaan satunnainen kirjain }
  if (length(txt(arvo))>5) then str1:=chr(ord(str1[6])+27);
  insert(str1,str2,5);
 {  insert('*',str2,5); }
@@ -2976,7 +2976,7 @@ begin
   writefont(150,130,lstr(38));
   writefont(150,140,lstr(39));
 
-  temp:=(random(3)*2)+41;
+  temp:=(CustomRandom({$I %FILE%}, {$I %LINE%}, 3)*2)+41;
 
   fontcolor(246);
 
@@ -3103,7 +3103,7 @@ begin
   cwriteln(9,'   Quote of the moment: ');
   cwrite(15,'   ');
 
-  case random(40) of
+  case CustomRandom({$I %FILE%}, {$I %LINE%}, 40) of
   0 : writeln('Drama, excitement, speed, life, Ski Jump International.');
   1 : writeln('"I traded K.I.T.T for Ski Jump International" - M. Knight');
   2 : writeln('"Ski Jump International is out there" - F. Mulder');

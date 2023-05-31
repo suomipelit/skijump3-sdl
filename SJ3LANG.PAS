@@ -15,7 +15,7 @@ var numlanguages : byte;
 
 Implementation
 
-uses {crt,}sj3help;
+uses {crt,}sj3help, sdlport;
 
 const NumStr = 599;
 
@@ -45,7 +45,7 @@ end;
 function lrstr(start,stop:integer):string;
 begin
 
- lrstr:=lstr(start+random(stop-start+1));
+ lrstr:=lstr(start+CustomRandom({$I %FILE%}, {$I %LINE%}, stop-start+1));
 
 end;
 

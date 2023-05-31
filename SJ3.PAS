@@ -1114,6 +1114,9 @@ end;
 
 
 begin
+ Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_alkaa', pel);
+ Trace({$I %FILE%}, {$I %LINE%}, 'eka', eka);
+ Trace({$I %FILE%}, {$I %LINE%}, 'lmaara', lmaara);
 
  kr:=acthill.kr;
 
@@ -1124,17 +1127,20 @@ begin
  if (eka) then
   begin
 
-   LMaara:=Random(2)*Random(256);
-   if (Lmaara>0) and (Lmaara<40) then Lmaara:=41+random(150);
-   if (Lmaara>0) and (random(4)=0) then inc(Lmaara,1000); { r„nt„ }
+   LMaara:=CustomRandom({$I %FILE%}, {$I %LINE%}, 2)*CustomRandom({$I %FILE%}, {$I %LINE%}, 256);
+   if (Lmaara>0) and (Lmaara<40) then Lmaara:=41+CustomRandom({$I %FILE%}, {$I %LINE%}, 150);
+   if (Lmaara>0) and (CustomRandom({$I %FILE%}, {$I %LINE%}, 4)=0) then inc(Lmaara,1000); { r„nt„ }
 {   Lmaara:=1151; }
 
+   Trace({$I %FILE%}, {$I %LINE%}, 'lmaara', lmaara);
    VieLmaara(Lmaara);
 
 {   LStyle:=Random(2)*Random(2);
    LStyle:=1; }
 
+   Trace({$I %FILE%}, {$I %LINE%}, 'gdetail', gdetail);
    if (gdetail=1) then LMaara:=0;
+   Trace({$I %FILE%}, {$I %LINE%}, 'lmaara', lmaara);
 
    if (LoadHill(KeulaX, nytmaki, Acthill)<>0) then
     begin
@@ -1219,23 +1225,23 @@ begin
   if (not cjumper) and (jcup) then statsvictim:=index+((pel-1)*4); { toivottavasti tekee saman }
 *)
                              { NumPl+1-pel+4*(team-1) }
-  temp:=random(80);   { 120 }
-  dec(temp,random(24*pel)); { 34,32, 30, 25,20, 13 ennen muutosta }
-  dec(temp,random(12*pel));  { 17,16,15, 12, 8,  5  e.m. }
-  dec(temp,random(10*pel)); { uusi }
+  temp:=CustomRandom({$I %FILE%}, {$I %LINE%}, 80);   { 120 }
+  dec(temp,CustomRandom({$I %FILE%}, {$I %LINE%}, 24*pel)); { 34,32, 30, 25,20, 13 ennen muutosta }
+  dec(temp,CustomRandom({$I %FILE%}, {$I %LINE%}, 12*pel));  { 17,16,15, 12, 8,  5  e.m. }
+  dec(temp,CustomRandom({$I %FILE%}, {$I %LINE%}, 10*pel)); { uusi }
   temp:=63-temp;           { 80,100,110,114,119,119  e.m. }
 
   skill:=17-round(nsqrt(temp)/4);
 
   if (skill>16) then skill:=16;
 
-  reflex:=round((34+pel+random(10))/5);
+  reflex:=round((34+pel+CustomRandom({$I %FILE%}, {$I %LINE%}, 10))/5);
 {  reflex:=round((33+pel+random(8))/4); }
 {  reflex:=round((45+pel+random(10))/5); }
 {  reflex:=round((30+1+random(30))/5); }
 
   { floppihyppy }
-  if (random(300-pel)=0) then skill:=17+random(3+pel div 25);
+  if (CustomRandom({$I %FILE%}, {$I %LINE%}, 300-pel)=0) then skill:=17+CustomRandom({$I %FILE%}, {$I %LINE%}, 3+pel div 25);
 
 {  skill:=16; }
 
@@ -1331,7 +1337,7 @@ begin
 
   ssuunta:=0;  { sukset eiv„t liiku mihink„„n }
 
-  replayname:='?'; replayfilename:='TEMP';
+  replayname:='lmaara'; replayfilename:='TEMP';
 
 { temp:=1; temp2:=0; }
 
@@ -1605,10 +1611,10 @@ begin
        (index=NumPl) and (kierros=1) and (osakilpailu=1) then begin Tuuli.Alusta(windplace); end;
     if (ch=#27) then out:=true;
    end;
-     if (cjumper) and ((random(100)=0) or (laskuri>600)) then Out:=True;
-   if (cjumper) and (random(100)=0) and (kulmalaskuri=0) then
+     if (cjumper) and ((CustomRandom({$I %FILE%}, {$I %LINE%}, 100)=0) or (laskuri>600)) then Out:=True;
+   if (cjumper) and (CustomRandom({$I %FILE%}, {$I %LINE%}, 100)=0) and (kulmalaskuri=0) then
     begin
-     kulmalaskuri:=(random(3)+1)*1000;
+     kulmalaskuri:=(CustomRandom({$I %FILE%}, {$I %LINE%}, 3)+1)*1000;
      sx:=0; sy:=0;
     end;
 
@@ -1690,12 +1696,16 @@ begin
 
 {   tuuli:=-10; }
 
+   Trace({$I %FILE%}, {$I %LINE%}, 'matka', matka);
    matka:=matka+(px*0.01);
+   Trace({$I %FILE%}, {$I %LINE%}, 'matka', matka);
 
     fx:=x;  { former x & y }
     fy:=y;
 
+   Trace({$I %FILE%}, {$I %LINE%}, 'x', x);
    x:=round(matka+qx);
+   Trace({$I %FILE%}, {$I %LINE%}, 'x', x);
 
    if (Ch<>#27) then Ch:=#0;  { en tied„ muisteleeko se vanhoja }
    ch2:=#0;
@@ -1776,7 +1786,7 @@ begin
           if (clanding=2) then landing:=2;
 
           if (clanding=0) then { eka kertaa }
-           if (random(250) < temp*(temp div 10)) then clanding:=2
+           if (CustomRandom({$I %FILE%}, {$I %LINE%}, 250) < temp*(temp div 10)) then clanding:=2
                                                  else landing:=1;
          end;
 
@@ -1804,19 +1814,25 @@ begin
 
 {      px:=px-((kulma1/900)/19)+((sqrt(4*tuuli.value+245)-16)/360); } { "alkup." }
 {      px:=px-((kulma1/900)/24)+((sqrt(4*tuuli.value+245)-16)/455); }
+      Trace({$I %FILE%}, {$I %LINE%}, 'px', px);
+      Trace({$I %FILE%}, {$I %LINE%}, 'kulma1', kulma1);
+      Trace({$I %FILE%}, {$I %LINE%}, 'tuuli_value', tuuli.value);
       px:=px-((kulma1/900)/20)+((nsqrt(4*tuuli.value+245)-16)/400);
+      Trace({$I %FILE%}, {$I %LINE%}, 'px', px);
 
+      Trace({$I %FILE%}, {$I %LINE%}, 't', t);
       t:=t+0.01;
+      Trace({$I %FILE%}, {$I %LINE%}, 't', t);
 
        { Satunnaispuuska }
-       if (random(30000)<tuuli.windy+10+tuuli.voim) then
+       if (CustomRandom({$I %FILE%}, {$I %LINE%}, 30000)<tuuli.windy+10+tuuli.voim) then
         begin
 
          laskuri:=0; { reflexi„ varten }
 
-         if (random(2)=1) then tyylip[1]:=tyylip[1]-5;
+         if (CustomRandom({$I %FILE%}, {$I %LINE%}, 2)=1) then tyylip[1]:=tyylip[1]-5;
 
-         temp:=random(15);  { „ij„n kulman muutos... SŽŽDŽ TŽTŽ! }
+         temp:=CustomRandom({$I %FILE%}, {$I %LINE%}, 15);  { „ij„n kulman muutos... SŽŽDŽ TŽTŽ! }
          dec(temp,6);
 
          Kulma1:=kulma1+temp;
@@ -1824,21 +1840,30 @@ begin
          if (temp>0) then
           begin { puuska tuo sukset yl”s }
            ssuunta:=3;
-           pl:=pl-random(tuuli.voim+50)/15000;
+           Trace({$I %FILE%}, {$I %LINE%}, 'pl', pl);
+           pl:=pl-CustomRandom({$I %FILE%}, {$I %LINE%}, tuuli.voim+50)/15000;
+           Trace({$I %FILE%}, {$I %LINE%}, 'pl', pl);
           end;
 
          if (temp<0) then
           begin { puuska vie suksia alas }
            ssuunta:=6;
 {           pl:=pl-random(tvoim+20)/6000+(tvoim/12000); } { vanha }
-           pl:=pl+random(tuuli.voim+50)/15000;
+           Trace({$I %FILE%}, {$I %LINE%}, 'pl', pl);
+           pl:=pl+CustomRandom({$I %FILE%}, {$I %LINE%}, tuuli.voim+50)/15000;
+           Trace({$I %FILE%}, {$I %LINE%}, 'pl', pl);
           end;
 
         end;
 
       if (pl<0.105) then pl:=0.105; { leijuntaesto :) }
 
+      Trace({$I %FILE%}, {$I %LINE%}, 't', t);
+      Trace({$I %FILE%}, {$I %LINE%}, 'pl', pl);
+      Trace({$I %FILE%}, {$I %LINE%}, 'py', py);
+      Trace({$I %FILE%}, {$I %LINE%}, 'kor', kor);
       kor:=kor+(t*t*pl)-((py-8)/100);
+      Trace({$I %FILE%}, {$I %LINE%}, 'kor', kor);
 
 {       delay(600); }
 
@@ -1866,7 +1891,7 @@ begin
            end;
 
        3 : begin { puuska, k saa iskua (ja tulee alas) }
-            kulmas:=kulmas-random(50)-30;
+            kulmas:=kulmas-CustomRandom({$I %FILE%}, {$I %LINE%}, 50)-30;
             ssuunta:=2;
            end;
 
@@ -1890,7 +1915,7 @@ begin
            end;
 
        6 : begin { puuska, k saa iskua (ja tulee yl”s) }
-            kulmas:=kulmas+random(50)+30;
+            kulmas:=kulmas+CustomRandom({$I %FILE%}, {$I %LINE%}, 50)+30;
             ssuunta:=5;
            end;
 
@@ -1979,14 +2004,22 @@ begin
       px:=px*pxk;  { Hanaa... }
 
       if (px>maxspeed) then begin px:=maxspeed; {beep(2);} end;
+      Trace({$I %FILE%}, {$I %LINE%}, 'kor', kor);
+      Trace({$I %FILE%}, {$I %LINE%}, 'px', px);
 
       if (ponnistus>0) then
        begin
          { ponnistuslis„ys }
+         Trace({$I %FILE%}, {$I %LINE%}, 'px', px);
          px:=px+0.21;
+         Trace({$I %FILE%}, {$I %LINE%}, 'px', px);
+         Trace({$I %FILE%}, {$I %LINE%}, 'py', py);
          py:=py+1.21;
+         Trace({$I %FILE%}, {$I %LINE%}, 'py', py);
          { pl:=pl-(5*0.01); }
+         Trace({$I %FILE%}, {$I %LINE%}, 'kulma1', kulma1);
          kulma1:=kulma1+12;
+         Trace({$I %FILE%}, {$I %LINE%}, 'kulma1', kulma1);
 
         if (ponnistus>16) then { Ponnistus liian aikaisin }
          begin
@@ -2031,6 +2064,7 @@ begin
 
    Maki.Tulosta;
 
+   Trace({$I %FILE%}, {$I %LINE%}, 'call_drawlumi', 2061);
    DrawLumi(DeltaX-Maki.X,DeltaY-Maki.Y,Tuuli.Value,LMaara,true);
 
    if (goals) and (goalx>0) then DrawAnim(goalx-Maki.X,goaly-Maki.Y,66); { tavoitekeppi }
@@ -2173,7 +2207,7 @@ begin
 {      drawscreen;
        readkey; }
 
-      if (random(1000)<riski) then { liian longa hyppy tai vaan kehno sk„g„ }
+      if (CustomRandom({$I %FILE%}, {$I %LINE%}, 1000)<riski) then { liian longa hyppy tai vaan kehno sk„g„ }
        begin
         if (kierros>0) then stats[statsvictim,osakilpailu].Reason[kierros]:=3;
         kupat:=3;
@@ -2184,11 +2218,11 @@ begin
 
       if (kupat>0) then tyylip[1]:=tyylip[1]-100
        else
-        if (landing=2) then dec(tyylip[1],15+random(2)*5); { tasajalka tuomarirokotus }
+        if (landing=2) then dec(tyylip[1],15+CustomRandom({$I %FILE%}, {$I %LINE%}, 2)*5); { tasajalka tuomarirokotus }
 
       for temp:=2 to 5 do
        begin
-        temp2:=random(4);
+        temp2:=CustomRandom({$I %FILE%}, {$I %LINE%}, 4);
         tyylip[temp]:=tyylip[1];
         tyylip[temp]:=tyylip[temp]-(temp2-1)*5; { ennen temp2-2 }
        end;
@@ -2309,7 +2343,7 @@ begin
       laskuri:=0;
       startanim:=100; { start "nousepa yl”s"-kuvio }
 
-      OK:=boolean(random(2)); { if OK then sukset j„„ kiinni }
+      OK:=boolean(CustomRandom({$I %FILE%}, {$I %LINE%}, 2)); { if OK then sukset j„„ kiinni }
 
       if (landing=2) then dec(startanim,50);
 
@@ -2334,6 +2368,9 @@ begin
 
        matka:=matka+(px*0.008);
        umatka:=umatka+(upx*0.008);
+
+       Trace({$I %FILE%}, {$I %LINE%}, 'matka', matka);
+       Trace({$I %FILE%}, {$I %LINE%}, 'umatka', umatka);
 
        if (OK) then matka:=umatka;
 
@@ -2450,6 +2487,7 @@ begin
 
         Ch:=#0;
 
+        Trace({$I %FILE%}, {$I %LINE%}, 'call_keypressed', 2483);
         if (SDLPort.KeyPressed) then
          begin
           SDLPort.WaitForKeyPress(ch,ch2);
@@ -2497,6 +2535,7 @@ begin
      ch2:=readkey;
     end;
 }
+        Trace({$I %FILE%}, {$I %LINE%}, 'call_drawlumi', 2531);
         DrawLumi(DeltaX-Maki.X,DeltaY-Maki.Y,Tuuli.Value,LMaara,true);
 
         if (goals) and (goalx>0) then DrawAnim(goalx-Maki.X,goaly-Maki.Y,66); { tavoitekeppi }
@@ -2531,15 +2570,15 @@ begin
           if (laskuri mod 30 < 15) then writefont(260,33,'HR!');
 {         writefont(279+random(3),71+random(3),txtp(hp)+'«'); }
 
-          if (random(2)=0) then ewritefont(temp2-1+random(3),32+random(3),txtp(hp)+'«');
+          if (CustomRandom({$I %FILE%}, {$I %LINE%}, 2)=0) then ewritefont(temp2-1+CustomRandom({$I %FILE%}, {$I %LINE%}, 3),32+CustomRandom({$I %FILE%}, {$I %LINE%}, 3),txtp(hp)+'«');
 
 {         writefont(280,72,txtp(hp)+'«'); }
          end;
 
         { tyylipisteet ruutuun }
 
-        temp:=random(5)+1;
-         if (random(20)=1) and (tyylip[temp]>9999) then dec(tyylip[temp],10000);
+        temp:=CustomRandom({$I %FILE%}, {$I %LINE%}, 5)+1;
+         if (CustomRandom({$I %FILE%}, {$I %LINE%}, 20)=1) and (tyylip[temp]>9999) then dec(tyylip[temp],10000);
 
         for temp:=1 to 5 do
          if (tyylip[temp]<9999) then
@@ -2695,9 +2734,12 @@ begin
           end;
          end;
 
+       Trace({$I %FILE%}, {$I %LINE%}, 'draw', draw);
+       Trace({$I %FILE%}, {$I %LINE%}, 'gdetail', gdetail);
        if (not draw) and (gdetail=0) then
         begin
 {         tuuli.value:=tuulisafe; }
+         Trace({$I %FILE%}, {$I %LINE%}, 'lmaara', LMaara);
          DrawLumi(DeltaX-Maki.X,DeltaY-Maki.Y,tuuli.value,LMaara,false); { pakko piirt„„ }
         end;
 
@@ -2718,6 +2760,7 @@ begin
 
 {       delay(100); }
 
+      Trace({$I %FILE%}, {$I %LINE%}, 'draw', draw);
       if (draw) then
        begin
         Putsaa;
@@ -4264,7 +4307,7 @@ begin
 
  for temp:=1 to players-1 do  { tasapisteiss„ arvotaan }
   begin
-   if (pisteet[luett[temp]] = pisteet[luett[temp+1]]) and (random(2)=0) then
+   if (pisteet[luett[temp]] = pisteet[luett[temp+1]]) and (CustomRandom({$I %FILE%}, {$I %LINE%}, 2)=0) then
     if (mcpisteet[luett[temp]]=0) and (mcpisteet[luett[temp+1]]=0) then
     begin
 {     beep(2); }
@@ -4659,7 +4702,7 @@ begin
    cupslut:=false;
    startgate:=0;
 
-   if (kothmaki=0) then nytmaki:=random(NumWCHills)+1 else nytmaki:=kothmaki;
+   if (kothmaki=0) then nytmaki:=CustomRandom({$I %FILE%}, {$I %LINE%}, NumWCHills)+1 else nytmaki:=kothmaki;
 
    if (nytmaki>0) then jumpalku;
 
@@ -4980,11 +5023,11 @@ begin
  for temp:=1 to 40 do
   HillOrder[temp]:=temp;
 
- HillOrder[1]:=random(NumWCHills)+1;
+ HillOrder[1]:=CustomRandom({$I %FILE%}, {$I %LINE%}, NumWCHills)+1;
 
    for temp:=2 to 6 do
     begin
-     HillOrder[temp]:=random(NumWCHills)+1;
+     HillOrder[temp]:=CustomRandom({$I %FILE%}, {$I %LINE%}, NumWCHills)+1;
 
      for temp2:=1 to temp-1 do
       if (HillOrder[temp] = HillOrder[temp2]) then dec(temp);
@@ -5083,7 +5126,7 @@ begin
 
  for temp2:=1 to 3 do
   for temp:=1 to 14 do
-   if (random(2)=0) then swap(teamorder[temp],teamorder[temp+1]);
+   if (CustomRandom({$I %FILE%}, {$I %LINE%}, 2)=0) then swap(teamorder[temp],teamorder[temp+1]);
 
     ResetStats;
 
@@ -5232,7 +5275,6 @@ var temp,temp2,index : integer;
     fourhills, dokosystem, skip : boolean;
 
 begin
-
  wcup:=true;
 
  osakilpailu:=0;
@@ -5310,6 +5352,7 @@ begin
 
        for temp:=1 to trainrounds do
         begin
+         Trace({$I %FILE%}, {$I %LINE%}, 'trainround', temp);
 
          kierros:=-temp;
 
@@ -5322,10 +5365,12 @@ begin
              end;
 
         end;
+     Trace({$I %FILE%}, {$I %LINE%}, 'cupstyle', cupstyle);
      if not (cupstyle=1) then  { v3.13 - customissa skipataan quali }
      begin
 
           kierros:=0;
+          Trace({$I %FILE%}, {$I %LINE%}, 'kierros', kierros);
 
           { QUAL ROUND  kierros:=0; }
 
@@ -5343,6 +5388,8 @@ begin
                  if not ((mcluett[index] > NumPl-pmaara) and (skip) and
                     (qual[mcluett[index]] > 0)) then  { skipquali mahis }
                  begin
+                   Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_index', index);
+                   Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_mcluett', mcluett[index]);
                    hyppy(index,mcluett[index],0);
                    eka:=false;
                  end;
@@ -5420,6 +5467,8 @@ begin
 
       kierros:=1;
 
+     Trace({$I %FILE%}, {$I %LINE%}, 'kierros', kierros);
+     Trace({$I %FILE%}, {$I %LINE%}, 'dokosystem', dokosystem);
      if (dokosystem) then                  { *** 1. KIERROS *** }
       for temp:=25 downto 1 do
        for temp2:=0 to 1 do
@@ -5429,6 +5478,8 @@ begin
 
          if (inj[luett[index]]=0) and (not cupslut) then
           begin
+           Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_index', index);
+           Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_mcluett', mcluett[index]);
            hyppy(index,luett[index],0);
            eka:=false;
           end;
@@ -5437,6 +5488,8 @@ begin
       for index:=NumPl downto 1 do
        if (qual[mcluett[index]]>0) and (inj[mcluett[index]]=0) and (not cupslut) then
         begin
+         Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_index', index);
+         Trace({$I %FILE%}, {$I %LINE%}, 'hyppy_mcluett', mcluett[index]);
          hyppy(index,mcluett[index],0);
          eka:=false;
         end;
@@ -5833,6 +5886,7 @@ begin
 end;
 
 begin  { MAIN }
+ CustomRandomize(11);
 
  sj3lang.Init;
  sj3list.Init;
@@ -5841,7 +5895,7 @@ begin  { MAIN }
  sj3info.Init;
  lumi.Init;
 
- randomize;
+ {randomize;}
 
  getdate(Today.Year,Today.Month,Today.Day,Today.DayofWeek);
  getnow(start);

@@ -12,6 +12,7 @@ procedure Update(var Buffer:array of byte;DeltaX,DeltaY,Tuuli:Integer;Draw:boole
 
 
 IMPLEMENTATION
+uses SDLPort;
 
 
 const SineLgt=512;   { t„ytyy olla 2^n }
@@ -78,7 +79,7 @@ end;
 
 
 function GetColor:Word;
-Begin GetColor:=(random(4)+232)+(random(4)+232) shl 8;end;
+Begin GetColor:=(CustomRandom({$I %FILE%}, {$I %LINE%}, 4)+232)+(CustomRandom({$I %FILE%}, {$I %LINE%}, 4)+232) shl 8;end;
 
 
 procedure Reset;
@@ -87,12 +88,12 @@ var i:integer;
 begin for i:=0 to SineLgt do Sine[i]:=Round(sin(i*pi*2/SineLgt)*SivuLiike);
       for i:=0 to LumiMax-1 do with LH[i] do
          begin
-          x:=longint(random(320)) shl 10;
-          y:=longint(random(200)) shl 10;
-          sin_pos:=random(SineLgt);
-          gravity:=random(GVaihtelu)+PerusG-GVaihtelu;
-          style:=random(2);
-          if (Sleet) and (Style=1) then Style:=random(2);
+          x:=longint(CustomRandom({$I %FILE%}, {$I %LINE%}, 320)) shl 10;
+          y:=longint(CustomRandom({$I %FILE%}, {$I %LINE%}, 200)) shl 10;
+          sin_pos:=CustomRandom({$I %FILE%}, {$I %LINE%}, SineLgt);
+          gravity:=CustomRandom({$I %FILE%}, {$I %LINE%}, GVaihtelu)+PerusG-GVaihtelu;
+          style:=CustomRandom({$I %FILE%}, {$I %LINE%}, 2);
+          if (Sleet) and (Style=1) then Style:=CustomRandom({$I %FILE%}, {$I %LINE%}, 2);
           C1:=GetColor;
           C2:=GetColor;
          end;
