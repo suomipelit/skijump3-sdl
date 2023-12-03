@@ -66,7 +66,7 @@ type Stat_type = record
      Kr : integer;
      FrIndex, BkIndex : string[3];
      BkBright, BkMirror, VxFinal : byte;
-     Pk, PlSave : single;
+     Pk, PlSave : double;
      Profile : longint;
      HRName : NameStr;
      HRLen : integer;

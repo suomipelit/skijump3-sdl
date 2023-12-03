@@ -79,19 +79,22 @@ begin
 end;
 
 function TimerCallback(interval: UInt32; param: Pointer): UInt32; cdecl;
-var frameIntervalMs, nowMs : LongInt;
+var frameIntervalMs, nowMs, elapsed : LongInt;
 begin
   frameIntervalMs := 1000 div targetFrames;
   nowMs := SDL_GetTicks();
-  subFrameCount += nowMs - lastFrameTick;
-  lastFrameTick := nowMs;
-
-  while (subFrameCount >= frameIntervalMs) do
+  elapsed := nowMs - lastFrameTick;
+  if (elapsed >= frameIntervalMs) then
   begin
-    dec(subFrameCount, frameIntervalMs);
-    inc(framecount);
-  end;
+    lastFrameTick := nowMs;
+    subFrameCount += elapsed;
 
+    while (subFrameCount >= frameIntervalMs) do
+    begin
+        dec(subFrameCount, frameIntervalMs);
+        inc(framecount);
+    end;
+  end;
   TimerCallback:=interval;
 end;
 
@@ -263,11 +266,11 @@ end;
 
 procedure WaitRaster;
 begin
+  lastFrameCount := framecount;
   while(lastFrameCount = framecount) do
   begin
     SDL_Delay(1);
   end;
-  lastFrameCount := framecount;
 end;
 
 function KeyPressed : boolean;

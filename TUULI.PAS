@@ -18,7 +18,7 @@ uses SJ3Graph, SJ3Help;
 
 var tsuun : boolean;      { kiinnostaako n„m„ kaikkia? }
     traja1, traja2 : integer;
-    tkulma : single;
+    tkulma : double;
     tuulix, tuuliy:integer;
     tpaikka : byte;
 
