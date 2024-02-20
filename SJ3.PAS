@@ -582,7 +582,7 @@ begin
         8 : if (goals) then str1:=lstr(180) else str1:=lstr(186);
         9 : if (seecomps>NumPl) then str1:=lstr(seecomps) else str1:='#'+txt(seecomps);
 
-{        8 : str1:=txt(windplace); }
+       10 : str1:=nsh(WindPlaceName(windplace),60);
        11 : if (kosystem) then str1:=lstr(182) else str1:=lstr(185);
         end;
 
