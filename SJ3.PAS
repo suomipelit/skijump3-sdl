@@ -4392,7 +4392,19 @@ var temp,temp2,who : integer;
 
 begin
 
- newscreen(1,0);
+ if (InvBack) then
+  begin
+
+   SiirraStandardiPaletti;
+   TallennaAlkuosa(0);
+   SavytaPaletti(0,40);
+   AsetaPaletti;
+
+   DrawHillScreen;
+   DrawAnim(5,2,62); { logo kehiin }
+
+  end
+   else newscreen(1,0);
  fontcolor(240);
   writefont(30,6,lstr(94));
  fontcolor(241);
@@ -4426,6 +4438,12 @@ begin
     end;
 
  cupslut:=Waitforkey3(305,6,ch);
+
+ if (InvBack) then
+  begin
+   TakaisinAlkuosa(0);
+   AsetaPaletti;
+  end;
 
 end;
 
