@@ -1601,8 +1601,10 @@ begin
     ch:=upcase(ch);
     if (ch=#0) and (ch2=#68) then begin cupslut:=true; ch:=#27; end;
     if (not cjumper) and ((kword(ch,ch2)=K[2]) or (ch=#13)) then out:=true; { liikkeelle }
-    if (ch=#0) and (ch2=#63) and (wcup) and (cupstyle=1) and
-       (index=NumPl) and (kierros=1) and (osakilpailu=1) then begin Tuuli.Alusta(windplace); end;
+    if (ch=#0) and (ch2=#63) and (
+     (treeni) or
+     ((wcup) and (cupstyle=1) and (index=NumPl) and (kierros=1) and (osakilpailu=1))
+    ) then begin Tuuli.Alusta(windplace); end;
     if (ch=#27) then out:=true;
    end;
      if (cjumper) and ((random(100)=0) or (laskuri>600)) then Out:=True;
@@ -1999,7 +2001,7 @@ begin
 
           pl:=pl+0.013;
           py:=py-1;
-          
+
 
           if (kierros>0) then stats[statsvictim,osakilpailu].Reason[kierros]:=1;
 
