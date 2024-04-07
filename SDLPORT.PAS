@@ -24,7 +24,7 @@ interface
 implementation
 
   uses sdl2, getopts;
-  const version: string = 'SP4+';
+  const version: string = 'SP5';
         xRes = 320;
         yRes = 200;
         targetFrames = 70;

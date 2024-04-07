@@ -45,6 +45,8 @@ some buffer overflows have been fixed.
 | Alt+(Keypad) Minus | Decrease window size |
 | Alt+R | Reset window if stretched |
 | Alt+A | Toggle 4:3 aspect ratio |
+| Keys G to L | Improved menu navigation |
+| F5 | Reset wind in practice |
 
 ### Command line parameters
 
@@ -78,7 +80,7 @@ IDE which bundles editor and the compiler.
 
 ## Releases
 
-**[WIP - Version 5](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp4) - TBA**
+**[Version 5](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp5) - 2024-04-07**
 
 - [More accurate frame rate limiter](https://github.com/suomipelit/skijump3-sdl/pull/27)
 - [Make LMaara global](https://github.com/suomipelit/skijump3-sdl/pull/26)
