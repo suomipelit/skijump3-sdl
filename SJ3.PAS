@@ -5725,6 +5725,8 @@ begin
  writeln(' * Alt+(Keypad) Minus : Decrease window size');
  writeln(' * Alt+R              : Reset window if stretched');
  writeln(' * Alt+A              : Toggle 4:3 aspect ratio');
+ writeln(' * G to L             : Improved menu navigation');
+ writeln(' * F5                 : Reset wind in practice');
  writeln('');
  writeln('-------');
  writeln('');

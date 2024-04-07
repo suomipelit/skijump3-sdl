@@ -45,7 +45,7 @@ some buffer overflows have been fixed.
 | Alt+(Keypad) Minus | Decrease window size |
 | Alt+R | Reset window if stretched |
 | Alt+A | Toggle 4:3 aspect ratio |
-| Keys G to L | Improved menu navigation |
+| G to L | Improved menu navigation |
 | F5 | Reset wind in practice |
 
 ### Command line parameters
