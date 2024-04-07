@@ -80,6 +80,7 @@ IDE which bundles editor and the compiler.
 
 **[WIP - Version 5](https://github.com/suomipelit/skijump3-sdl/releases/tag/sj313-sp4) - TBA**
 
+- [Make LMaara global](https://github.com/suomipelit/skijump3-sdl/pull/26)
 - [Support keys G to L in menus](https://github.com/suomipelit/skijump3-sdl/pull/25)
 - [Show wind location in options](https://github.com/suomipelit/skijump3-sdl/pull/24)
 - [Fix box title name for CPU jumper select](https://github.com/suomipelit/skijump3-sdl/pull/23)
