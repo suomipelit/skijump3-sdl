@@ -19,7 +19,7 @@ interface
   function KeyPressed : boolean;
   procedure WaitForKeyPress(var ch1, ch2 : char);
 
-  procedure Wait(ms : integer);
+  procedure Wait(ticks : integer);
 
 implementation
 
@@ -29,6 +29,7 @@ implementation
         yRes = 200;
         targetFrames = 70;
         aspectRes: real = xRes / yRes;
+        msPerTick: real = 1000 / 18.2065; { typical IBM PC PIT system clock tick rate }
 
   var windowMultiplier: integer;
       window: PSDL_Window;
@@ -475,7 +476,7 @@ begin
             SDLK_KP_PERIOD : keyPressed:=SDLK_DELETE;
           end;
         end;
-        
+
         // Merge keypad characters with their regular counterparts.
         // It is not needed to differentiate between them, since the scancode isn't checked for normal characters.
         // Checks for Shift and Num Lock were already done, so they won't interfere with the merge.
@@ -582,9 +583,9 @@ begin
   end;
 end;
 
-procedure Wait(ms : integer);
+procedure Wait(ticks : integer);
 begin
-  SDL_Delay(ms);
+  SDL_Delay(Round(ticks * msPerTick));
 end;
 
 end.
