@@ -5834,7 +5834,7 @@ begin
  lopputext(version_full,Start,Now);
 
  repeat
-  SdlPort.Wait(10);
+  SDLPort.Wait(1);
  until Crt.KeyPressed
 
 end;
