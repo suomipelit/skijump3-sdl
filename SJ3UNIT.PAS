@@ -112,7 +112,7 @@ procedure getch(xx,yy:integer;bkcolor:byte;var tempch,tempch2:char);
 function getstr(xx,yy,maxlength:integer;oldstr:string;bkcolor:byte):string;
 function getstr2(xx,yy,maxchars:integer;oldstr:string;bkcolor:byte):string;
 
-procedure lopputext(version:string;a1,a2:Time);
+procedure lopputext(version,regname,regnumber:string;a1,a2:Time);
 
 function MakeMenu(x,y,length,height,items,index:integer;bgcolor,phase,tab:byte):integer;
 
@@ -3039,22 +3039,29 @@ end;
 
 
 
-procedure lopputext(version:string;a1,a2:Time);
+procedure lopputext(version,regname,regnumber:string;a1,a2:Time);
 var out : Time;
     temp1, temp2, diff : longint;
 
 begin
+   textbackground(0);
+   clrscr;
 
+   textbackground(7);
    textcolor(0);
-   gotoxy(69,2);write(' лп л');
-   gotoxy(69,3);write(' л  л');
-   gotoxy(69,4);write('мл мл');
-
+   gotoxy(69,2);write(toansi('      '));
+   gotoxy(69,3);write(toansi(' лп л '));
+   gotoxy(69,4);write(toansi(' л  л '));
+   gotoxy(69,5);write(toansi('мл мл '));
    textcolor(4);
-   gotoxy(75,2);write('пл');
-   gotoxy(75,3);write('ўл');
-   gotoxy(75,4);write('мл');
+   gotoxy(75,2);write(toansi('      '));
+   gotoxy(75,3);write(toansi('пл    '));
+   gotoxy(75,4);write(toansi('ўл    '));
+   gotoxy(75,5);write(toansi('мл    '));
+   textbackground(0);
 
+   DoWindow(69,6,80,14,7);
+   DoWindow(1,2,68,14,7);
 
    temp1:=longint(a1.second)+longint(a1.minute)*60+longint(a1.hour)*3600;
    temp2:=longint(a2.second)+longint(a2.minute)*60+longint(a2.hour)*3600;
@@ -3105,9 +3112,13 @@ begin
  write('   webpage located at  ');
  cwrite(8,'http://www.nomasi.com/sj3/');
 
-  window(1,16,80,19);
-  textbackground(1);
-   clrscr;
+{$IFDEF REG}
+ regendtext(regname,regnumber);
+{$ELSE}
+ unregendtext;
+{$ENDIF}
+
+  DoWindow(1,16,80,19,1);
   writeln;
   cwriteln(9,'   Quote of the moment: ');
   cwrite(15,'   ');

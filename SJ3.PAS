@@ -5730,7 +5730,7 @@ begin
  writeln('');
  writeln('-------');
  writeln('');
- writeln('SJ3 v',version,' by Ville Ken 2011');
+ writeln('SJ3 v',version,toansi(' by Ville K馬馬en 2013'));
 
  write('- Loading ANIM.SKI');
   LoadAnim('ANIM.SKI');
@@ -5796,7 +5796,7 @@ end;
 procedure loppu;
 begin
 
- writeln('SJ3 v',version,' by Ville Ken 2013');
+ writeln('SJ3 v',version,toansi(' by Ville K馬馬en 2013'));
 
  GetNow(Now);
 
@@ -5824,14 +5824,7 @@ begin
  textbackground(0);
  clrscr;
 
-  DoWindow(1,2,80,14,7);
-{$IFDEF REG}
- regendtext(regname,regnumber);
-{$ELSE}
- unregendtext;
-{$ENDIF}
-
- lopputext(version_full,Start,Now);
+ lopputext(version_full,regname,regnumber,Start,Now);
 
  repeat
   SdlPort.Wait(10);
