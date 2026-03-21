@@ -3861,7 +3861,7 @@ begin
        if (osakilpailu=12) then sorthighs(2);
        if (final) then sorthighs(0);
       end;
-  1 : if (cscreen) then NewCRecordScreen(SetFile,top[42],oldhi,sortby);
+  1 : if (cscreen) then NewCRecordScreen(SetFile,top[42],oldhi,sortby,InvBack);
   2 : if (final) then sorthighs(2);
   end;
 
