@@ -64,7 +64,7 @@ procedure selectcustomhills(var sortby:byte;var CupHills:integer;
                             var HillOrder : array of integer;
                             var SetFile:string);
 
-procedure newcrecordscreen(SetFile:string;NewHi,OldHi:Hiscore;sortby:byte);
+procedure newcrecordscreen(SetFile:string;NewHi,OldHi:Hiscore;sortby:byte;InvBack:boolean);
 
 procedure CallSendme(version,regname,regnumber:string;
                      Today:date;Now:Time; vcode:byte);
@@ -306,11 +306,18 @@ end;
 
 
 
-procedure newcrecordscreen(SetFile:string;NewHi,OldHi:Hiscore;sortby:byte);
+procedure newcrecordscreen(SetFile:string;NewHi,OldHi:Hiscore;sortby:byte;InvBack:boolean);
 var tempb : boolean;
 {    tempch : char; }
     str1 : string;
 begin
+ if (InvBack) then
+  begin
+   SiirraStandardiPaletti;
+   TallennaAlkuosa(0);
+   SavytaPaletti(0,40);
+   AsetaPaletti;
+  end;
 
  tempb:=true;
  if (Oldhi.score<=0) then tempb:=false;
@@ -347,6 +354,12 @@ begin
  drawscreen;
 
  waitforkey;
+
+ if (InvBack) then
+  begin
+   TakaisinAlkuosa(0);
+   AsetaPaletti;
+  end;
 
 end;
 
