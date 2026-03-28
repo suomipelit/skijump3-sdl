@@ -2684,7 +2684,7 @@ begin
          if (inj[pel]=1) then str1:='LEG.';
          writefont(12,176,'WILL MISS NEXT '+txt(inj[pel])+str1); }
 
-           str1:=txt(inj[pel])+' '+lstr(76);
+           str1:=txt(inj[pel]-1)+' '+lstr(76);
 
            case inj[pel] of
            1 : str1:=lstr(77);
