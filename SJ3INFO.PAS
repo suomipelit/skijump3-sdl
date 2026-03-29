@@ -1790,7 +1790,7 @@ begin
     writefont(x-(fontlen(lnames[temp]) div 2),temp*8+55,lnames[temp]);
 
   temp:=3; if (not full) then temp:=7;
- index:=MakeMenu(112,64,100,8,numlanguages-1,1,243,temp,0);
+ index:=MakeMenu(112,64,100,8,numlanguages-1,languagenumber,243,temp,0);
 
  if (index=0) then index:=numlanguages;
 
