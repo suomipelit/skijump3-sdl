@@ -4485,9 +4485,9 @@ var temp : integer;
 
 
 
-function selecthill(phase:byte):byte; { 0 - train, 1 - koth, 2 - morehills, 3 - morehills KOTH }
-                                      { uusi: 0 - train, 1 - koth }
-var temp, gothill : integer;
+function selecthill(phase:byte;gothill:integer):byte; { 0 - train, 1 - koth, 2 - morehills, 3 - morehills KOTH }
+                                                      { uusi: 0 - train, 1 - koth }
+var temp : integer;
     hill : integer;
     str1 : string;
     items : integer;
@@ -4497,6 +4497,11 @@ var temp, gothill : integer;
 begin
 
  start:=0;
+ while (gothill>20) do
+  begin
+   dec(gothill,20);
+   inc(start,20);
+  end;
 
  repeat
 
@@ -4543,12 +4548,13 @@ begin
 
    DrawScreen;
 
-  gothill:=MakeMenu(110,11,170,8,items,1,243,0,0);
+  gothill:=MakeMenu(110,11,170,8,items,gothill,243,0,0);
 
   leave:=true;
 
   if (gothill=items) and (NumExtraHills>0) then
    begin
+    gothill:=1;
     inc(start,20);
     if (start>=NumExtraHills+NumWCHills) then start:=0;
     leave:=false;
@@ -4575,12 +4581,13 @@ begin
  cupslut:=false;
  ch:=#1;
  startgate:=15;
+ nytmaki:=1;
 
   repeat
 
    eka:=true;
 
-   nytmaki:=selecthill(0);
+   nytmaki:=selecthill(0,nytmaki);
 
    if (nytmaki=0) then cupslut:=true;
 
@@ -4842,6 +4849,7 @@ begin
 
  getkoth;
 
+ index:=1;
  repeat
 
  NewScreen(3,0);
@@ -4891,7 +4899,7 @@ begin
 
   DrawScreen;
 
-  index:=MakeMenu(10,10,160,10,6,1,245,0,3);
+  index:=MakeMenu(10,10,160,10,6,index,245,0,3);
 
   case index of
   1 : startkoth;
@@ -4900,7 +4908,7 @@ begin
        DrawScreen;
 
        temp:=kothpack;
-       kothpack:=MakeMenu(10,121,160,8,6,1,244,0,254);
+       kothpack:=MakeMenu(10,121,160,8,6,kothpack,244,0,254);
 {$IFNDEF REG}
        if ((kothpack<1) or (kothpack>6)) then kothpack:=temp;
 {$ENDIF}
@@ -4914,7 +4922,7 @@ begin
       end; { else if (beeppi) then beep(2); }
   4 : begin
        kothpack:=0;
-       kothmaki:=selecthill(1);
+       kothmaki:=selecthill(1,kothmaki);
       end; { else if (beeppi) then beep(2); }
   5 : begin
        kothpack:=0;

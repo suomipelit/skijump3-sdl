@@ -765,6 +765,16 @@ var{ tempch1,tempch2 : char; }
     oldindex : integer;
     thing : integer;
 
+function GetLastIndex:integer;
+begin
+ if (putkeen) then GetLastIndex:=items+1 else GetLastIndex:=items+2;
+end;
+
+procedure NormalizeIndex;
+begin
+ if (index<=0) or (index>items) then index:=GetLastIndex;
+end;
+
 begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
        {        3 - kaikki putkeen, 4 - ei fillarea, 5 - old players }
        {        6 - new profiles, 7 - kaikki putkeen & ei fill }
@@ -796,6 +806,7 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
 { index:=1; }
 
  index:=abs(index);
+ NormalizeIndex;
 
   xx:=x-6;
   yy:=y-3+((index-1)*height);
@@ -848,24 +859,16 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
    'a'..'l' : index:=ord(ch)-87;
    end;
 
-   if (index<=0) or (index>items) then
-    begin
-     index:=items+2;
-     if (putkeen) then index:=items+1;
-    end;
+   NormalizeIndex;
 
    if (ch2=#71) then index:=1;
    if (ch=#27) or (ch2=#79) then
-    begin
-     index:=items+2;
-     if (putkeen) then index:=items+1;
-    end;
+    index:=GetLastIndex;
 
    if (ch2=#68) then { F10 }
     begin
      out:=true;
-     index:=items+2;
-     if (putkeen) then index:=items+1;
+     index:=GetLastIndex;
      if (phase=6) then index:=254;
     end;
 
@@ -2121,7 +2124,7 @@ begin
 
   DrawScreen;
 
-  index:=MakeMenu(60,11,80,8,20,1,243,0,0);
+  index:=MakeMenu(60,11,80,8,20,index,243,0,0);
 
   if (index=0) then leave:=true
                else edithill(h[index],filestr,false);
@@ -2484,7 +2487,7 @@ begin
 
    DrawScreen;
 
-   index:=MakeMenu(99,14,221,8,items,1,243,1,0);
+   index:=MakeMenu(99,14,221,8,items,index,243,1,0);
 
    leave:=false;
 
