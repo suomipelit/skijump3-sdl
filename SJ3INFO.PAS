@@ -1525,12 +1525,17 @@ if (index>0) and (index<=NumProfiles) then
    begin
     str1:='';
 
+    x:=colx+4; y:=gety;
+
+    if (temp>15) then inc(y,8)
+                 else inc(x,fontlen(lstr(303+temp)));
+
     with Profile[index] do
      case temp of
      1 : str1:=name;
      2 : str1:=realname;
      5 : if (replace=0) then str1:='-'
-                        else str1:=nimet[replace];
+                        else str1:=nsh(nimet[replace],316-x);
      6 : if (cstyle=0) then str1:=lstr(9)
                        else str1:=lstr(361+cstyle*40);
      7 : str1:=lstr(231+skipquali);
@@ -1566,11 +1571,6 @@ if (index>0) and (index<=NumProfiles) then
      18 : if (kothlevel=0) then str1:='-'
                            else str1:=lstr(130+kothlevel);
      end;
-
-     x:=colx+4; y:=gety;
-
-     if (temp>15) then inc(y,8)
-                  else inc(x,fontlen(lstr(303+temp)));
 
      writefont(x,y,str1);
 
@@ -1675,7 +1675,7 @@ begin
 
   if (value>0) then
    begin
-    writefont(x,y,nsh(nimet[value],305-x));
+    writefont(x,y,nsh(nimet[value],316-fontlen('#'+txt(value))-x));
     ewritefont(316,y,'#'+txt(value));
    end else writefont(x,y,lstr(9));
 
