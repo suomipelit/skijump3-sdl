@@ -614,7 +614,7 @@ begin
    0 : begin
 
         case index[screen] of
-        1,2,3 : screen:=index[screen];
+        1,2,3 : begin screen:=index[screen]; index[screen]:=1; end;
         4 : configurekeys(K);
 {$IFDEF REG}
         5 : setgoals;
