@@ -647,7 +647,7 @@ begin
 
              if (ch<>#27) then
               begin
-               assign(f3,'names'+ch+'.ski');
+               assign(f3,'NAMES'+ch+'.SKI');
                {$I-}
                reset(f3);
                {$I+}
