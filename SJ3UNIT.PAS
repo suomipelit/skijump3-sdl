@@ -726,6 +726,7 @@ begin
           if (l<>acthill.profile) then { profiilichekkaus }
            begin
 
+             fillbox(0,0,319,199,0);
              alertbox;
 
              str1:='RUN THE HILL MAKER AGAIN.';
@@ -736,11 +737,11 @@ begin
                str1:='EXITING CUP.';
               end;
 
-             writefont(80,90,'THE PROFILE OF HILL #'+acthill.frindex);
-             writefont(80,102,'HAS BEEN CHANGED! NOT GOOD.');
-             writefont(80,114,str1);
+             writefont(80,85,'THE PROFILE OF THE HILL (FRONT'+acthill.frindex+'.PCX)');
+             writefont(80,95,'HAS BEEN CHANGED! NOT GOOD.');
+             writefont(80,105,str1);
 
-             writefont(80,130,'PRESS A KEY...');
+             writefont(80,120,'PRESS A KEY...');
              drawscreen;
 
              waitforkey;
