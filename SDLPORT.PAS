@@ -4,6 +4,7 @@ interface
 
   type TPalette = Array[0..255,0..2] of byte;
   type TCloseCallback = procedure;
+  type TCharToUTF8Table = array[#128..#255] of RawByteString;
 
   function GetVersion : string;
 
@@ -20,6 +21,8 @@ interface
   procedure WaitForKeyPress(var ch1, ch2 : char);
 
   procedure Wait(ticks : integer);
+
+  function ConvertToUTF8(s : string): UTF8String;
 
 implementation
 
@@ -586,6 +589,26 @@ end;
 procedure Wait(ticks : integer);
 begin
   SDL_Delay(Round(ticks * msPerTick));
+end;
+
+function ConvertToUTF8(s : string): UTF8String;
+const ArrayCP865ToUTF8 : TCharToUTF8Table = (
+  'Ç', 'ü', 'é', 'â', 'ä', 'à', 'å', 'ç', 'ê', 'ë', 'è', 'ï', 'î', 'ì', 'Ä', 'Å',
+  'É', 'æ', 'Æ', 'ô', 'ö', 'ò', 'û', 'ù', 'ÿ', 'Ö', 'Ü', 'ø', '£', 'Ø', '₧', 'ƒ',
+  'á', 'í', 'ó', 'ú', 'ñ', 'Ñ', 'ª', 'º', '¿', '⌐', '¬', '½', '¼', '¡', '«', '¤',
+  '░', '▒', '▓', '│', '┤', '╡', '╢', '╖', '╕', '╣', '║', '╗', '╝', '╜', '╛', '┐',
+  '└', '┴', '┬', '├', '─', '┼', '╞', '╟', '╚', '╔', '╩', '╦', '╠', '═', '╬', '╧',
+  '╨', '╤', '╥', '╙', '╘', '╒', '╓', '╫', '╪', '┘', '┌', '█', '▄', '▌', '▐', '▀',
+  'α', 'ß', 'Γ', 'π', 'Σ', 'σ', 'μ', 'τ', 'Φ', 'Θ', 'Ω', 'δ', '∞', 'φ', 'ε', '∩',
+  '≡', '±', '≥', '≤', '⌠', '⌡', '÷', '≈', '°', '∙', '·', '√', 'ⁿ', '²', '■', ' '
+);
+var i, l : integer;
+    tmp : UTF8String;
+begin
+  tmp := '';
+  l := Length(s);
+  for i:=1 to l do if s[i] > #127 then tmp += ArrayCP865ToUTF8[s[i]] else tmp += s[i];
+  ConvertToUTF8 := tmp;
 end;
 
 end.

@@ -338,34 +338,8 @@ begin
 end;
 
 function toansi(str1:string):string;
-var outstr : string;
-    index  : integer;
 begin
-
- outstr:=str1;
-
- for index:=1 to length(outstr) do
-  begin
-   case outstr[index] of
-   '' : outstr[index]:='Â';
-   '' : outstr[index]:='Ä';
-   '™' : outstr[index]:='Ö';
-   'š' : outstr[index]:='Ü';
-   '' : outstr[index]:='Ø';
-   '’' : outstr[index]:='Æ';
-   '†' : outstr[index]:='å';
-   '„' : outstr[index]:='ä';
-   '”' : outstr[index]:='ö';
-   '' : outstr[index]:='ü';
-   '›' : outstr[index]:='ø';
-   '‘' : outstr[index]:='æ';
-   'á' : outstr[index]:='ß'; { beta? }
-   end;
-
-  end;
-
- toansi:=outstr;
-
+ toansi:=SDLPort.ConvertToUTF8(str1);
 end;
 
 
