@@ -53,6 +53,8 @@ some buffer overflows have been fixed.
 | Command | Short |  Description |
 | --- | --- | --- |
 | --sw-rendering | -s | Enforce SW rendering |
+| --help | -h | Show help and quit |
+| --version | -v | Show version information and quit |
 
 ## Build
 

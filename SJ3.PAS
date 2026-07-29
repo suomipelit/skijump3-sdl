@@ -1,5 +1,5 @@
 program Skijump3; { Reality Strikes }
-uses crt, dos, sj3graph, sj3pcx, sj3unit, sj3help, sj3info,
+uses crt, dos, getopts, sj3graph, sj3pcx, sj3unit, sj3help, sj3info,
      sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sdlport;
 
 const
@@ -5562,23 +5562,83 @@ end;
 
 
 
-procedure CheckParam;
-var str1 : string;
+procedure WriteVersion;
 begin
+  writeln('SJ3 v',version_full,' by Ville Könönen 2013');
+end;
 
- str1:=paramstr(1);
 
- if (length(str1) > 1) then
- begin
-   case str1[2] of
-  { 'x' : ex:=true; }
-  { 't' : StartTest; }
-   'r' : ResetHiscore(1);
-   'z' : ResetHiscore(0);
-   'c' : ResetConfig;
-   end;
- end;
+procedure CheckParam;
 
+const options: array[0..6] of TOption = (
+{ (Name: 'expert'; Has_arg: 0; Flag: nil; Value: 'x'), }
+{ (Name: 'test'; Has_arg: 0; Flag: nil; Value: 't'), }
+{ (Name: 'unregistered'; Has_arg: 0; Flag: nil; Value: 'u'), }
+  (Name: 'reset'; Has_arg: 0; Flag: nil; Value: 'r'),
+  (Name: 'zero'; Has_arg: 0; Flag: nil; Value: 'z'),
+  (Name: 'clear'; Has_arg: 0; Flag: nil; Value: 'c'),
+  (Name: 'sw-rendering'; Has_arg: 0; Flag: nil; Value: 's'),
+  (Name: 'help'; Has_arg: 0; Flag: nil; Value: 'h'),
+  (Name: 'version'; Has_arg: 0; Flag: nil; Value: 'v'),
+  (Name: ''; Has_arg: 0; Flag: nil)
+);
+
+var c : char;
+    optionindex : Longint;
+
+procedure ShowHelp;
+var option : TOption;
+    optSpecifier : char;
+begin
+  writeln('Usage: SJ3 [OPTIONS]');
+  writeln('');
+  for option in options do
+  begin
+    if option.Name <> '' then
+    begin
+      write('  ');
+      for optSpecifier in getopts.OptSpecifier do write(optSpecifier, option.Value, ', ');
+      write('--', option.Name, '':21-Length(option.Name));
+      case option.Value of
+      { 'x': writeln('expert mode'); }
+      { 't': writeln('start test'); }
+      { 'u': writeln('run as unregistered version'); }
+        'r': writeln('reset hiscores');
+        'z': writeln('zero hiscores');
+        'c': writeln('return default setup values');
+        's': writeln('enforce software rendering');
+        'h': writeln('show help and quit');
+        'v': writeln('show version information and quit');
+      end;
+    end;
+  end;
+  Halt;
+end;
+
+procedure ShowVersion;
+begin
+  WriteVersion;
+  SDLPort.WritePortInfo;
+  Halt;
+end;
+
+begin
+  c:=#0;
+  optionindex:=0;
+  repeat
+    c:=GetLongOpts('rzcshv', @options[0], optionindex);
+    case c of
+    { 'x' : ex:=true; }
+    { 't' : StartTest; }
+    { 'u' : reg:=false; }
+      'r' : ResetHiscore(1);
+      'z' : ResetHiscore(0);
+      'c' : ResetConfig;
+      's' : SDLPort.SetSwRendering(true);
+      'h' : ShowHelp;
+      'v' : ShowVersion;
+    end; { case }
+  until c=EndOfOptions;
 end;
 
 
@@ -5705,20 +5765,13 @@ end;
 procedure alku;
 begin
 
- writeln('Ported to SDL2 by Suomipelit (https://suomipelit.github.io)');
+ SDLPort.WritePortInfo;
  writeln('');
- writeln('New shortkeys:');
- writeln(' * Alt+Enter          : Toggle fullscreen');
- writeln(' * Alt+(Keypad) Plus  : Increase window size');
- writeln(' * Alt+(Keypad) Minus : Decrease window size');
- writeln(' * Alt+R              : Reset window if stretched');
- writeln(' * Alt+A              : Toggle 4:3 aspect ratio');
- writeln(' * G to L             : Improved menu navigation');
- writeln(' * F5                 : Reset wind in practice');
+ SDLPort.WriteNewShortkeys;
  writeln('');
  writeln('-------');
  writeln('');
- writeln('SJ3 v',version,' by Ville Könönen 2011');
+ WriteVersion;
 
  write('- Loading ANIM.SKI');
   LoadAnim('ANIM.SKI');
@@ -5734,8 +5787,6 @@ begin
    wcup:=false;
    koth:=false;
    cupstyle:=0;
-
-   CheckParam;
 
  write(', HISCORE.SKI');
   ReadRecords;
@@ -5784,7 +5835,7 @@ end;
 procedure loppu;
 begin
 
- writeln('SJ3 v',version,' by Ville Könönen 2013');
+ WriteVersion;
 
  GetNow(Now);
 
@@ -5859,7 +5910,7 @@ begin  { MAIN }
  version:='3.13';
  version_full:=version+'-'+SdlPort.GetVersion;
 
-(* ex:=true;    { expert-mode } *)
+(* ex:=false;    { expert-mode } *)
 
 {$IFDEF REG}
  reg:=true;   { registered wai no }
@@ -5869,12 +5920,12 @@ begin  { MAIN }
 
 {  reg:=boolean(random(2)); }
 
-{ if (paramstr(1)='U') then reg:=false; }
-
 { regname:='THIS IS A PRIVATE VERSION';
   regnumber:='1234A'; }
 
  SDLPort.Init;
+ CheckParam;
+ SDLPort.InitGraphics;
  SDLPort.SetCloseCallback(CloseAndHalt);
 
  alku;

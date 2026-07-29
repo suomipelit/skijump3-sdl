@@ -6,13 +6,17 @@ interface
   type TCloseCallback = procedure;
 
   function GetVersion : string;
+  procedure WritePortInfo;
+  procedure WriteNewShortkeys;
 
   procedure Init;
+  procedure InitGraphics;
   procedure DeinitGraphics;
   procedure Deinit;
 
   procedure SetCloseCallback(callback : TCloseCallback);
   procedure SetPalette(input : TPalette);
+  procedure SetSwRendering(enabled : boolean);
   procedure Render(buffer : array of byte);
   procedure WaitRaster;
 
@@ -23,7 +27,7 @@ interface
 
 implementation
 
-  uses sdl2, getopts;
+  uses sdl2;
   const version: string = 'SP5';
         xRes = 320;
         yRes = 200;
@@ -49,35 +53,6 @@ implementation
       closeCallback: TCloseCallback;
 
       swRendering: boolean;
-
-procedure GetArguments;
-var c : char;
-    optionindex : Longint;
-    options : array[1..1] of TOption;
-
-begin
-  with options[1] do
-  begin
-    name:='--sw-rendering';
-    has_arg:=0;
-    flag:=nil;
-    value:=#0;
-  end;
-  c:=#0;
-  optionindex:=0;
-  repeat
-    c:=getlongopts('s', @options[1], optionindex);
-    case c of
-      #0 : begin
-        if (options[optionindex].name = '--sw-rendering') then
-        begin
-          swRendering := true;
-        end;
-      end;
-      's' : swRendering := true;
-    end; { case }
-  until c=endofoptions;
-end;
 
 function TimerCallback(interval: UInt32; param: Pointer): UInt32; cdecl;
 var frameIntervalMs, nowMs, elapsed : LongInt;
@@ -137,15 +112,34 @@ begin
   GetVersion := version;
 end;
 
-procedure Init;
-var rendererFlags : UInt32;
+procedure WritePortInfo;
 begin
-  rendererFlags := 0;
+  writeln('Ported to SDL2 by Suomipelit (https://suomipelit.github.io)');
+end;
+
+procedure WriteNewShortkeys;
+begin
+  writeln('New shortkeys:');
+  writeln(' * Alt+Enter          : Toggle fullscreen');
+  writeln(' * Alt+(Keypad) Plus  : Increase window size');
+  writeln(' * Alt+(Keypad) Minus : Decrease window size');
+  writeln(' * Alt+R              : Reset window if stretched');
+  writeln(' * Alt+A              : Toggle 4:3 aspect ratio');
+  writeln(' * G to L             : Improved menu navigation');
+  writeln(' * F5                 : Reset wind in practice');
+end;
+
+procedure Init;
+begin
   windowMultiplier := 2;
   aspect := aspectRes;
   swRendering := false;
+end;
 
-  GetArguments;
+procedure InitGraphics;
+var rendererFlags : UInt32;
+begin
+  rendererFlags := 0;
 
   if SDL_Init( SDL_INIT_VIDEO or SDL_INIT_TIMER ) < 0 then HALT;
 
@@ -227,6 +221,11 @@ end;
 procedure SetCloseCallback(callback : TCloseCallback);
 begin
   closeCallback:=callback;
+end;
+
+procedure SetSwRendering(enabled : boolean);
+begin
+  swRendering := enabled;
 end;
 
 procedure Render(buffer : array of byte);
