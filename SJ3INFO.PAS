@@ -1987,11 +1987,7 @@ begin
          doorder;
         end;{ else
          begin
-          alertbox;
-          writefont(80,90,lstr(47));
-          writefont(80,100,lstr(48));
-          drawscreen;
-          waitforkey;
+          alert(lstr(47),lstr(48),'');
           doscreen;
          end;}
 

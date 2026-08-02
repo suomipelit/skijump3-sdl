@@ -172,6 +172,7 @@ function replayinfo(var filename, author, name:string;nytmaki,hp:integer):byte;
 procedure WriteExtras;
 procedure ReadExtras;
 
+procedure alert(str1,str2,str3:string);
 function question(str1,str2:string):boolean;
 function quitting(phase:byte):byte;
 function dayandtime(D1:Date;T1:Time):string;
@@ -728,7 +729,6 @@ begin
            begin
 
              fillbox(0,0,319,199,0);
-             alertbox;
 
              str1:='RUN THE HILL MAKER AGAIN.';
 
@@ -738,11 +738,7 @@ begin
                str1:='EXITING CUP.';
               end;
 
-             writefont(80,85,'THE PROFILE OF THE HILL (FRONT'+acthill.frindex+'.PCX)');
-             writefont(80,95,'HAS BEEN CHANGED! NOT GOOD.');
-             writefont(80,105,str1);
-
-             waitforkey3(190,120,ch);
+             alert('THE PROFILE OF THE HILL (FRONT'+acthill.frindex+'.PCX)','HAS BEEN CHANGED! NOT GOOD.',str1);
 
            end;
 
@@ -1316,12 +1312,7 @@ end;
 procedure makewarning(num:integer;str1:string);
 begin
 
- alertbox;
-
- writefont(80,90,'SJ3 WARNING #'+txt(num));
- writefont(80,105,str1);
-
- waitforkey3(190,120,ch);
+ alert('SJ3 WARNING #'+txt(num),str1,'');
 
 end;
 
@@ -1745,10 +1736,7 @@ begin
        h2.frindex:=getstr(xx2,yy,20,h2.frindex,242);
        if (not fexist('FRONT'+h2.frindex+'.PCX')) then
         begin
-         alertbox;
-         writefont(80,90,'INVALID FRONT INDEX VALUE.');
-         writefont(80,100,'FILE FRONT'+h2.frindex+'.PCX DOESN''T EXIST.');
-         waitforkey3(190,110,ch);
+         alert('INVALID FRONT INDEX VALUE.','FILE FRONT'+h2.frindex+'.PCX DOESN''T EXIST.','');
          h2.frindex:=str1;
         end;
       end;
@@ -1757,10 +1745,7 @@ begin
        h2.bkindex:=getstr(xx2,yy,20,h2.bkindex,242);
        if (not fexist('BACK'+h2.bkindex+'.PCX')) then
         begin
-         alertbox;
-         writefont(80,90,'INVALID BACK INDEX VALUE.');
-         writefont(80,100,'FILE BACK'+h2.bkindex+'.PCX DOESN''T EXIST.');
-         waitforkey3(190,110,ch);
+         alert('INVALID BACK INDEX VALUE.','FILE BACK'+h2.bkindex+'.PCX DOESN''T EXIST.','');
          h2.bkindex:=str1;
         end;
       end;
@@ -2627,6 +2612,31 @@ begin
 
  waitforkey3:=tempboole;
 
+end;
+
+
+procedure alert(str1,str2,str3:string);
+begin
+  alertbox;
+  fontcolor(246);
+  if (str3 <> '') then
+    begin
+    writefont(80,85,str1);
+    writefont(80,95,str2);
+    writefont(80,105,str3);
+    waitforkey3(233,120,ch);
+    end
+  else if (str2 <> '') then
+    begin
+    writefont(80,90,str1);
+    writefont(80,100,str2);
+    waitforkey3(233,115,ch);
+    end
+  else
+    begin
+    writefont(80,90,str1);
+    waitforkey3(233,110,ch);
+    end;
 end;
 
 
