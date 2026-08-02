@@ -172,6 +172,7 @@ function replayinfo(var filename, author, name:string;nytmaki,hp:integer):byte;
 procedure WriteExtras;
 procedure ReadExtras;
 
+function question(str1,str2:string):boolean;
 function quitting(phase:byte):byte;
 function dayandtime(D1:Date;T1:Time):string;
 
@@ -1731,14 +1732,8 @@ begin
 
          if (fexist(filestr+'.SJH')) then
           begin
-           alertbox;
 
-           writefont(80,90,'FILE '+filestr+'.SJH ALREADY EXISTS.');
-           writefont(80,110,'WRITE OVER? (Y/N):');
-
-           getch(190,110,243,ch,ch2);
-
-           if (upcase(ch) <> 'Y') then
+           if (not question(filestr+'.SJH '+lstr(345),lstr(346))) then
             begin leave2:=false; index2:=11; end;
           end;
         end;
@@ -1885,14 +1880,8 @@ begin
 
        if (fexist(filename+'.SJR')) then
         begin
-         alertbox;
 
-         writefont(80,90,filename+'.SJR '+lstr(345));
-         writefont(80,110,lstr(346)+' ('+lch(6,1)+'/'+lch(7,1)+'):');
-
-         getch(190,110,243,ch,ch2);
-
-         if (upcase(ch) <> lch(6,1)) then
+         if (not question(filename+'.SJR '+lstr(345),lstr(346))) then
           begin leave2:=false; index2:=3; end;
 
         end;
@@ -2332,14 +2321,7 @@ begin
 
  tempb:=1;
 
- alertbox;
-
- writefont(75,90,lstr(194)+' '+filestr);
- writefont(75,110,lstr(193)+' ('+lch(6,1)+'/'+lch(7,1)+')');
-
- getch(220,110,243,ch,ch2);
-
- if (upcase(ch) = upcase(lch(6,1))) then
+ if (question(lstr(194)+' '+filestr,lstr(193))) then
   begin
 
    assign(f1,filestr);
@@ -2648,37 +2630,49 @@ begin
 end;
 
 
+function question(str1,str2:string):boolean;
+var temp : byte;
+ {   tempch,tempch2 : char; }
+    tempboo : boolean;
+
+begin
+
+ alertbox;
+
+ temp:=fontlen(str2)+4;
+
+ fontcolor(241);
+ writefont(80+temp,110,'('+lch(6,1)+'/'+lch(7,1)+')');
+
+ inc(temp,25);
+
+ fontcolor(246);
+
+ writefont(80,90,str1);
+ writefont(80,110,str2);
+
+ getch(80+temp,110,243,ch,ch2);
+
+ tempboo:=false;
+ if (upcase(ch) = lch(6,1)) then tempboo:=true;
+
+ clearchs;
+
+ question:=tempboo;
+
+end;
+
+
 function quitting(phase:byte):byte;
                { 0-main menu, 1-world cup }
 var str1, str2 : string;
-    tempb : byte;
 begin
 
  str1:=lrstr(251,253);
  if (phase=1) then str1:=lstr(245);
  str2:=lrstr(256,258);
 
- alertbox;
-
- tempb:=fontlen(str2)+4;
-
- fontcolor(241);
- writefont(70+tempb,110,'('+lch(6,1)+'/'+lch(7,1)+')');
-
- inc(tempb,25);
-
- fontcolor(246);
-
- writefont(70,90,str1);
- writefont(70,110,str2);
-
- getch(70+tempb,110,243,ch,ch2);
-
- tempb:=1;
- if (upcase(ch) = lch(6,1)) then tempb:=0;
- clearchs;
-
- quitting:=tempb;
+ if question(str1,str2) then quitting:=0 else quitting:=1;
 
 end;
 

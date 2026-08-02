@@ -700,20 +700,8 @@ begin
    3 : case index[screen] of
        1 : comphrs:=not comphrs;
        2 : nosamename:=not nosamename;
-       3,4 : begin
-              fillbox(69,79,251,131,242);
-              fillbox(70,80,250,130,244);
-              fillarea(70,80,250,130,63);
-              str1:=lstr(190);
-
-              if (index[screen]=4) then str1:=lstr(191);
-              writefont(80,90,str1+' '+lstr(192));
-              writefont(80,110,lstr(193));
-
-              getch(88+fontlen(lstr(193)),110,243,ch,ch2);
-
-              if (upcase(ch) = lch(6,1)) then ResetHiscore(4-index[screen]);
-             end;
+       3 : if question(lstr(190)+' '+lstr(192),lstr(193)) then ResetHiscore(1);
+       4 : if question(lstr(191)+' '+lstr(192),lstr(193)) then ResetHiscore(0);
        5 : begin
             ResetConfig;
            end;

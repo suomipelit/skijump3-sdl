@@ -738,19 +738,8 @@ var hill, y : integer;
 
   if (str1<>'ÿ') then
    begin
-    ch:='Y';
 
-    if (fexist(str1+'.SJC')) then { file exists }
-     begin
-      alertbox;
-
-      writefont(80,90,'FILE '+str1+'.SJC ALREADY EXISTS.');
-      writefont(80,110,'WRITE OVER? (Y/N):');
-
-      getch(190,110,243,ch,ch2);
-     end;
-
-    if (upcase(ch)='Y') then
+    if (not fexist(str1+'.SJC') or question(str1+'.SJC '+lstr(345),lstr(346))) then
      begin
       for temp:=1 to 20 do defaulthi(top[temp+41]);
       result:=WriteCustom(str1,sortby,hillorder,cuphills);
@@ -1705,42 +1694,6 @@ begin
 end;
 
 
-function question(str1:string):boolean;
-var temp : byte;
- {   tempch,tempch2 : char; }
-    tempboo : boolean;
-    str2 : string;
-
-begin
-
- str2:=lstr(193);
-
- alertbox;
-
- temp:=fontlen(str2)+4;
-
- fontcolor(241);
- writefont(70+temp,110,'('+lch(6,1)+'/'+lch(7,1)+')');
-
- inc(temp,25);
-
- fontcolor(246);
-
- writefont(70,90,str1);
- writefont(70,110,str2);
-
- getch(70+temp,110,243,ch,ch2);
-
- tempboo:=false;
- if (upcase(ch) = lch(6,1)) then tempboo:=true;
-
- clearchs;
-
- question:=tempboo;
-
-end;
-
-
 procedure welcomescreen(var languagenumber:byte);
 var x, index, temp : integer;
     full : boolean;
@@ -1950,7 +1903,7 @@ begin
       end;
 
   8 : begin
-       if (question(lstr(329))) then DefaultProfile(index,1);
+       if (question(lstr(329),lstr(193))) then DefaultProfile(index,1);
        doscreen;
       end;
 
@@ -2065,7 +2018,7 @@ begin
      end else  { poista profile kokonaan }
       begin
 
-       if (question(lstr(328)+': '+Profile[oldindex].name)) then
+       if (question(lstr(328)+': '+Profile[oldindex].name,lstr(193))) then
         begin
 
          if (numprofiles>1) then
@@ -2207,7 +2160,7 @@ var f2 : text;
    write(f2,'From: ');
 
 
-   
+
 {$IFDEF REG}
     str1:=regname+' #'+regnumber;
 {$ELSE}
