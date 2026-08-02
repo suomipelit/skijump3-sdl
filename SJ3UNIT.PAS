@@ -741,10 +741,7 @@ begin
              writefont(80,95,'HAS BEEN CHANGED! NOT GOOD.');
              writefont(80,105,str1);
 
-             writefont(80,120,'PRESS A KEY...');
-             drawscreen;
-
-             waitforkey;
+             waitforkey3(190,120,ch);
 
            end;
 
@@ -1323,10 +1320,7 @@ begin
  writefont(80,90,'SJ3 WARNING #'+txt(num));
  writefont(80,105,str1);
 
- writefont(80,120,'PRESS A KEY...');
- drawscreen;
-
- waitforkey;
+ waitforkey3(190,120,ch);
 
 end;
 
@@ -2694,22 +2688,20 @@ begin
 
 { alertbox; }
 
- fillbox(59,59,261,141,242);
- fillbox(60,60,260,140,244);
+ fillbox(59,54,261,146,242);
+ fillbox(60,55,260,145,244);
 
- fillarea(60,60,260,140,63);
+ fillarea(60,55,260,145,63);
 
  fontcolor(246);
 
- writefont(80,72,lstr(261));
- writefont(80,82,lstr(262));
- writefont(80,92,lstr(263));
- writefont(80,112,lstr(264));
- writefont(80,122,lstr(265));
+ writefont(80,65,lstr(261));
+ writefont(80,75,lstr(262));
+ writefont(80,85,lstr(263));
+ writefont(80,100,lstr(264));
+ writefont(80,110,lstr(265));
 
- drawscreen;
-
- waitforkey;
+ waitforkey3(233,130,ch);
 
 end;
 

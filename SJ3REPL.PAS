@@ -484,7 +484,7 @@ end;
   clearscreen;
   fontcolor(246);
   writefont(170,80,lstr(290));
-  getch(177+fontlen(lstr(290)),80,243,ch,ch2);
+  waitforkey3(301,95,ch);
   DrawScreen;
  end;
 
