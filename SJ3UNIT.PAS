@@ -1301,8 +1301,8 @@ begin
 
  fontcolor(246);
 
- writefont(75,90,lstr(temp));
- waitforkey3(240,105,ch);
+ writefont(80,90,lstr(temp));
+ waitforkey3(233,105,ch);
 
 end;
 
