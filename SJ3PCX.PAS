@@ -381,20 +381,19 @@ end;
 begin
 
  LataaPCX:=True;
-{ GetMem(DiskBuffer,BufSize); }
- GetMem(DiskBuffer,65528);
  assign(f,name);
  {$I-}
  reset(f,1);
  {$I+}
  if (IOResult<>0) then
   begin
-   FreeMem(Diskbuffer,65528);
    AsetaMoodi($3);
    writeln('SJ3 Error: Can''t find file ',name,'.  Exiting... ');
    Halt;
   end;
 
+{ GetMem(DiskBuffer,BufSize); }
+ GetMem(DiskBuffer,65528);
  seek(f,128);
   if (IOresult<>0) then LataaPCX:=false else
    begin
