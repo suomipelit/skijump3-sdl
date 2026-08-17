@@ -4,7 +4,7 @@ unit sj3info; { pelaaja & profiili-infoa }
 
 interface { -------------------------------------------------------------- }
 
-uses maki, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx, sdlport, x87, SysUtils;
+uses maki, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx, sj3file, sdlport, x87;
 
 procedure Init;
 
@@ -108,11 +108,6 @@ var temp,temp2,nytmaki : integer;
 
 begin
 
- assign(f2,Setfile+'.SJC');
- {$I-}
- reset(f2);
- {$I+}
-
 { defaulthi(Hi); }
 
  code:=0;
@@ -120,7 +115,7 @@ begin
 
  for temp:=1 to 20 do defaulthi(top[temp+41]);
 
- if (IOResult=0) then
+ if (SJ3File.OpenTextFile(f2, Setfile+'.SJC', SJ3File.FILEMODE_READ, true)) then
   begin
    sortby:=0;
    {$I-}      { ei niin v„li„ vaikkei l”ytyisik„„n }
@@ -241,15 +236,10 @@ var temp,result : integer;
 
 begin
 
- assign(f2,Setfile+'.SJC');
- {$I-}
- rewrite(f2);
- {$I+}
-
  checksum:=0;
  result:=1;
 
- if (IOResult=0) then
+ if (SJ3File.OpenTextFile(f2, Setfile+'.SJC', SJ3File.FILEMODE_WRITE, true)) then
   begin
 
    code:=0; { SJC:n m„kij„rkk„koodi }
@@ -368,38 +358,8 @@ end;
 
 procedure FindCustoms(var NumCustoms:integer;
                       var Filenames:array of FileStr);
-var DirInfo : TSearchRec;
-    temp : integer;
 begin
-
- NumCustoms:=0;
- for temp:=0 to Maxcustoms do FileNames[temp]:='';
-
- if FindFirst ('*.SJC',faAnyFile,DirInfo)=0 then
- begin
-   repeat
-     if (NumCustoms < maxcustoms) then
-     begin
-       temp:=1;
-
-       inc(NumCustoms);
-
-       while (DirInfo.Name[temp]<>'.') do
-       begin
-         filenames[NumCustoms]:=filenames[NumCustoms]+DirInfo.Name[temp];
-         inc(temp);
-       end;
-
-       if (filenames[NumCustoms] = 'TEMP') then
-       begin
-         filenames[NumCustoms]:='';
-         dec(NumCustoms);
-       end;
-    end;
-   Until FindNext(DirInfo)<>0;
-
-   FindClose(DirInfo);
- end;
+ NumCustoms:=SJ3File.FindFiles('*.SJC',Filenames,true);
 end;
 
 
@@ -486,13 +446,9 @@ var hill, y : integer;
       f1 : text;
   begin
 
-   assign(f1,filename);
-   {$I-}
-   reset(f1);
-   {$I+}
    result:=1;
 
-   if (IOResult=0) then
+   if (SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, true)) then
     begin
      readln(f1,Cuphills);
 
@@ -669,13 +625,9 @@ var hill, y : integer;
 
  begin
   result:=1;
-  assign(f1,filename+'.SJC');
-  {$I-}
-  rewrite(f1);
-  {$I+}
   code:=0;
 
-  if (IOResult=0) then
+  if (SJ3File.OpenTextFile(f1, filename+'.SJC', SJ3File.FILEMODE_WRITE, true)) then
    begin
     writeln(f1,CupHills);
     inc(code,svaluestr(filename,11)*13+1);
@@ -740,7 +692,7 @@ var hill, y : integer;
   if (str1<>'ÿ') then
    begin
 
-    if (not fexist(str1+'.SJC') or question(str1+'.SJC '+lstr(345),lstr(346))) then
+    if (not SJ3File.FileExists(str1+'.SJC') or question(str1+'.SJC '+lstr(345),lstr(346))) then
      begin
       for temp:=1 to 20 do defaulthi(top[temp+41]);
       result:=WriteCustom(str1,sortby,hillorder,cuphills);
@@ -934,11 +886,7 @@ begin
 
  s:='NAMES'+whatset+'.SKI';
 
- assign(f4,s);
- {$I-}
- reset(f4);
- {$I+}
- FileOK(IOResult,s);
+ SJ3File.OpenTextFile(f4, s, SJ3File.FILEMODE_READ, false);
 
  readln(f4,s); { titlerivi pois }
 
@@ -1229,11 +1177,7 @@ begin
 
  str1:='PLAYERS.SKI';
 
- assign(f1,str1);
- {$I-}
- reset(f1);
- {$I+}
- FileOK(IOResult,str1);
+ SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
 
  for temp:=0 to 20 do DefaultProfile(temp,0);
 
@@ -1295,8 +1239,7 @@ begin
 
  str1:='PLAYERS.SKI';
 
- assign(f1,str1);
- rewrite(f1);
+ SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,NumProfiles);
   if (NumProfiles=0) or (NumProfiles>20) then NumProfiles:=1;
@@ -2083,8 +2026,7 @@ var f2 : text;
 
  procedure dotop(fname:string);
   begin
-   assign(f2,fname);
-   rewrite(f2);
+   SJ3File.OpenTextFile(f2, fname, SJ3File.FILEMODE_WRITE, false);
 
    writeln(f2,'SJ3 v',version,' - ',fname,' - created at ',dayandtime(Today,Now));
    writeln(f2);

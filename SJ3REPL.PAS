@@ -6,7 +6,7 @@ procedure replays(start:boolean;version:string;gdetail:byte);
 
 implementation
 
-uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport, x87, SysUtils;
+uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, SJ3File, sdlport, x87;
 
 
 procedure replays;
@@ -374,33 +374,8 @@ end;
 
 
  procedure findreplays;
- var DirInfo : TSearchRec;
-     temp : integer;
  begin
-
-  NumReplays:=0;
-
-  for temp:=0 to MaxReplays do filenames[temp]:='';
-
-  if FindFirst ('*.SJR',faAnyFile,DirInfo)=0 then
-  begin
-    repeat
-      if (NumReplays < MaxReplays) then
-      begin
-        temp:=1;
-
-        inc(NumReplays);
-
-        while (DirInfo.Name[temp]<>'.') do
-        begin
-          filenames[NumReplays]:=filenames[NumReplays]+DirInfo.Name[temp];
-          inc(temp);
-        end;
-      end;
-    Until FindNext(DirInfo)<>0;
-
-    FindClose(DirInfo);
-  end;
+  NumReplays:=SJ3File.FindFiles('*.SJR',filenames,false);
  end;
 
  procedure readreplayinfo;
@@ -506,18 +481,14 @@ begin
 
 if (start) then
  begin
-  assign(f1,'INTRO.SJR');
-  {$I-}
-  reset(f1);
-
   result:=0;
 
   intro:=true;
 
-  if (IOResult<>0) then result:=1
-                   else readreplayinfo;
+  if (SJ3File.OpenTextFile(f1, 'INTRO.SJR', SJ3File.FILEMODE_READ, true))
+    then readreplayinfo
+    else result:=1;
 
-  {$I+}
   if (result=0) then
    begin
     LoadInfo(nytmaki,Acthill);
@@ -550,16 +521,11 @@ if (start) then
 
         result:=0; intro:=false;
 
-        assign(f1,filenames[index]+'.SJR');
-        {$I-}
-        reset(f1);
-
         if (upstr(filenames[index])='INTRO') then intro:=true;
 
-        if (IOResult<>0) then result:=1
-                         else readreplayinfo;
-
-        {$I+}
+        if (SJ3File.OpenTextFile(f1, filenames[index]+'.SJR', SJ3File.FILEMODE_READ, true))
+          then readreplayinfo
+          else result:=1;
 
         if (nytmaki>NumWCHills) and (result=0) then
          begin

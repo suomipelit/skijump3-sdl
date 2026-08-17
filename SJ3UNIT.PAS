@@ -4,6 +4,8 @@ Unit SJ3UNIT;
 
 interface
 
+uses SJ3File;
+
 procedure Init;
 
 const  NumPl = 75;  { montako pelaajaa on ylip„„t„„n }
@@ -42,7 +44,7 @@ type Stat_type = record
     HillStr = string[25];
     TimeStr = string[22];
     NameStr = string[30];
-    FileStr = string[8];
+    FileStr = SJ3File.TFileBaseName;
 
 
 
@@ -136,7 +138,6 @@ procedure resultbox(phase:byte;result:integer);
 function hillfile(nyt:integer):FileStr;
 
 { procedure WriteExtraHillHR(index:integer);}
-function fexist(filename:string):boolean;
 
 procedure CheckExtraHills;
 procedure LoadHillInfo;
@@ -220,7 +221,7 @@ procedure clrscr;
 
 implementation
 
-uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, x87, SysUtils;
+uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, x87;
 
 {var osote : array [0..4000] of byte; }
 
@@ -490,19 +491,17 @@ var temp, value:integer;
     f2 : text;
 begin
 
- assign(f2,'GOALS.SKI');
- {$I-}
- reset(f2);
- {$I+}
-
  value:=0;
 
- if (IOResult=0) and (num>0) and (num<=numwchills) then
+ if (num>0) and (num<=numwchills) then
   begin
-   for temp:=1 to num do
-    readln(f2,value);
+   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_READ, true)) then
+    begin
+     for temp:=1 to num do
+      readln(f2,value);
 
-   close(f2);
+     close(f2);
+    end;
   end;
 
  loadgoal:=value;
@@ -520,11 +519,7 @@ var goals : array[0..numwchills] of integer;
   var f2 : text;
       temp2 : integer;
   begin
-   assign(f2,'GOALS.SKI');
-   {$I-}
-   reset(f2);
-   {$I+}
-   if (IOResult=0) then
+   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_READ, true)) then
     begin
      for temp2:=1 to NumWCHills do
       readln(f2,goals[temp2]);
@@ -536,11 +531,7 @@ var goals : array[0..numwchills] of integer;
   var f2 : text;
       temp2 : integer;
   begin
-   assign(f2,'GOALS.SKI');
-   {$I-}
-   rewrite(f2);
-   {$I+}
-   if (IOResult=0) then
+   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_WRITE, true)) then
     begin
      for temp2:=1 to NumWCHills do
       writeln(f2,goals[temp2]);
@@ -1357,15 +1348,6 @@ end;
 
 
 
-function fexist(filename:string):boolean;
-begin
-
- fexist:=FileExists(filename);
-
-end;
-
-
-
 function hillfile(nyt:integer):FileStr;
 var str1 : string;
     temp : integer;
@@ -1376,11 +1358,7 @@ begin
 
  if (nyt<=NumExtraHills) then
   begin
-   assign(f2,'MOREHILL.SKI');
-   {$I-}
-   reset(f2);
-   {$I+}
-   FileOK(IOResult,'MOREHILL.SKI');
+   SJ3File.OpenTextFile(f2, 'MOREHILL.SKI', SJ3File.FILEMODE_READ, false);
 
    str1:='ERROR';
 
@@ -1423,7 +1401,7 @@ var f1 : text;
 
  filename:=str2+indexstr+'.PCX';
 
- if (not fexist(filename)) then
+ if (not SJ3File.FileExists(filename)) then
   begin
    AsetaMoodi($3);
    writeln('Error #345A: File '+filename+' does not exist,');
@@ -1451,12 +1429,7 @@ begin
  if (nytmaki<=NumWCHills) then str1:='HILLBASE.SKI'
                           else str1:=hillfile(nytmaki-NumWCHills)+'.SJH';
 
-  assign(f1,str1);
-
-  {$I-}
-  reset(f1);
-  {$I+}
-  FileOk(IOResult, str1);
+  SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
 
   temp:=nytmaki;
 
@@ -1719,7 +1692,7 @@ begin
        if (filestr<>'NULL') then
         begin
 
-         if (fexist(filestr+'.SJH')) then
+         if (SJ3File.FileExists(filestr+'.SJH')) then
           begin
 
            if (not question(filestr+'.SJH '+lstr(345),lstr(346))) then
@@ -1732,7 +1705,7 @@ begin
   3 : begin
        str1:=h2.frindex;
        h2.frindex:=getstr(xx2,yy,20,h2.frindex,242);
-       if (not fexist('FRONT'+h2.frindex+'.PCX')) then
+       if (not SJ3File.FileExists('FRONT'+h2.frindex+'.PCX')) then
         begin
          alert('INVALID FRONT INDEX VALUE.','FILE FRONT'+h2.frindex+'.PCX DOESN''T EXIST.','');
          h2.frindex:=str1;
@@ -1741,7 +1714,7 @@ begin
   4 : begin
        str1:=h2.bkindex;
        h2.bkindex:=getstr(xx2,yy,20,h2.bkindex,242);
-       if (not fexist('BACK'+h2.bkindex+'.PCX')) then
+       if (not SJ3File.FileExists('BACK'+h2.bkindex+'.PCX')) then
         begin
          alert('INVALID BACK INDEX VALUE.','FILE BACK'+h2.bkindex+'.PCX DOESN''T EXIST.','');
          h2.bkindex:=str1;
@@ -1861,7 +1834,7 @@ begin
   0 : begin
        leave2:=true;
 
-       if (fexist(filename+'.SJR')) then
+       if (SJ3File.FileExists(filename+'.SJR')) then
         begin
 
          if (not question(filename+'.SJR '+lstr(345),lstr(346))) then
@@ -2037,11 +2010,7 @@ begin
 
  temp:=index-NumWCHills;
 
- assign(f1,hillfile(temp)+'.SJH');
- {$I-}
- rewrite(f1);
- {$I+}
- if (IOResult=0) then
+ if (SJ3File.OpenTextFile(f1, hillfile(temp)+'.SJH', SJ3File.FILEMODE_WRITE, true)) then
   begin
    writehill(f1,h,0,1); { ainoa mesta jossa phase=1 }
    close(f1);
@@ -2098,8 +2067,7 @@ begin
 
  until (leave);
 
- assign(f1,'HILLBASE.SKI');
- rewrite(f1);
+ SJ3File.OpenTextFile(f1, 'HILLBASE.SKI', SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,'-HILLBASE.SKI- DO NOT ATTEMPT TO EDIT THIS FILE!');
 
@@ -2121,38 +2089,14 @@ end;
 
 
 procedure CheckExtraHills;
-var DirInfo : TSearchRec;
-    f1 : text;
+var f1 : text;
     temp : integer;
     filenames : array[0..MaxExtraHills] of FileStr;
 
 begin
- NumExtraHills:=0;
+ NumExtraHills:=SJ3File.FindFiles('*.SJH',filenames,false);
 
- for temp:=0 to MaxExtraHills do filenames[temp]:='';
-
- if FindFirst ('*.SJH',faAnyFile,DirInfo)=0 then
- begin
-   repeat
-     if (NumExtraHills < MaxExtraHills) then
-     begin
-       temp:=1;
-
-       inc(NumExtraHills);
-
-       while (DirInfo.Name[temp]<>'.') do
-       begin
-         filenames[NumExtraHills]:=filenames[NumExtraHills]+DirInfo.Name[temp];
-         inc(temp);
-       end;
-     end;
-   Until FindNext(DirInfo)<>0;
-
-   FindClose(DirInfo);
- end;
-
- Assign(f1,'MOREHILL.SKI');
- ReWrite(f1);
+ SJ3File.OpenTextFile(f1, 'MOREHILL.SKI', SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,NumExtraHills);
 
@@ -2176,12 +2120,7 @@ begin
 
  filename:='MOREHILL.SKI';
 
- assign(f1,filename);
-
- {$I-}
- reset(f1);
- {$I+}
- FileOk(IOResult, filename);
+ SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, false);
 
  readln(f1,NumExtraHills);
 
@@ -2306,17 +2245,7 @@ begin
 
  if (question(lstr(194)+' '+filestr,lstr(193))) then
   begin
-
-   assign(f1,filestr);
-   {$I-}
-   reset(f1);
-   {$I+}
-   if (IOResult=0) then
-    begin
-     close(f1);
-     erase(f1);
-     tempb:=0; { yep, deleted }
-    end;
+   if (SJ3File.DeleteTextFile(f1, filestr)) then tempb:=0; { yep, deleted }
   end;
 
 {       command:='/C DEL '+filestr+' > NUL:';
@@ -2491,18 +2420,18 @@ begin
 
        if (filestr<>'NULL') then { sitten kirjoitetaan p„„lle }
         begin
-         assign(f1,filestr+'.SJH');
-         {$I-}
-         rewrite(f1);
-         {$I+}
-         if (IOResult=0) then
+         if (SJ3File.OpenTextFile(f1, filestr+'.SJH', SJ3File.FILEMODE_WRITE, true)) then
           begin
            writehill(f1,h,0,0); { file aukesi ok }
            close(f1);
+           newscreen(5,0);
+           resultbox(3,0);
+          end
+         else
+          begin
+           newscreen(5,0);
+           resultbox(3,1);
           end;
-
-         newscreen(5,0);
-         resultbox(3,IOResult);
 
        end;
 

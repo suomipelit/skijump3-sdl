@@ -1,6 +1,6 @@
 program Skijump3; { Reality Strikes }
 uses crt, dos, getopts, sj3graph, sj3pcx, sj3unit, sj3help, sj3info,
-     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sdlport, x87;
+     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sj3file, sdlport, x87;
 
 const
 
@@ -95,8 +95,7 @@ begin
 
  l1:=0; l2:=0;
 
-  assign(f1,'HISCORE.SKI');
-  rewrite(f1);  { topten }
+  SJ3File.OpenTextFile(f1, 'HISCORE.SKI', SJ3File.FILEMODE_WRITE, false);  { topten }
 
   writeln(f1,'HISCORE.SKI - !!! DO NOT ATTEMPT TO EDIT THIS FILE !!!');
 
@@ -150,8 +149,7 @@ var f2 : text;
     temp : integer;
 begin
 
-  assign(f2,'CONFIG.SKI');
-  rewrite(f2);  { CONFIG }
+  SJ3File.OpenTextFile(f2, 'CONFIG.SKI', SJ3File.FILEMODE_WRITE, false);  { CONFIG }
 
     writeln(f2,integer(reg));
     writeln(f2,integer(comphrs));
@@ -296,11 +294,7 @@ begin
 
   str1:='HISCORE.SKI';
 
-  assign(f1,str1);
-  {$I-}
-  reset(f1);
-  {$I+}
-  Fileok(IOresult,str1);
+  SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
 
   readln(f1,str1);  { se varoitusrivi pois sielt„ }
 
@@ -380,11 +374,7 @@ var f2 : text;
 begin
 
   str1:='CONFIG.SKI';
-  assign(f2,str1);
-  {$I-}
-  reset(f2);
-  {$I+}
-  Fileok(IOResult,str1);
+  SJ3File.OpenTextFile(f2, str1, SJ3File.FILEMODE_READ, false);
 
   readln(f2,temp);
   readln(f2,temp);
@@ -419,7 +409,7 @@ begin
 
   setfile:='TEMP';
   readln(f2,str1);
-   if (fexist(str1+'.SJC')) then setfile:=upstr(str1);
+   if (SJ3File.FileExists(str1+'.SJC')) then setfile:=upstr(str1);
 
   readln(f2,gdetail);
   readln(f2,seecomps);
@@ -553,11 +543,7 @@ begin
         3 : str1:=lstr(13+gdetail);
         4 : begin
              str1:=namenumber;
-              assign(f3,'NAMES'+namenumber+'.SKI');
-              {$I-}
-              reset(f3);
-              {$I+}
-              if (IOResult=0) then
+              if (SJ3File.OpenTextFile(f3, 'NAMES'+namenumber+'.SKI', SJ3File.FILEMODE_READ, true)) then
                begin
                 readln(f3,str2);
                 close(f3);
@@ -647,7 +633,7 @@ begin
 
              if (ch<>#27) then
               begin
-               ok:=fexist('NAMES'+ch+'.SKI');
+               ok:=SJ3File.FileExists('NAMES'+ch+'.SKI');
               end else ok:=true;
 
             until (ok);
@@ -1035,13 +1021,9 @@ var t1, t2 : integer;
 
 begin
 
- Assign(f1,replayfilename+'.SJR');
- {$I-}
- Rewrite(f1);
- {$I+}
  Result:=0;
 
- if (IOResult=0) then
+ if (SJ3File.OpenTextFile(f1, replayfilename+'.SJR', SJ3File.FILEMODE_WRITE, true)) then
   begin
    check:=0;
    writeln(f1,RStartX); writeln(f1,RStartY); inc(check,RStartx*2+RStarty);
@@ -5895,6 +5877,7 @@ end;
 
 begin  { MAIN }
 
+ sj3file.SetErrorHandler(sj3help.Fileok);
  sj3lang.Init;
  sj3list.Init;
  sj3unit.Init;
