@@ -1352,8 +1352,8 @@ begin
 
  tempb:=false;
 
-  {$I-}
   assign(f1,filename);
+  {$I-}
   reset(f1);
   {$I+}
   if (IOResult = 0) then
@@ -2493,8 +2493,8 @@ begin
 
        if (filestr<>'NULL') then { sitten kirjoitetaan p„„lle }
         begin
-         {$I-}
          assign(f1,filestr+'.SJH');
+         {$I-}
          rewrite(f1);
          {$I+}
          if (IOResult=0) then

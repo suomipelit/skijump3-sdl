@@ -107,8 +107,8 @@ var temp,temp2,nytmaki : integer;
 
 begin
 
- {$I-}
  assign(f2,Setfile+'.SJC');
+ {$I-}
  reset(f2);
  {$I+}
 
@@ -240,8 +240,8 @@ var temp,result : integer;
 
 begin
 
- {$I-}
  assign(f2,Setfile+'.SJC');
+ {$I-}
  rewrite(f2);
  {$I+}
 
@@ -485,8 +485,8 @@ var hill, y : integer;
       f1 : text;
   begin
 
-   {$I-}
    assign(f1,filename);
+   {$I-}
    reset(f1);
    {$I+}
    result:=1;
@@ -668,8 +668,8 @@ var hill, y : integer;
 
  begin
   result:=1;
-  {$I-}
   assign(f1,filename+'.SJC');
+  {$I-}
   rewrite(f1);
   {$I+}
   code:=0;

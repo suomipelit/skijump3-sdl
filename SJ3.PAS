@@ -1043,8 +1043,8 @@ var t1, t2 : integer;
 
 begin
 
- {$I-}
  Assign(f1,replayfilename+'.SJR');
+ {$I-}
  Rewrite(f1);
  {$I+}
  Result:=0;
