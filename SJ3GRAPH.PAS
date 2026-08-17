@@ -35,7 +35,7 @@ function NumofAnims:byte;
 
 implementation
 
-uses Maki, SJ3PCX, SJ3Help, SDLPort;
+uses Maki, SJ3PCX, SJ3Help, SJ3File, SDLPort;
 
 var Anim : array[0..200] of array of byte;
     AnimP : array[0..200,0..1] of byte;
@@ -251,11 +251,7 @@ var f1 : text;
     xx,yy,temp : integer;
 begin
 
- assign(f1,filename);
- {$I-}
- reset(f1);
- {$I+}
- FileOk(IOResult,filename);
+ SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, false);
 
 { writeln;
  writeln('File opened.'); }

@@ -15,7 +15,7 @@ var numlanguages : byte;
 
 Implementation
 
-uses {crt,}sj3help;
+uses {crt,}sj3file;
 
 const NumStr = 599;
 
@@ -67,11 +67,7 @@ var f1 : text;
     out : boolean;
 begin
 
- assign(f1,'LANGBASE.SKI');
- {$I-}
- reset(f1);
- {$I+}
- FileOK(IOResult,'LANGBASE.SKI');
+ SJ3File.OpenTextFile(f1, 'LANGBASE.SKI', SJ3File.FILEMODE_READ, false);
 
  numlanguages:=0;
 
@@ -104,11 +100,7 @@ begin
 
  for temp:=0 to NumStr do plstr[temp]^:='?';
 
- assign(f1,'LANGBASE.SKI');
- {$I-}
- reset(f1);
- {$I+}
- FileOK(IOResult,'LANGBASE.SKI');
+ SJ3File.OpenTextFile(f1, 'LANGBASE.SKI', SJ3File.FILEMODE_READ, false);
 
  out:=false;
  index:=0;

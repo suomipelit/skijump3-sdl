@@ -36,7 +36,7 @@ function toansi(str1:string):string;
 
 implementation
 
-uses maki, sj3unit, crt, dos, sj3graph, SDLPort;
+uses maki, crt, dos, sj3graph, SDLPort;
 
 procedure Wait(C : integer) ;
 begin
