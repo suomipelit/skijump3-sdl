@@ -105,7 +105,10 @@ begin
  for temp:=0 to NumStr do plstr[temp]^:='?';
 
  assign(f1,'LANGBASE.SKI');
+ {$I-}
  reset(f1);
+ {$I+}
+ FileOK(IOResult,'LANGBASE.SKI');
 
  out:=false;
  index:=0;
