@@ -647,15 +647,7 @@ begin
 
              if (ch<>#27) then
               begin
-               assign(f3,'NAMES'+ch+'.SKI');
-               {$I-}
-               reset(f3);
-               {$I+}
-               if (IOResult=0) then
-                begin
-                 ok:=true;
-                 close(f3);
-                end;
+               ok:=fexist('NAMES'+ch+'.SKI');
               end else ok:=true;
 
             until (ok);
