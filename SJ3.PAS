@@ -66,7 +66,7 @@ var
 
 { startday : word; }
 
- namenumber : char;
+ namenumber : SJ3UNIT.NameNumberStr;
  languagenumber : byte;
  gdetail, seecomps : byte;
 
@@ -484,6 +484,7 @@ end;
 procedure setupmenu;
 var index : array[0..4] of integer;
 {    ch,ch2 : char; }
+    newNamenumber : SJ3UNIT.NameNumberStr;
     str1, str2 : string;
     f3 : text;
     ok, out : boolean;
@@ -633,7 +634,8 @@ begin
 
              if (ch<>#27) then
               begin
-               ok:=SJ3File.FileExists('NAMES'+ch+'.SKI');
+               newNamenumber:=ch;
+               ok:=SJ3File.FileExists('NAMES'+newNamenumber+'.SKI');
               end else ok:=true;
 
             until (ok);

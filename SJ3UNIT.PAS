@@ -46,6 +46,9 @@ type Stat_type = record
     NameStr = string[30];
     FileStr = SJ3File.TFileBaseName;
 
+    ImageIndexStr = string[3];
+    NameNumberStr = char;
+
 
 
 {
@@ -66,7 +69,7 @@ type Stat_type = record
      Name : HillStr;
      Author : NameStr;
      Kr : integer;
-     FrIndex, BkIndex : string[3];
+     FrIndex, BkIndex : ImageIndexStr;
      BkBright, BkMirror, VxFinal : byte;
      Pk, PlSave : single;
      Profile : longint;
@@ -1391,7 +1394,7 @@ var f1 : text;
  procedure checkfile(phase:integer);
  var filename : string;
      str2 : string;
-     indexstr : string[3];
+     indexstr : ImageIndexStr;
 
  begin
 
