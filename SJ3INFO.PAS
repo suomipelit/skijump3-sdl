@@ -14,7 +14,7 @@ type Profile_type = record
       name, realname : NameStr;
       suitcolor, skicolor, kothlevel, replace, bestwchill, besthill, cstyle,skipquali : byte;
       bestwcjump, bestpoints, best4points, bestjump : word;
-      besthillfile : string[12];
+      besthillfile : FileStr;
       bestresult, best4result : string[20];
       wcs, legswon, wcswon, totaljumps : longint;
      end;

@@ -61,8 +61,8 @@ type Stat_type = record
     end;
 
     Hill_type = record
-     Name : string[25];
-     Author : string[30];
+     Name : HillStr;
+     Author : NameStr;
      Kr : integer;
      FrIndex, BkIndex : string[3];
      BkBright, BkMirror, VxFinal : byte;
@@ -2112,7 +2112,7 @@ procedure CheckExtraHills;
 var DirInfo : TSearchRec;
     f1 : text;
     temp : integer;
-    filenames : array[0..MaxExtraHills] of string[12];
+    filenames : array[0..MaxExtraHills] of FileStr;
 
 begin
  NumExtraHills:=0;
