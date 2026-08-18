@@ -32,7 +32,7 @@ var top : array[0..NumHiscores] of Hiscore;
 
 (*    HR : array[0..NumWCHills+MaxExtraHills] of Hillrec; { uusi 3.10 } *)
 
-procedure LoadNames(whatset:char;
+procedure LoadNames(whatset:SJ3UNIT.NameNumberStr;
                     teamdiscount:byte;
                     var teamlineup:array of byte;
                     replaces:boolean);
@@ -867,7 +867,7 @@ end;
 
 
 
-Procedure LoadNames(whatset:char;
+Procedure LoadNames(whatset:SJ3UNIT.NameNumberStr;
                     teamdiscount:byte;
                     var teamlineup:array of byte;
                     replaces:boolean);
