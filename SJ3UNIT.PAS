@@ -46,8 +46,8 @@ type Stat_type = record
     NameStr = string[30];
     FileStr = SJ3File.TFileBaseName;
 
-    ImageIndexStr = string[3];
-    NameNumberStr = char;
+    ImageIndexStr = SJ3File.TImageIndex;
+    NameNumberStr = SJ3File.TNameNumber;
 
 
 
@@ -200,7 +200,7 @@ function kothtitle(temp:integer):string;
 
 function lengthpoint(kr:integer):integer;
 
-function mightdelete(filestr:string):byte;
+function mightdelete(fileID:SJ3File.TFileID):byte;
 
 procedure DoCoachCorner(height,kulmalaskuri:integer;grade,ponn,style:byte);
 
@@ -225,6 +225,10 @@ procedure clrscr;
 implementation
 
 uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, x87;
+
+const GoalsFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_CONFIG; configId: SJ3File.FILECONFIG_GOALS );
+      MorehillFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_CONFIG; configId: SJ3File.FILECONFIG_MOREHILL );
+      HillbaseFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_RESOURCE; resourceId: SJ3File.FILERESOURCE_HILLBASE );
 
 {var osote : array [0..4000] of byte; }
 
@@ -498,7 +502,7 @@ begin
 
  if (num>0) and (num<=numwchills) then
   begin
-   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_READ, true)) then
+   if (SJ3File.OpenTextFile(f2, GoalsFileID, SJ3File.FILEMODE_READ, true)) then
     begin
      for temp:=1 to num do
       readln(f2,value);
@@ -522,7 +526,7 @@ var goals : array[0..numwchills] of integer;
   var f2 : text;
       temp2 : integer;
   begin
-   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_READ, true)) then
+   if (SJ3File.OpenTextFile(f2, GoalsFileID, SJ3File.FILEMODE_READ, true)) then
     begin
      for temp2:=1 to NumWCHills do
       readln(f2,goals[temp2]);
@@ -534,7 +538,7 @@ var goals : array[0..numwchills] of integer;
   var f2 : text;
       temp2 : integer;
   begin
-   if (SJ3File.OpenTextFile(f2, 'GOALS.SKI', SJ3File.FILEMODE_WRITE, true)) then
+   if (SJ3File.OpenTextFile(f2, GoalsFileID, SJ3File.FILEMODE_WRITE, true)) then
     begin
      for temp2:=1 to NumWCHills do
       writeln(f2,goals[temp2]);
@@ -668,14 +672,16 @@ end;
 
 
 function LoadHill(var KeulaX:integer;nytmaki:integer;Acthill:hill_type):byte;
+const LoadImageFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_IMAGE; imageId: SJ3File.FILEIMAGE_LOAD );
 var temp : integer;
     l  : longint;
     str1 : string;
     res : byte;
+    ImageFileID : SJ3File.TFileID;
 begin
           res:=0;
 
-          LataaPCX('LOAD.PCX',320*200,0,0);
+          LataaPCX(LoadImageFileID,320*200,0,0);
           SiirraStandardiPaletti;
           AsetaPaletti;
 
@@ -702,7 +708,9 @@ begin
 
           DrawScreen;
 
-          LataaPCX('FRONT'+Acthill.frindex+'.PCX',1024*512,0,0);
+          ImageFileID.fileType:=SJ3File.FILETYPE_FRONT;
+          ImageFileID.imageIndex:=Acthill.frindex;
+          LataaPCX(ImageFileID,1024*512,0,0);
 
           TallennaAlkuosa(1);
 
@@ -715,7 +723,9 @@ begin
 
            dec(l,1500000);
 
-          LataaPCX('BACK'+acthill.bkindex+'.PCX',1024*400,Maki.Sivuja,acthill.bkmirror);
+          ImageFileID.fileType:=SJ3File.FILETYPE_BACK;
+          ImageFileID.imageIndex:=acthill.bkindex;
+          LataaPCX(ImageFileID,1024*400,Maki.Sivuja,acthill.bkmirror);
 
           TakaisinAlkuosa(1);
 
@@ -1181,6 +1191,7 @@ procedure writehill(var f1:text;h:hill_type;index,phase:integer);
 var a,c : integer;
     b : byte;
     l1, l2 : longint;
+    ImageFileID : SJ3File.TFileID;
 
 begin
 
@@ -1234,7 +1245,9 @@ begin
     h.hrlen:=0;
     h.hrtime:='Jan 1 2001 1:00';  { nollataan hillrec }
 
-    LataaPCX('FRONT'+h.frindex+'.PCX',1024*512,0,0);
+    ImageFileID.fileType:=SJ3File.FILETYPE_FRONT;
+    ImageFileID.imageIndex:=h.frindex;
+    LataaPCX(ImageFileID,1024*512,0,0);
     LaskeLinjat(a,h.kr,h.pk);
 
     for a:=0 to 1023 do
@@ -1361,7 +1374,7 @@ begin
 
  if (nyt<=NumExtraHills) then
   begin
-   SJ3File.OpenTextFile(f2, 'MOREHILL.SKI', SJ3File.FILEMODE_READ, false);
+   SJ3File.OpenTextFile(f2, MorehillFileID, SJ3File.FILEMODE_READ, false);
 
    str1:='ERROR';
 
@@ -1390,21 +1403,22 @@ var f1 : text;
     str1 : string;
     l1,l2,l3,l4 : longint;
     temp : integer;
+    HillFileID : SJ3File.TFileID;
 
  procedure checkfile(phase:integer);
  var filename : string;
-     str2 : string;
-     indexstr : ImageIndexStr;
+     ImageFileID : SJ3File.TFileID;
 
  begin
 
- str2:='FRONT';
- indexstr:=hill.frindex;
-  if (phase=1) then begin str2:='BACK'; indexstr:=hill.bkindex; end;
+ case phase of
+ 0 : begin ImageFileID.fileType:=SJ3File.FILETYPE_FRONT; ImageFileID.imageIndex:=hill.frindex; end;
+ 1 : begin ImageFileID.fileType:=SJ3File.FILETYPE_BACK; ImageFileID.imageIndex:=hill.bkindex; end;
+ end;
 
- filename:=str2+indexstr+'.PCX';
+ filename:=SJ3File.GetFileName(ImageFileID);
 
- if (not SJ3File.FileExists(filename)) then
+ if (not SJ3File.FileExists(ImageFileID)) then
   begin
    AsetaMoodi($3);
    writeln('Error #345A: File '+filename+' does not exist,');
@@ -1429,10 +1443,18 @@ begin
 
  defaulthill(hill);
 
- if (nytmaki<=NumWCHills) then str1:='HILLBASE.SKI'
-                          else str1:=hillfile(nytmaki-NumWCHills)+'.SJH';
+ if (nytmaki<=NumWCHills) then
+  begin
+   HillFileID:=HillbaseFileID;
+  end
+ else
+  begin
+   HillFileID.fileType:=SJ3File.FILETYPE_EXTRAHILL;
+   HillFileID.fileName:=hillfile(nytmaki-NumWCHills);
+  end;
+  str1:=SJ3File.GetFileName(HillFileID);
 
-  SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
+  SJ3File.OpenTextFile(f1, HillFileID, SJ3File.FILEMODE_READ, false);
 
   temp:=nytmaki;
 
@@ -1566,8 +1588,9 @@ var temp : integer;
 {    ch,ch2 : char; }
     index2 : integer;
     xx, xx2, yy : integer;
-    str1 : string;
+    str1,filename : string;
     oldhill : hill_type;
+    FileID : SJ3File.TFileID;
 
  procedure getnum(var thisnum:byte;low,high:byte);
  var code : integer;
@@ -1695,10 +1718,13 @@ begin
        if (filestr<>'NULL') then
         begin
 
-         if (SJ3File.FileExists(filestr+'.SJH')) then
+         FileID.fileType:=SJ3File.FILETYPE_EXTRAHILL;
+         FileID.fileName:=filestr;
+         if (SJ3File.FileExists(FileID)) then
           begin
 
-           if (not question(filestr+'.SJH '+lstr(345),lstr(346))) then
+           filename:=SJ3File.GetFileName(FileID);
+           if (not question(filename+' '+lstr(345),lstr(346))) then
             begin leave2:=false; index2:=11; end;
           end;
         end;
@@ -1708,18 +1734,24 @@ begin
   3 : begin
        str1:=h2.frindex;
        h2.frindex:=getstr(xx2,yy,20,h2.frindex,242);
-       if (not SJ3File.FileExists('FRONT'+h2.frindex+'.PCX')) then
+       FileID.fileType:=SJ3File.FILETYPE_FRONT;
+       FileID.imageIndex:=h2.frindex;
+       if (not SJ3File.FileExists(FileID)) then
         begin
-         alert('INVALID FRONT INDEX VALUE.','FILE FRONT'+h2.frindex+'.PCX DOESN''T EXIST.','');
+         filename:=SJ3File.GetFileName(FileID);
+         alert('INVALID FRONT INDEX VALUE.','FILE '+filename+' DOESN''T EXIST.','');
          h2.frindex:=str1;
         end;
       end;
   4 : begin
        str1:=h2.bkindex;
        h2.bkindex:=getstr(xx2,yy,20,h2.bkindex,242);
-       if (not SJ3File.FileExists('BACK'+h2.bkindex+'.PCX')) then
+       FileID.fileType:=SJ3File.FILETYPE_BACK;
+       FileID.imageIndex:=h2.bkindex;
+       if (not SJ3File.FileExists(FileID)) then
         begin
-         alert('INVALID BACK INDEX VALUE.','FILE BACK'+h2.bkindex+'.PCX DOESN''T EXIST.','');
+         filename:=SJ3File.GetFileName(FileID);
+         alert('INVALID BACK INDEX VALUE.','FILE '+filename+' DOESN''T EXIST.','');
          h2.bkindex:=str1;
         end;
       end;
@@ -1763,11 +1795,12 @@ end;
 
 function replayinfo(var filename, author, name:string;nytmaki,hp:integer):byte;
 var result : byte;
-    str1 : string;
+    str1, filefullname : string;
     temp, index2 : integer;
 {    ch, ch2 : char; }
     xx, yy : integer;
     leave2 : boolean;
+    ReplayFileID : SJ3File.TFileID;
 begin
 
  result:=0;
@@ -1837,10 +1870,13 @@ begin
   0 : begin
        leave2:=true;
 
-       if (SJ3File.FileExists(filename+'.SJR')) then
+       ReplayFileID.fileType:=SJ3File.FILETYPE_REPLAY;
+       ReplayFileID.fileName:=filename;
+       if (SJ3File.FileExists(ReplayFileID)) then
         begin
 
-         if (not question(filename+'.SJR '+lstr(345),lstr(346))) then
+         filefullname:=SJ3File.GetFileName(ReplayFileID);
+         if (not question(filefullname+' '+lstr(345),lstr(346))) then
           begin leave2:=false; index2:=3; end;
 
         end;
@@ -2003,6 +2039,8 @@ procedure WriteExtraHillHR(index:integer);
 var f1 : text;
     h : hill_type;
     temp : integer;
+    filefullname : string;
+    HillFileID : SJ3File.TFileID;
 begin
 
  LoadInfo(index,h);
@@ -2013,13 +2051,16 @@ begin
 
  temp:=index-NumWCHills;
 
- if (SJ3File.OpenTextFile(f1, hillfile(temp)+'.SJH', SJ3File.FILEMODE_WRITE, true)) then
+ HillFileID.fileType:=SJ3File.FILETYPE_EXTRAHILL;
+ HillFileID.fileName:=hillfile(temp);
+ if (SJ3File.OpenTextFile(f1, HillFileID, SJ3File.FILEMODE_WRITE, true)) then
   begin
    writehill(f1,h,0,1); { ainoa mesta jossa phase=1 }
    close(f1);
   end else
    begin
-    writeln('Error #29: Couldn''t write file ',hillfile(temp)+'.SJH');
+    filefullname:=SJ3File.GetFilename(HillFileID);
+    writeln('Error #29: Couldn''t write file ',filefullname);
     writeln('Maybe the disk is full or something.');
    end;
 
@@ -2070,7 +2111,7 @@ begin
 
  until (leave);
 
- SJ3File.OpenTextFile(f1, 'HILLBASE.SKI', SJ3File.FILEMODE_WRITE, false);
+ SJ3File.OpenTextFile(f1, HillbaseFileID, SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,'-HILLBASE.SKI- DO NOT ATTEMPT TO EDIT THIS FILE!');
 
@@ -2097,9 +2138,9 @@ var f1 : text;
     filenames : array[0..MaxExtraHills] of FileStr;
 
 begin
- NumExtraHills:=SJ3File.FindFiles('*.SJH',filenames,false);
+ NumExtraHills:=SJ3File.FindFiles(SJ3File.FILETYPE_EXTRAHILL,filenames);
 
- SJ3File.OpenTextFile(f1, 'MOREHILL.SKI', SJ3File.FILEMODE_WRITE, false);
+ SJ3File.OpenTextFile(f1, MorehillFileID, SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,NumExtraHills);
 
@@ -2117,13 +2158,10 @@ procedure LoadHillInfo;  { t„ll„ ladataan mnimet ja kri -taulut kuntoon }
 var f1 : text;
     temp : byte;
     NowHill : hill_type;
-    filename : string;
 
 begin
 
- filename:='MOREHILL.SKI';
-
- SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, false);
+ SJ3File.OpenTextFile(f1, MorehillFileID, SJ3File.FILEMODE_READ, false);
 
  readln(f1,NumExtraHills);
 
@@ -2238,17 +2276,19 @@ end;
 
 
 
-function mightdelete(filestr:string):byte;
+function mightdelete(fileID:SJ3File.TFileID):byte;
 var f1 : text;
     tempb : byte;
+    filestr : string;
 
 begin
 
  tempb:=1;
+ filestr:=SJ3File.GetFileName(fileID);
 
  if (question(lstr(194)+' '+filestr,lstr(193))) then
   begin
-   if (SJ3File.DeleteTextFile(f1, filestr)) then tempb:=0; { yep, deleted }
+   if (SJ3File.DeleteTextFile(f1, fileID)) then tempb:=0; { yep, deleted }
   end;
 
 {       command:='/C DEL '+filestr+' > NUL:';
@@ -2291,6 +2331,7 @@ var h : hill_type;
     f1 : text;
 {    tempch : char; }
     cols : array [1..3] of integer;
+    HillFileID : SJ3File.TFileID;
 
 begin
 
@@ -2385,9 +2426,9 @@ begin
 
    if (index<0) and (abs(index)+start<=NumExtraHills) then { delete? }
     begin
-     filestr:=hillfile(abs(index)+start)+'.SJH';
-
-     if (mightdelete(filestr) = 0) then
+     HillFileID.fileType:=SJ3File.FILETYPE_EXTRAHILL;
+     HillFileID.fileName:=hillfile(abs(index)+start);
+     if (mightdelete(HillFileID) = 0) then
       begin
        CheckExtraHills;
        LoadHillinfo;
@@ -2423,7 +2464,9 @@ begin
 
        if (filestr<>'NULL') then { sitten kirjoitetaan p„„lle }
         begin
-         if (SJ3File.OpenTextFile(f1, filestr+'.SJH', SJ3File.FILEMODE_WRITE, true)) then
+         HillFileID.fileType:=SJ3File.FILETYPE_EXTRAHILL;
+         HillFileID.fileName:=filestr;
+         if (SJ3File.OpenTextFile(f1, HillFileID, SJ3File.FILEMODE_WRITE, true)) then
           begin
            writehill(f1,h,0,0); { file aukesi ok }
            close(f1);

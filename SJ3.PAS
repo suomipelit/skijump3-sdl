@@ -8,6 +8,9 @@ const
 
  {$I REGFREE.PAS}
 
+ RecordsFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_CONFIG; configId: SJ3File.FILECONFIG_RECORDS );
+ ConfigFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_CONFIG; configId: SJ3File.FILECONFIG_CONFIG );
+
 var
 
  version, version_full : string[10];
@@ -95,7 +98,7 @@ begin
 
  l1:=0; l2:=0;
 
-  SJ3File.OpenTextFile(f1, 'HISCORE.SKI', SJ3File.FILEMODE_WRITE, false);  { topten }
+  SJ3File.OpenTextFile(f1, RecordsFileID, SJ3File.FILEMODE_WRITE, false);  { topten }
 
   writeln(f1,'HISCORE.SKI - !!! DO NOT ATTEMPT TO EDIT THIS FILE !!!');
 
@@ -149,7 +152,7 @@ var f2 : text;
     temp : integer;
 begin
 
-  SJ3File.OpenTextFile(f2, 'CONFIG.SKI', SJ3File.FILEMODE_WRITE, false);  { CONFIG }
+  SJ3File.OpenTextFile(f2, ConfigFileID, SJ3File.FILEMODE_WRITE, false);  { CONFIG }
 
     writeln(f2,integer(reg));
     writeln(f2,integer(comphrs));
@@ -292,9 +295,7 @@ begin
 
   l1:=0; l2:=0; l3:=0; l4:=0; l5:=0;
 
-  str1:='HISCORE.SKI';
-
-  SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
+  SJ3File.OpenTextFile(f1, RecordsFileID, SJ3File.FILEMODE_READ, false);
 
   readln(f1,str1);  { se varoitusrivi pois sielt„ }
 
@@ -371,10 +372,10 @@ procedure ReadConfig;
 var f2 : text;
     str1 : string;
     temp : integer;
+    CustomsetFileID : SJ3File.TFileID;
 begin
 
-  str1:='CONFIG.SKI';
-  SJ3File.OpenTextFile(f2, str1, SJ3File.FILEMODE_READ, false);
+  SJ3File.OpenTextFile(f2, ConfigFileID, SJ3File.FILEMODE_READ, false);
 
   readln(f2,temp);
   readln(f2,temp);
@@ -409,7 +410,9 @@ begin
 
   setfile:='TEMP';
   readln(f2,str1);
-   if (SJ3File.FileExists(str1+'.SJC')) then setfile:=upstr(str1);
+  CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+  CustomsetFileID.fileName:=str1;
+   if (SJ3File.FileExists(CustomsetFileID)) then setfile:=upstr(str1);
 
   readln(f2,gdetail);
   readln(f2,seecomps);
@@ -490,6 +493,7 @@ var index : array[0..4] of integer;
     ok, out : boolean;
     temp : integer;
     screen, entries, length : byte;
+    NamesFileID : SJ3File.TFileID;
 begin
 
  for temp:=0 to 4 do index[temp]:=1;
@@ -544,7 +548,9 @@ begin
         3 : str1:=lstr(13+gdetail);
         4 : begin
              str1:=namenumber;
-              if (SJ3File.OpenTextFile(f3, 'NAMES'+namenumber+'.SKI', SJ3File.FILEMODE_READ, true)) then
+              NamesFileID.fileType:=SJ3File.FILETYPE_NAMES;
+              NamesFileID.nameNumber:=namenumber;
+              if (SJ3File.OpenTextFile(f3, NamesFileID, SJ3File.FILEMODE_READ, true)) then
                begin
                 readln(f3,str2);
                 close(f3);
@@ -635,7 +641,9 @@ begin
              if (ch<>#27) then
               begin
                newNamenumber:=ch;
-               ok:=SJ3File.FileExists('NAMES'+newNamenumber+'.SKI');
+               NamesFileID.fileType:=SJ3File.FILETYPE_NAMES;
+               NamesFileID.nameNumber:=newNamenumber;
+               ok:=SJ3File.FileExists(NamesFileID);
               end else ok:=true;
 
             until (ok);
@@ -1020,12 +1028,15 @@ function writereplay(author,name:string):byte;
 var t1, t2 : integer;
     check : longint;
     result: byte;
+    ReplayFileID : SJ3File.TFileID;
 
 begin
 
  Result:=0;
 
- if (SJ3File.OpenTextFile(f1, replayfilename+'.SJR', SJ3File.FILEMODE_WRITE, true)) then
+ ReplayFileID.fileType:=SJ3File.FILETYPE_REPLAY;
+ ReplayFileID.fileName:=replayfilename;
+ if (SJ3File.OpenTextFile(f1, ReplayFileID, SJ3File.FILEMODE_WRITE, true)) then
   begin
    check:=0;
    writeln(f1,RStartX); writeln(f1,RStartY); inc(check,RStartx*2+RStarty);
@@ -5747,6 +5758,7 @@ end;
 
 
 procedure alku;
+const AnimFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_RESOURCE; resourceId: SJ3File.FILERESOURCE_ANIM );
 begin
 
  SDLPort.WritePortInfo;
@@ -5758,7 +5770,7 @@ begin
  WriteVersion;
 
  write('- Loading ANIM.SKI');
-  LoadAnim('ANIM.SKI');
+  LoadAnim(AnimFileID);
 
 (*
   for temp:=1 to MaxOwnPl do
