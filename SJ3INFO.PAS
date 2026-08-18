@@ -79,6 +79,7 @@ const maxcustomhills = 40;
 {$ELSE}
 const maxcustomhills = 5;
 {$ENDIF}
+      ProfilesFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_CONFIG; configId: SJ3File.FILECONFIG_PROFILES );
 
 var maxprofiles, maxpmaara : integer;
 
@@ -105,6 +106,7 @@ var temp,temp2,nytmaki : integer;
     str1:string;
     f2 : text;
     code, checksum, compare, compare2 : longint;
+    CustomsetFileID : SJ3File.TFileID;
 
 begin
 
@@ -115,7 +117,9 @@ begin
 
  for temp:=1 to 20 do defaulthi(top[temp+41]);
 
- if (SJ3File.OpenTextFile(f2, Setfile+'.SJC', SJ3File.FILEMODE_READ, true)) then
+ CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+ CustomsetFileID.fileName:=Setfile;
+ if (SJ3File.OpenTextFile(f2, CustomsetFileID, SJ3File.FILEMODE_READ, true)) then
   begin
    sortby:=0;
    {$I-}      { ei niin v„li„ vaikkei l”ytyisik„„n }
@@ -233,13 +237,16 @@ function writecustom(SetFile:string;sortby:byte;
 var temp,result : integer;
     checksum, code : longint;
     f2 : text;
+    CustomsetFileID : SJ3File.TFileID;
 
 begin
 
  checksum:=0;
  result:=1;
 
- if (SJ3File.OpenTextFile(f2, Setfile+'.SJC', SJ3File.FILEMODE_WRITE, true)) then
+ CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+ CustomsetFileID.fileName:=Setfile;
+ if (SJ3File.OpenTextFile(f2, CustomsetFileID, SJ3File.FILEMODE_WRITE, true)) then
   begin
 
    code:=0; { SJC:n m„kij„rkk„koodi }
@@ -359,7 +366,7 @@ end;
 procedure FindCustoms(var NumCustoms:integer;
                       var Filenames:array of FileStr);
 begin
- NumCustoms:=SJ3File.FindFiles('*.SJC',Filenames,true);
+ NumCustoms:=SJ3File.FindFiles(SJ3File.FILETYPE_CUSTOMSET,Filenames);
 end;
 
 
@@ -444,11 +451,14 @@ var hill, y : integer;
       str1 : string;
       ok : boolean;
       f1 : text;
+      CustomsetFileID : SJ3File.TFileID;
   begin
 
    result:=1;
 
-   if (SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, true)) then
+   CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+   CustomsetFileID.fileName:=filename;
+   if (SJ3File.OpenTextFile(f1, CustomsetFileID, SJ3File.FILEMODE_READ, true)) then
     begin
      readln(f1,Cuphills);
 
@@ -507,6 +517,7 @@ var hill, y : integer;
      temp2 : integer;
      tempb,result : byte;
      temphillorder : array[0..41] of integer;
+     CustomsetFileID : SJ3File.TFileID;
 
   procedure nocustoms;
   begin
@@ -576,7 +587,9 @@ var hill, y : integer;
 
     if (ch2=#83) then { delete! }
      begin
-      if (mightdelete(filenames[actcustom]+'.SJC') = 0) then
+      CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+      CustomsetFileID.fileName:=filenames[actcustom];
+      if (mightdelete(CustomsetFileID) = 0) then
        begin
         FindCustoms(NumCustoms,Filenames);
         actcustom:=1;
@@ -622,12 +635,15 @@ var hill, y : integer;
  var f1 : text;
      temp2,result : integer;
      code : longint;
+     CustomsetFileID : SJ3File.TFileID;
 
  begin
   result:=1;
   code:=0;
 
-  if (SJ3File.OpenTextFile(f1, filename+'.SJC', SJ3File.FILEMODE_WRITE, true)) then
+  CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+  CustomsetFileID.fileName:=filename;
+  if (SJ3File.OpenTextFile(f1, CustomsetFileID, SJ3File.FILEMODE_WRITE, true)) then
    begin
     writeln(f1,CupHills);
     inc(code,svaluestr(filename,11)*13+1);
@@ -666,8 +682,9 @@ var hill, y : integer;
 
  function saveset:integer; { palauttaa: 0 - save onnistui, 1 - ei }
  var result,temp : integer;
-     str1 : string;
+     str1,filename : string;
    {  tempch,tempch2 : char; }
+    CustomsetFileID : SJ3File.TFileID;
 
  begin
 
@@ -692,7 +709,10 @@ var hill, y : integer;
   if (str1<>'ÿ') then
    begin
 
-    if (not SJ3File.FileExists(str1+'.SJC') or question(str1+'.SJC '+lstr(345),lstr(346))) then
+    CustomsetFileID.fileType:=SJ3File.FILETYPE_CUSTOMSET;
+    CustomsetFileID.fileName:=str1;
+    filename:=SJ3File.GetFileName(CustomsetFileID);
+    if (not SJ3File.FileExists(CustomsetFileID) or question(filename+' '+lstr(345),lstr(346))) then
      begin
       for temp:=1 to 20 do defaulthi(top[temp+41]);
       result:=WriteCustom(str1,sortby,hillorder,cuphills);
@@ -878,15 +898,16 @@ var f4 : text;
     temp,c, temp2, temp3 : integer;
     ok : boolean;
     tempb : byte;
+    NamesFileID : SJ3File.TFileID;
 
 begin
 
  l1:=0;  { checksum-laskuri }
  l2:=0;
 
- s:='NAMES'+whatset+'.SKI';
-
- SJ3File.OpenTextFile(f4, s, SJ3File.FILEMODE_READ, false);
+ NamesFileID.fileType:=SJ3File.FILETYPE_NAMES;
+ NamesFileID.nameNumber:=whatset;
+ SJ3File.OpenTextFile(f4, NamesFileID, SJ3File.FILEMODE_READ, false);
 
  readln(f4,s); { titlerivi pois }
 
@@ -1175,9 +1196,7 @@ begin
  maxpmaara:=2; maxprofiles:=4;
 {$ENDIF}
 
- str1:='PLAYERS.SKI';
-
- SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_READ, false);
+ SJ3File.OpenTextFile(f1, ProfilesFileID, SJ3File.FILEMODE_READ, false);
 
  for temp:=0 to 20 do DefaultProfile(temp,0);
 
@@ -1234,12 +1253,9 @@ end;
 procedure WriteProfiles;
 var f1 : text;
     temp : integer;
-    str1 : string;
 begin
 
- str1:='PLAYERS.SKI';
-
- SJ3File.OpenTextFile(f1, str1, SJ3File.FILEMODE_WRITE, false);
+ SJ3File.OpenTextFile(f1, ProfilesFileID, SJ3File.FILEMODE_WRITE, false);
 
  writeln(f1,NumProfiles);
   if (NumProfiles=0) or (NumProfiles>20) then NumProfiles:=1;
@@ -2011,6 +2027,10 @@ end;
 procedure CallSendme(version,regname,regnumber:string;
                      Today:date;Now:Time;vcode:byte);
 
+const SendmeFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_SENDME; sendmeId: SJ3File.FILESENDME_SENDME );
+      CustomsFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_SENDME; sendmeId: SJ3File.FILESENDME_CUSTOMS );
+      ExtrasFileID : SJ3File.TFileID = ( fileType: SJ3File.FILETYPE_SENDME; sendmeId: SJ3File.FILESENDME_EXTRAS );
+
 var f2 : text;
     str1, realname : string;
     sortby : byte;
@@ -2024,9 +2044,11 @@ var f2 : text;
     TempCupHills : integer;
 
 
- procedure dotop(fname:string);
+ procedure dotop(fileID : SJ3File.TFileID);
+ var fname : string;
   begin
-   SJ3File.OpenTextFile(f2, fname, SJ3File.FILEMODE_WRITE, false);
+   SJ3File.OpenTextFile(f2, fileID, SJ3File.FILEMODE_WRITE, false);
+   fname:=SJ3File.GetFileName(fileID);
 
    writeln(f2,'SJ3 v',version,' - ',fname,' - created at ',dayandtime(Today,Now));
    writeln(f2);
@@ -2140,7 +2162,7 @@ var f2 : text;
 
 begin
 
- dotop('SENDME.TXT');
+ dotop(SendmeFileID);
  findnames(1);
 
  writehead(1);
@@ -2284,7 +2306,7 @@ begin
  if (NumExtraHills>0) then  {      --- EXTRAS! ---      }
   begin
 
-   dotop('EXTRAS.TXT');
+   dotop(ExtrasFileID);
    findnames(2);
 
    laskuri:=0;
@@ -2332,7 +2354,7 @@ begin
  if (NumCustoms>0) then  {      --- CUSTOMS! ---      }
   begin
 
-   dotop('CUSTOMS.TXT');
+   dotop(CustomsFileID);
    findnames(3);
 
    writehead(6);
@@ -2385,13 +2407,14 @@ begin
 end;
 
 procedure drawmainmenu;
+const MainImageFileID : TFileID = ( fileType: SJ3File.FILETYPE_IMAGE; imageId: SJ3File.FILEIMAGE_MAIN );
 var x, y, temp : integer;
 begin
 
 {  fontcolor(240); }
 
     fillbox(0,0,319,199,0); drawscreen;
-    LataaPCX('MAIN.PCX',320*200,0,0);
+    LataaPCX(MainImageFileID,320*200,0,0);
 
     SiirraStandardiPaletti;
     SpecialMainPaletti;

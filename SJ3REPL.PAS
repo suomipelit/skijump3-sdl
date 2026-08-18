@@ -32,6 +32,8 @@ var filenames : array[0..MaxReplays] of FileStr;
     RD : array[0..4,0..1000] of byte;
     mcliivi : boolean;
 
+    ReplayFileID : SJ3File.TFileID;
+
 {    TempVideo : EPtr; }
 
 
@@ -375,7 +377,7 @@ end;
 
  procedure findreplays;
  begin
-  NumReplays:=SJ3File.FindFiles('*.SJR',filenames,false);
+  NumReplays:=SJ3File.FindFiles(SJ3File.FILETYPE_REPLAY,filenames);
  end;
 
  procedure readreplayinfo;
@@ -485,7 +487,9 @@ if (start) then
 
   intro:=true;
 
-  if (SJ3File.OpenTextFile(f1, 'INTRO.SJR', SJ3File.FILEMODE_READ, true))
+  ReplayFileID.fileType:=SJ3File.FILETYPE_REPLAY;
+  ReplayFileID.fileName:='INTRO';
+  if (SJ3File.OpenTextFile(f1, ReplayFileID, SJ3File.FILEMODE_READ, true))
     then readreplayinfo
     else result:=1;
 
@@ -523,7 +527,9 @@ if (start) then
 
         if (upstr(filenames[index])='INTRO') then intro:=true;
 
-        if (SJ3File.OpenTextFile(f1, filenames[index]+'.SJR', SJ3File.FILEMODE_READ, true))
+        ReplayFileID.fileType:=SJ3File.FILETYPE_REPLAY;
+        ReplayFileID.fileName:=filenames[index];
+        if (SJ3File.OpenTextFile(f1, ReplayFileID, SJ3File.FILEMODE_READ, true))
           then readreplayinfo
           else result:=1;
 
@@ -612,7 +618,9 @@ if (start) then
 
       if (ch2=#83) then { delete! }
        begin
-        if (mightdelete(filenames[index]+'.SJR') = 0) then
+        ReplayFileID.fileType:=SJ3File.FILETYPE_REPLAY;
+        ReplayFileID.fileName:=filenames[index];
+        if (mightdelete(ReplayFileID) = 0) then
          begin
           FindReplays;
          end;

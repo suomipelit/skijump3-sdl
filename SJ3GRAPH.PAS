@@ -2,13 +2,15 @@ unit SJ3Graph; { SJ3:n grafiikkarutiineja }
 
 interface
 
+uses SJ3File;
+
 Procedure DrawScreen;
 Procedure DrawHillScreen;
 {procedure Splitscreen(korkeus:byte); }
 procedure CloseGraph;
 procedure Sprite(SpriteData:array of byte;X,Y:Word);
 procedure DrawAnim(x,y:integer;num:byte);
-procedure LoadAnim(filename:string);
+procedure LoadAnim(fileId:SJ3File.TFileID);
 procedure PutPixel(x,y,c:integer);
 {procedure PutGPixel(x,y:integer;c:byte); }
 {function GetPixel(x,y:integer):byte; }
@@ -35,7 +37,7 @@ function NumofAnims:byte;
 
 implementation
 
-uses Maki, SJ3PCX, SJ3Help, SJ3File, SDLPort;
+uses Maki, SJ3PCX, SJ3Help, SDLPort;
 
 var Anim : array[0..200] of array of byte;
     AnimP : array[0..200,0..1] of byte;
@@ -244,14 +246,14 @@ begin
 end;
 
 
-procedure LoadAnim(filename:string);
+procedure LoadAnim(fileId:SJ3File.TFileID);
 var f1 : text;
 {    ch : char; }
     x,y,tempb,x2,y2 : byte;
     xx,yy,temp : integer;
 begin
 
- SJ3File.OpenTextFile(f1, filename, SJ3File.FILEMODE_READ, false);
+ SJ3File.OpenTextFile(f1, fileId, SJ3File.FILEMODE_READ, false);
 
 { writeln;
  writeln('File opened.'); }
