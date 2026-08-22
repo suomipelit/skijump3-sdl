@@ -1346,23 +1346,9 @@ end;
 
 
 function fexist(filename:string):boolean;
-var tempb : boolean;
-    f1 : file;
 begin
 
- tempb:=false;
-
-  assign(f1,filename);
-  {$I-}
-  reset(f1);
-  {$I+}
-  if (IOResult = 0) then
-   begin
-    tempb:=true;
-    close(f1);
-   end;
-
-  fexist:=tempb;
+ fexist:=FileExists(filename);
 
 end;
 
