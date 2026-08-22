@@ -133,7 +133,7 @@ function makeletter(temp:integer):char;
 
 procedure resultbox(phase:byte;result:integer);
 
-function hillfile(nyt:integer):string;
+function hillfile(nyt:integer):FileStr;
 
 { procedure WriteExtraHillHR(index:integer);}
 function fexist(filename:string):boolean;
@@ -1354,13 +1354,13 @@ end;
 
 
 
-function hillfile(nyt:integer):string;
+function hillfile(nyt:integer):FileStr;
 var str1 : string;
     temp : integer;
     f2 : text;
 begin
 
- hillfile:='HILLBASE.SKI';
+ hillfile:='HILLBASE';
 
  if (nyt<=NumExtraHills) then
   begin
@@ -1370,7 +1370,7 @@ begin
    {$I+}
    FileOK(IOResult,'MOREHILL.SKI');
 
-   str1:='ERROR.SJH';
+   str1:='ERROR';
 
    readln(f2); { NumExtraHills pois }
 
