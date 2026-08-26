@@ -43,7 +43,7 @@ jobs:
         hdiutil create $DMGDIR/SJ3_tmp.dmg -ov -volname "SJ3" -fs HFS+ -srcfolder "$APPDIR"
         hdiutil convert $DMGDIR/SJ3_tmp.dmg -format UDZO -o $DMGDIR/SJ3.dmg
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: SJ3.dmg
         path: /tmp/sj3-dmg/SJ3.dmg
