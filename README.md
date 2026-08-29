@@ -33,8 +33,8 @@ qualify.
 ## Differences compared to DOS version
 
 Port attempts to be carbon copy of original DOS version, even to such
-extent that you can share configuration files. Only minor bugs like
-some buffer overflows have been fixed.
+extent that you can share configuration files. However, it's fine to
+contribute fixes or other minor improvements that respect the original.
 
 ### Additional port related shortkeys
 
