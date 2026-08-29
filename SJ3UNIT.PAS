@@ -867,7 +867,7 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
      if (phase=6) then index:=254;
     end;
 
-   if (ch=#9) and (tab>0) then
+   if (phase<>6) and (ch=#9) and (tab>0) then
     begin { tab }
      out:=true;
      if (tab<254) then index:=tab;
