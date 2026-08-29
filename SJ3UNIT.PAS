@@ -775,25 +775,23 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
        {        6 - new profiles, 7 - kaikki putkeen & ei fill }
 
  out:=false;
- del:=false; { delete n„pp„in ei k„yt”ss„ }
  thing:=63;
 
  if (phase=5) then begin thing:=64; phase:=1; end;
 
  case phase of
  1,2,6 : del:=true;
+ else del:=false; { delete n„pp„in ei k„yt”ss„ }
  end;
-
- fill:=true;
 
  case phase of
- 4,7 : fill:=false;
+ 4,7,9 : fill:=false;
+ else fill:=true;
  end;
-
- putkeen:=false;
 
  case phase of
  3,7 : putkeen:=true;
+ else putkeen:=false;
  end;
 
 { if (phase=2) then cols:=2; }
