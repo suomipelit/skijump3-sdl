@@ -1384,9 +1384,8 @@ begin
 
   y:=y-59+(phase*32);
 
- value:=MakeMenu(x+9,y,24,8,Max-1,value,242,7,value);
+ value:=MakeMenu(x+9,y,24,8,Max,value,242,9,value);
 
- if (value=0) then value:=max;
  if (phase=0) then Profile[index].SuitColor:=value-1
               else Profile[index].SkiColor:=value-1;
 
@@ -1748,10 +1747,8 @@ begin
   for temp:=1 to numlanguages do
     writefont(x-(fontlen(lnames[temp]) div 2),temp*8+55,lnames[temp]);
 
-  temp:=3; if (not full) then temp:=7;
- index:=MakeMenu(112,64,100,8,numlanguages-1,languagenumber,243,temp,0);
-
- if (index=0) then index:=numlanguages;
+  temp:=8; if (not full) then temp:=9;
+ index:=MakeMenu(112,64,100,8,numlanguages,languagenumber,243,temp,0);
 
  languagenumber:=index;
 

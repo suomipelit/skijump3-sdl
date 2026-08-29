@@ -114,7 +114,7 @@ function getstr2(xx,yy,maxchars:integer;oldstr:string;bkcolor:byte):string;
 
 procedure lopputext(version:string;a1,a2:Time);
 
-function MakeMenu(x,y,length,height,items,index:integer;bgcolor,phase,tab:byte):integer;
+function MakeMenu(x,y,length,height,items,startIndex:integer;bgcolor,phase,tab:byte):integer;
 
 function LoadHill(var KeulaX:integer;nytmaki:integer;Acthill:hill_type):byte;
 
@@ -750,11 +750,13 @@ end;
 
 
 
-function MakeMenu(x,y,length,height,items,index:integer;bgcolor,phase,tab:byte):integer;
+function MakeMenu(x,y,length,height,items,startIndex:integer;bgcolor,phase,tab:byte):integer;
+type TExitPlacement = ( EXIT_NONE, EXIT_TOGETHER, EXIT_SEPARATE );
 var{ tempch1,tempch2 : char; }
-{    index : integer; }
+    index : integer;
     xx,yy : integer;
-    out,fill,putkeen : boolean;
+    out,fill : boolean;
+    exitPlacement : TExitPlacement;
     boxcol : byte;
     del : boolean;
     oldindex : integer;
@@ -762,7 +764,16 @@ var{ tempch1,tempch2 : char; }
 
 function GetLastIndex:integer;
 begin
- if (putkeen) then GetLastIndex:=items+1 else GetLastIndex:=items+2;
+ case exitPlacement of
+   EXIT_NONE : GetLastIndex:=items;
+   EXIT_TOGETHER : GetLastIndex:=items+1;
+   EXIT_SEPARATE : GetLastIndex:=items+2;
+ end;
+end;
+
+function GetExitIndex:integer;
+begin
+ if (exitPlacement<>EXIT_NONE) then GetExitIndex:=GetLastIndex else GetExitIndex:=startIndex;
 end;
 
 procedure NormalizeIndex;
@@ -773,7 +784,9 @@ end;
 begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
        {        3 - kaikki putkeen, 4 - ei fillarea, 5 - old players }
        {        6 - new profiles, 7 - kaikki putkeen & ei fill }
+       {        8 - ei exit, 9 - ei exit & ei fill }
 
+ index:=startIndex;
  out:=false;
  thing:=63;
 
@@ -790,8 +803,9 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
  end;
 
  case phase of
- 3,7 : putkeen:=true;
- else putkeen:=false;
+ 3,7 : exitPlacement:=EXIT_TOGETHER;
+ 8,9 : exitPlacement:=EXIT_NONE;
+ else exitPlacement:=EXIT_SEPARATE;
  end;
 
 { if (phase=2) then cols:=2; }
@@ -827,17 +841,17 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
    #72,#75 :{  if (cols=2) and (tempch2=#75) and (index>tab) then dec(index,tab)
              else }
               begin
-               if (index>1) then dec(index)
-                            else index:=items+2;
-               if (index=items+1) then dec(index); { skip v„li }
+               if (index=1) then index:=GetLastIndex
+               else if (index>items) then index:=items { skip v„li }
+               else dec(index);
               { boxcol:=32; }
               end;
    #77,#80 :{ if (cols=2) and (tempch2=#77) then inc(index,tab)
               else }
              begin
-              if (index<items+1) then inc(index)
-                                 else index:=1;
-              if (index=items+1) then inc(index); { skip v„li }
+              if (index=GetLastIndex) then index:=1
+              else if (index=items) then index:=GetLastIndex { skip v„li }
+              else inc(index);
              { boxcol:=32; }
              end;
    #59..#68 : begin
@@ -855,13 +869,13 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
    NormalizeIndex;
 
    if (ch2=#71) then index:=1;
-   if (ch=#27) or (ch2=#79) then
-    index:=GetLastIndex;
+   if (ch2=#79) then index:=GetLastIndex;
+   if (ch=#27) then index:=GetExitIndex;
 
    if (ch2=#68) then { F10 }
     begin
      out:=true;
-     index:=GetLastIndex;
+     index:=GetExitIndex;
      if (phase=6) then index:=254;
     end;
 
@@ -869,7 +883,7 @@ begin  { phase: 0 - DEL ei k„y, 1 - DEL k„y, 2 - 2 columns! DEL k„y }
     begin { tab }
      out:=true;
      if (tab<254) then index:=tab;
-     if (tab=255) then index:=items+2;
+     if (tab=255) then index:=GetExitIndex;
     end;
 
    if (ch=#13) or (ch=' ') then out:=true;
