@@ -41,6 +41,7 @@ procedure profiles;
 
 procedure chooseseecomps(var seecomps:byte);
 procedure welcomescreen(var languagenumber:byte);
+procedure LoadLanguage(languageindex:byte);
 
 procedure WriteProfiles;
 procedure LoadProfiles;
@@ -1126,6 +1127,12 @@ end;
 
 
 
+function ProfileCStyleValid(index:integer):boolean;
+begin
+ ProfileCStyleValid := lstr(361+(Profile[index].cstyle*40))<>'?';
+end;
+
+
 procedure defaultprofile(index:integer;phase:byte);
 var temp : integer;
     count, count2 : byte;
@@ -1704,7 +1711,6 @@ begin
  if (languagenumber=255) then full:=true;
 
  if (languagenumber=255) then languagenumber:=1;
- for temp:=1 to {numprofiles}5 do Profile[temp].CStyle:=1;
 
  if (full) then
   begin
@@ -1749,8 +1755,16 @@ begin
 
  languagenumber:=index;
 
- LoadLanguage(languagenumber);
+ sj3info.LoadLanguage(languagenumber);
 
+end;
+
+
+procedure LoadLanguage(languageindex:byte);
+var temp : integer;
+begin
+ sj3lang.LoadLanguage(languageindex);
+ for temp:=1 to numprofiles do if (not ProfileCStyleValid(temp)) then Profile[temp].CStyle:=1;
 end;
 
 
@@ -1892,7 +1906,7 @@ begin
 
   6 : begin
        inc(Profile[index].cstyle);
-       if (lstr(361+(Profile[index].cstyle*40))='?') then Profile[index].cstyle:=0;
+       if (not ProfileCStyleValid(index)) then Profile[index].cstyle:=0;
        emptyedit;
       end;
 

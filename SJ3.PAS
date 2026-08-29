@@ -5753,7 +5753,7 @@ begin
    LoadTeams(teamnumber,jmaara,NumTeams,Jnimet); }
 
  write('  LANGBASE.SKI');
-  if (languagenumber<>255) then LoadLanguage(languagenumber);
+  if (languagenumber<>255) then sj3info.LoadLanguage(languagenumber);
 
 {
   writeln('Kieli: ',lnames[1]);  writeln('Kieli„: ',numlanguages);
