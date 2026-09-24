@@ -11,6 +11,7 @@ procedure Tuo(x,y:integer);
 procedure AsetaPaikka(place:byte);
 
 var voim,windy, value : integer;
+    canReset : boolean;
 
 Implementation
 
@@ -131,11 +132,18 @@ var s:string;
  writefont(tuulix+15,tuuliy+5,s[1]);
  writefont(tuulix+24,tuuliy+5,s[3]);
 
+ if (canReset) then case tpaikka of
+   1,2,8,11,13 : writefont(tuulix+44,tuuliy,'(F5)');
+   4,7,12 : writefont(tuulix+14,tuuliy-8,'(F5)');
+   3,5,6 : ewritefont(tuulix,tuuliy,'(F5)');
+ end;
+
 end;
 
 procedure Init;
 begin
 
+ canReset:=false;
  Alusta(0);
 end;
 

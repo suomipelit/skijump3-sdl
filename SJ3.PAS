@@ -1487,6 +1487,10 @@ begin
   until (ch<>#1);
 
   if (treeni) then maxspeed:=maxspeed+(startgate-15);
+  if (
+   (treeni) or
+   ((wcup) and (cupstyle=1) and (index=NumPl) and (kierros=1) and (osakilpailu=1))
+  ) then Tuuli.canReset:=true;
 
 (*
   if (keypressed) then
@@ -1589,10 +1593,8 @@ begin
     ch:=upcase(ch);
     if (ch=#0) and (ch2=#68) then begin cupslut:=true; ch:=#27; end;
     if (not cjumper) and ((kword(ch,ch2)=K[2]) or (ch=#13)) then out:=true; { liikkeelle }
-    if (ch=#0) and (ch2=#63) and (
-     (treeni) or
-     ((wcup) and (cupstyle=1) and (index=NumPl) and (kierros=1) and (osakilpailu=1))
-    ) then begin Tuuli.Alusta(windplace); end;
+    if (ch=#0) and (ch2=#63) and Tuuli.canReset
+     then begin Tuuli.Alusta(windplace); end;
     if (ch=#27) then out:=true;
    end;
      if (cjumper) and ((random(100)=0) or (laskuri>600)) then Out:=True;
@@ -1623,6 +1625,7 @@ begin
 
   sx:=0;
   sy:=0;
+  Tuuli.canReset:=false;
 
   if (laskuri>700) then   { ei sitten kaveri l„htenytk„„n }
     begin
