@@ -6,6 +6,7 @@ interface
 type TFileBaseName = string[8];
      TFileFullName = string[12];
      TFilePath = string;
+     TFilePathArray = array of TFilePath;
      TErrorHandler = procedure(IORes: integer; filename: string);
      TFileMode = (FILEMODE_READ, FILEMODE_WRITE);
 
@@ -40,7 +41,7 @@ function DeleteTextFile(var f: text; fileID: TFileID): boolean;
 
 implementation
 
-uses SysUtils;
+uses Classes, SysUtils;
 
 var ErrorHandler : TErrorHandler;
 
@@ -49,33 +50,41 @@ begin
  ErrorHandler:=handler;
 end;
 
-function FindFilesByPattern(pattern: string; var FileNames: array of TFileBaseName; excludeTemp: boolean): integer;
-var DirInfo: SysUtils.TSearchRec;
-    temp, count, maxCount: integer;
+function FindFilesByPattern(pattern: string; paths: TFilePathArray; var FileNames: array of TFileBaseName; excludeTemp: boolean): integer;
+var FileNameList: Classes.TStringList;
+    FileName: string;
+    DirInfo: SysUtils.TSearchRec;
+    i, temp, count, maxCount: integer;
 begin
- count:=0;
+ FileNameList:=Classes.TStringList.Create;
+ FileNameList.Duplicates:=Classes.dupIgnore;
+ FileNameList.Sorted:=true;
+ FileNameList.CaseSensitive:=false;
+
  maxCount:=length(FileNames)-1;
  for temp:=0 to maxCount do FileNames[temp]:='';
 
- if SysUtils.FindFirst(pattern,SysUtils.faAnyFile,DirInfo)=0 then
+ for i:=0 to Length(paths)-1 do
  begin
-   repeat
-     if (count < maxCount) then
-     begin
-       inc(count);
-
-       FileNames[count]:=SysUtils.ChangeFileExt(DirInfo.Name,'');
-
-       if ((excludeTemp) and (FileNames[count] = 'TEMP')) then
+   if SysUtils.FindFirst(paths[i]+pattern,SysUtils.faAnyFile,DirInfo)=0 then
+   begin
+     repeat
        begin
-         FileNames[count]:='';
-         dec(count);
-       end;
-     end;
-   Until SysUtils.FindNext(DirInfo)<>0;
+         FileName:=SysUtils.ChangeFileExt(DirInfo.Name,'');
 
-   SysUtils.FindClose(DirInfo);
+         if ((not excludeTemp) or (FileName <> 'TEMP')) then FileNameList.Add(FileName);
+       end;
+     Until SysUtils.FindNext(DirInfo)<>0;
+
+     SysUtils.FindClose(DirInfo);
+   end;
  end;
+
+ count:=maxCount;
+ if (FileNameList.Count<count) then count:=FileNameList.Count;
+
+ for temp:=1 to count do FileNames[temp]:=FileNameList[temp-1];
+ FileNameList.Free;
 
  FindFilesByPattern:=count;
 end;
@@ -198,8 +207,34 @@ begin
   end;
 end;
 
+procedure GetSearchPaths(fileType: TFileType; var paths: TFilePathArray);
+var i: integer;
+begin
+  case fileType of
+    FILETYPE_RESOURCE: begin; SetLength(paths, 2); paths[1]:='DATA'; end;
+    FILETYPE_IMAGE: begin; SetLength(paths, 2); paths[1]:='IMAGES'; end;
+    FILETYPE_FRONT, FILETYPE_BACK: begin; SetLength(paths, 3); paths[1]:='EXTRAS'; paths[2]:='IMAGES'; end;
+    FILETYPE_CONFIG: begin; SetLength(paths, 2); paths[1]:='CONFIG'; end;
+    FILETYPE_NAMES: begin; SetLength(paths, 2); paths[1]:='NAMES'; end;
+    FILETYPE_REPLAY: begin; SetLength(paths, 2); paths[1]:='REPLAYS'; end;
+    FILETYPE_CUSTOMSET: begin; SetLength(paths, 2); paths[1]:='CUSTOMS'; end;
+    FILETYPE_EXTRAHILL: begin; SetLength(paths, 2); paths[1]:='EXTRAS'; end;
+    FILETYPE_SENDME: SetLength(paths, 1);
+  end;
+  paths[0]:=''; { current working dir always first }
+  for i:=1 to Length(paths)-1 do paths[i]:=paths[i]+DirectorySeparator;
+end;
+
+function GetDefaultPath(fileType: TFileType): TFilePath;
+var paths: TFilePathArray;
+begin
+  GetSearchPaths(fileType, paths);
+  GetDefaultPath:=paths[Length(paths)-1];
+end;
+
 function FindFiles(fileType: TFileType; var FileNames: array of TFileBaseName): integer;
 var pattern: string;
+    paths: TFilePathArray;
     excludeTemp: boolean;
 begin
   case fileType of
@@ -211,54 +246,132 @@ begin
     FILETYPE_EXTRAHILL: pattern:='*.SJH';
   end;
 
+  GetSearchPaths(fileType, paths);
+
   excludeTemp:=(filetype=FILETYPE_CUSTOMSET);
 
-  FindFiles:=FindFilesByPattern(pattern, FileNames, excludeTemp);
+  FindFiles:=FindFilesByPattern(pattern, paths, FileNames, excludeTemp);
 end;
 
 function FileExists(fileID: TFileID): boolean;
 var name: TFileFullName;
+    paths: TFilePathArray;
     path: TFilePath;
+    found: boolean;
+    i: integer;
 begin
  name:=GetFileName(fileID);
- path:=name;
- FileExists:=FileExistsByPath(path);
+ GetSearchPaths(fileID.fileType, paths);
+ found:=false;
+ for i:=0 to Length(paths)-1 do
+ begin
+  path:=paths[i]+name;
+  found:=FileExistsByPath(path);
+  if (found) then break;
+ end;
+ FileExists:=found;
 end;
 
 function OpenFile(var f: file; fileID: TFileID; mode: TFileMode; optional: boolean): boolean;
 var name: TFileFullName;
+    paths: TFilePathArray;
     path: TFilePath;
+    success, found: boolean;
+    i: integer;
 begin
  name:=GetFileName(fileID);
- path:=name;
- OpenFile:=OpenFileByPath(f,path,mode,optional);
+ GetSearchPaths(fileID.fileType, paths);
+ success:=false;
+ found:=false;
+ for i:=0 to Length(paths)-1 do
+ begin
+  path:=paths[i]+name;
+  if (FileExistsByPath(path)) then
+  begin
+   found:=true;
+   success:=OpenFileByPath(f,path,mode,optional);
+   break;
+  end;
+ end;
+ if (not found) then
+ begin
+  path:=GetDefaultPath(fileID.fileType)+name;
+  success:=OpenFileByPath(f,path,mode,optional); { trigger read error or save to default location }
+ end;
+ OpenFile:=success;
 end;
 
 function OpenTextFile(var f: text; fileID: TFileID; mode: TFileMode; optional: boolean): boolean;
 var name: TFileFullName;
+    paths: TFilePathArray;
     path: TFilePath;
+    success, found: boolean;
+    i: integer;
 begin
  name:=GetFileName(fileID);
- path:=name;
- OpenTextFile:=OpenTextFileByPath(f,path,mode,optional);
+ GetSearchPaths(fileID.fileType, paths);
+ success:=false;
+ found:=false;
+ for i:=0 to Length(paths)-1 do
+ begin
+  path:=paths[i]+name;
+  if (FileExistsByPath(path)) then
+  begin
+   found:=true;
+   success:=OpenTextFileByPath(f,path,mode,optional);
+   break;
+  end;
+ end;
+ if (not found) then
+ begin
+  path:=GetDefaultPath(fileID.fileType)+name;
+  success:=OpenTextFileByPath(f,path,mode,optional); { trigger read error or save to default location }
+ end;
+ OpenTextFile:=success;
 end;
 
 function DeleteFile(var f: file; fileID: TFileID): boolean;
 var name: TFileFullName;
+    paths: TFilePathArray;
     path: TFilePath;
+    success: boolean;
+    i: integer;
 begin
  name:=GetFileName(fileID);
- path:=name;
- DeleteFile:=DeleteFileByPath(f,path);
+ GetSearchPaths(fileID.fileType, paths);
+ success:=false;
+ for i:=0 to Length(paths)-1 do
+ begin
+  path:=paths[i]+name;
+  if (FileExistsByPath(path)) then
+  begin
+   success:=DeleteFileByPath(f,path);
+   break;
+  end;
+ end;
+ DeleteFile:=success;
 end;
 
 function DeleteTextFile(var f: text; fileID: TFileID): boolean;
 var name: TFileFullName;
+    paths: TFilePathArray;
     path: TFilePath;
+    success: boolean;
+    i: integer;
 begin
  name:=GetFileName(fileID);
- path:=name;
- DeleteTextFile:=DeleteTextFileByPath(f,path);
+ GetSearchPaths(fileID.fileType, paths);
+ success:=false;
+ for i:=0 to Length(paths)-1 do
+ begin
+  path:=paths[i]+name;
+  if (FileExistsByPath(path)) then
+  begin
+   success:=DeleteTextFileByPath(f,path);
+   break;
+  end;
+ end;
+ DeleteTextFile:=success;
 end;
 
 end.
