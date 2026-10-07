@@ -71,7 +71,7 @@ $ sudo apt-get install fpc libsdl2-dev
 $ git clone https://github.com/ev1313/Pascal-SDL-2-Headers
 
 # Compile in Turbo Pascal mode
-$ fpc -Mtp -Fu./Pascal-SDL-2-Headers/ SJ3.PAS
+$ fpc -Mtp -Fu./Pascal-SDL-2-Headers/ -FU./SRC -o./SJ3 ./SRC/SJ3.PAS
 ```
 
 You can find full instructions how to compile Pascal SDL2 applications
