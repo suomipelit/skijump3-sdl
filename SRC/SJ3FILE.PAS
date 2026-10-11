@@ -94,6 +94,16 @@ begin
  FileExistsByPath:=SysUtils.FileExists(path);
 end;
 
+function DirectoryExistsByPath(path: TFilePath): boolean;
+begin
+ DirectoryExistsByPath:=SysUtils.DirectoryExists(path);
+end;
+
+function CreateDirectoryByPath(path: TFilePath): boolean;
+begin
+ CreateDirectoryByPath:=SysUtils.CreateDir(path);
+end;
+
 function OpenFileByPath(var f: file; path: TFilePath; mode: TFileMode; optional: boolean): boolean;
 var result: word;
 begin
@@ -295,7 +305,9 @@ begin
  end;
  if (not found) then
  begin
-  path:=GetDefaultPath(fileID.fileType)+name;
+  path:=GetDefaultPath(fileID.fileType);
+  if ((mode=FILEMODE_WRITE) and (path<>'') and (not DirectoryExistsByPath(path))) then CreateDirectoryByPath(path);
+  path:=path+name;
   success:=OpenFileByPath(f,path,mode,optional); { trigger read error or save to default location }
  end;
  OpenFile:=success;
@@ -324,7 +336,9 @@ begin
  end;
  if (not found) then
  begin
-  path:=GetDefaultPath(fileID.fileType)+name;
+  path:=GetDefaultPath(fileID.fileType);
+  if ((mode=FILEMODE_WRITE) and (path<>'') and (not DirectoryExistsByPath(path))) then CreateDirectoryByPath(path);
+  path:=path+name;
   success:=OpenTextFileByPath(f,path,mode,optional); { trigger read error or save to default location }
  end;
  OpenTextFile:=success;
