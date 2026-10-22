@@ -14,7 +14,7 @@ var voim,windy, value : integer;
 
 Implementation
 
-uses SJ3Graph, SJ3Help;
+uses SJ3Graph, SJ3Help, X87;
 
 var tsuun : boolean;      { kiinnostaako n„m„ kaikkia? }
     traja1, traja2 : integer;
@@ -87,7 +87,7 @@ begin
  if (tsuun) and (tkulma>traja2) then tsuun:=false;
   if (tsuun=false) and (tkulma<traja1) then tsuun:=true;
    if (random(50)=0) then tsuun:=not tsuun;
- if (tsuun) then tkulma:=tkulma+(random(4)/5) else tkulma:=tkulma-(random(4)/5);
+ if (tsuun) then tkulma:=tkulma+(Ext(random(4))/5) else tkulma:=tkulma-(Ext(random(4))/5);
 
 end;
 

@@ -6,7 +6,7 @@ procedure replays(start:boolean;version:string;gdetail:byte);
 
 implementation
 
-uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport, SysUtils;
+uses SJ3Unit, SJ3info, SJ3Help, SJ3PCX, SJ3Graph, Tuuli, Maki, Lumi, SJ3lang, sdlport, x87, SysUtils;
 
 
 procedure replays;
@@ -250,14 +250,14 @@ var filenames : array[0..MaxReplays] of FileStr;
 
        if (Rturns>FLstart) then
         begin
-         hp:=round(nsqrt(sqr(longint(X-KeulaX))+sqr(longint(Y-KeulaY)))*acthill.pk*0.5)*5;
+         hp:=round(Ext(nsqrt(sqr(longint(X-KeulaX))+sqr(longint(Y-KeulaY))))*acthill.pk*0.5)*5;
          temp:=Rturns-FLstart;
          if (Rturns>FlStop) then
           begin
            temp:=FlStop-FLstart;
            hp:=realhp;
           end;
-         str(round(temp*10/7),str1);
+         str(round(Ext(temp*10)/7),str1);
 
          while (length(str1) < 3) do str1:='0'+str1;
          insert('.',str1,length(str1)-1);

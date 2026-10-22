@@ -25,7 +25,7 @@ function LataaPCX(name:string;picsize:longint;Page:word;mirror:byte):boolean;
 
 implementation
 
-uses Maki, SDLPort;
+uses Maki, SDLPort, X87;
 
 const BufSize=2048;
       ReplaceMenu : array[0..6*2*3] of byte =
@@ -225,12 +225,12 @@ begin
 
  if (alue=1) then begin start:=64; fin:=215; end;
 
- r1:=bkbright/100;
+ r1:=Ext(bkbright)/100;
 
  for temp1:=start to fin do
   for temp2:=0 to 2 do
    begin
-    Paletti[temp1,temp2]:=round(Paletti[temp1,temp2]*r1);
+    Paletti[temp1,temp2]:=round(Ext(Paletti[temp1,temp2])*r1);
     if (Paletti[temp1,temp2] > 63) then Paletti[temp1,temp2]:=63;
    end;
 end;
@@ -268,9 +268,9 @@ begin
 
  for temp:=0 to 3 do
   begin
-    Paletti[target+temp,0]:=round(nums[Suits[col,0],temp]*w1);
-    Paletti[target+temp,1]:=round(nums[Suits[col,0],temp]*w2);
-    Paletti[target+temp,2]:=round(nums[Suits[col,0],temp]*w3);
+    Paletti[target+temp,0]:=round(Ext(nums[Suits[col,0],temp])*w1);
+    Paletti[target+temp,1]:=round(Ext(nums[Suits[col,0],temp])*w2);
+    Paletti[target+temp,2]:=round(Ext(nums[Suits[col,0],temp])*w3);
   end;
 
 end;
