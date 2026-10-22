@@ -1,6 +1,6 @@
 program Skijump3; { Reality Strikes }
 uses crt, dos, getopts, sj3graph, sj3pcx, sj3unit, sj3help, sj3info,
-     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sdlport;
+     sj3list, sj3table, maki, lumi, tuuli, sj3lang, sj3repl, sdlport, x87;
 
 const
 
@@ -1209,7 +1209,7 @@ begin
 
   if (skill>16) then skill:=16;
 
-  reflex:=round((34+pel+random(10))/5);
+  reflex:=round(Ext(34+pel+random(10))/5);
 {  reflex:=round((33+pel+random(8))/4); }
 {  reflex:=round((45+pel+random(10))/5); }
 {  reflex:=round((30+1+random(30))/5); }
@@ -1258,7 +1258,7 @@ begin
     x:=round(matka+qx);
     kor:=Profiili(x);
     kkor:=kor-KeulaY;
-    hp:=round(nsqrt((matka*matka)+(kkor*kkor))*acthill.pk*0.5)*5;
+    hp:=round(Ext(nsqrt((Ext(matka)*matka)+(Ext(kkor)*kkor)))*acthill.pk*0.5)*5;
 
     if (hp>=HRLen(nytmaki)) and (HRLen(nytmaki)>0) and (wrx=0) then
      begin wrx:=x; wry:=round(kor)-9; end;
@@ -1528,7 +1528,7 @@ begin
      sy:=y-Maki.Y-10;
 
      if (temp=1) then px:=0.6;
-     px:=px+((tuuli.value-20)/10000);
+     px:=px+(Ext(tuuli.value-20)/10000);
 
      inc(sx,round(temp*px));
      inc(sy,(temp*temp) div 160);
@@ -1769,24 +1769,24 @@ begin
        if (kword(ch,ch2)=K[4]) then Landing:=1;
        if (kword(ch,ch2)=K[5]) then Landing:=2;
 
-       if (kword(ch,ch2)=K[3]) and (kulma1<=600) then kulma1:=kulma1+round(kulma1/4);
-       if (kword(ch,ch2)=K[2]) and (Landing=0) and (kulma1>0) then kulma1:=kulma1-round(kulma1/5);
+       if (kword(ch,ch2)=K[3]) and (kulma1<=600) then kulma1:=kulma1+round(Ext(kulma1)/4);
+       if (kword(ch,ch2)=K[2]) and (Landing=0) and (kulma1>0) then kulma1:=kulma1-round(Ext(kulma1)/5);
 
 {       if (ch='x') then pl:=0.1; }
 
         { ylirotaatio }
-       if (kulma1<50) then begin pl:=pl+0.0001-((kulma1-50)/18000); {beep(1);} end;
+       if (kulma1<50) then begin pl:=pl+0.0001-(Ext(kulma1-50)/18000); {beep(1);} end;
 
 
 { orig. if (tuuli>0) then pl:=pl-((1-(kulma1/900))/1500)+(sqrt(sqrt(2*tuuli)))/52400
          else pl:=pl-((1-(kulma1/900))/1500)-(sqrt(sqrt(-2*tuuli)))/52400; }
 
-      if (tuuli.value>0) then pl:=pl-((1-(kulma1/900))/1875)+(sqrt(sqrt(2*tuuli.value)))/65500
-                   else pl:=pl-((1-(kulma1/900))/1875)-(sqrt(sqrt(-2*tuuli.value)))/65500;
+      if (tuuli.value>0) then pl:=pl-((1-(Ext(kulma1)/900))/1875)+(sqrt(sqrt(2*tuuli.value)))/65500
+                   else pl:=pl-((1-(Ext(kulma1)/900))/1875)-(sqrt(sqrt(-2*tuuli.value)))/65500;
 
 {      px:=px-((kulma1/900)/19)+((sqrt(4*tuuli.value+245)-16)/360); } { "alkup." }
 {      px:=px-((kulma1/900)/24)+((sqrt(4*tuuli.value+245)-16)/455); }
-      px:=px-((kulma1/900)/20)+((nsqrt(4*tuuli.value+245)-16)/400);
+      px:=px-((Ext(kulma1)/900)/20)+((Ext(nsqrt(4*tuuli.value+245))-16)/400);
 
       t:=t+0.01;
 
@@ -1806,21 +1806,21 @@ begin
          if (temp>0) then
           begin { puuska tuo sukset yl”s }
            ssuunta:=3;
-           pl:=pl-random(tuuli.voim+50)/15000;
+           pl:=pl-Ext(random(tuuli.voim+50))/15000;
           end;
 
          if (temp<0) then
           begin { puuska vie suksia alas }
            ssuunta:=6;
 {           pl:=pl-random(tvoim+20)/6000+(tvoim/12000); } { vanha }
-           pl:=pl+random(tuuli.voim+50)/15000;
+           pl:=pl+Ext(random(tuuli.voim+50))/15000;
           end;
 
         end;
 
       if (pl<0.105) then pl:=0.105; { leijuntaesto :) }
 
-      kor:=kor+(t*t*pl)-((py-8)/100);
+      kor:=kor+(Ext(t)*t*pl)-((Ext(py)-8)/100);
 
 {       delay(600); }
 
@@ -1939,7 +1939,7 @@ begin
         end;
 
        { Automaattiponnistus }
-        if (cjumper) and (matka>-(skill*px*0.01)) and (ponnistus=0) then inc(ponnistus);
+        if (cjumper) and (matka>-(Ext(skill)*px*0.01)) and (ponnistus=0) then inc(ponnistus);
 
       SkiAnim:=SuksiLaskussa(MakiKulma(x));
 
@@ -2091,7 +2091,7 @@ begin
   until (Out);   { ***  LENTO LOPPUU  *** }
 
    kkor:=kor-KeulaY;
-   hp:=round(nsqrt((matka*matka)+(kkor*kkor))*acthill.pk*0.5)*5;
+   hp:=round(Ext(nsqrt((Ext(matka)*matka)+(Ext(kkor)*kkor)))*acthill.pk*0.5)*5;
 
    if (ch=#27) then { painoi ESCi„ }
     begin
@@ -2109,13 +2109,13 @@ begin
       inc(Profile[actprofile].totaljumps);
 
       grade:=0;
-      if (kr<>0) then grade:=round(hp/kr)*10;
+      if (kr<>0) then grade:=round(Ext(hp)/kr)*10;
 
       temp:=MakiKulma(x);
-      height:=round((temp*1.34) + (kulma1/10));
+      height:=round((temp*1.34) + (Ext(kulma1)/10));
 
       riski:=jumprisk(temp);
-       if (hp<20/3*kr) then riski:=1; { lyhyiden hyppyjen riski? }
+       if (hp<(Ext(20)/3)*kr) then riski:=1; { lyhyiden hyppyjen riski? }
 
       if (height<63) then riski:=round(riski*(1+((63-height)*0.075)));
 
@@ -2161,7 +2161,7 @@ begin
         kupat:=3;
        end;
 
-      for temp:=1 to round((kr+(kr/20)-(hp/10))/6) do
+      for temp:=1 to round((Ext(kr)+(Ext(kr)/20)-(Ext(hp)/10))/6) do
        tyylip[1]:=tyylip[1]-5;
 
       if (kupat>0) then tyylip[1]:=tyylip[1]-100
@@ -2202,7 +2202,7 @@ begin
       dec(score,tyylip[7]);
 
       if (kr<>0) then { vanha tyyli }
-       inc(score,round(((hp/10)-(kr*2/3))*(180/kr)*10));  { pituuspisteet }
+       inc(score,round(((Ext(hp)/10)-(Ext(kr*2)/3))*(180/Ext(kr))*10));  { pituuspisteet }
 
 (*
       if (kr<>0) then { uusi fis:in mukainen }
@@ -3350,7 +3350,7 @@ var aa,yy : integer;
    laskuri:=0;
     for apu1:=1 to NumWChills do inc(laskuri,longint(hillkr(apu1)*10));
 
-   ahi:=round((ahi/laskuri)*10000);
+   ahi:=round((Ext(ahi)/laskuri)*10000);
    str1:=txt(ahi);
    insert('.',str1,length(str1)-1);
    str1:=str1+' %';

@@ -220,7 +220,7 @@ procedure clrscr;
 
 implementation
 
-uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, SysUtils;
+uses crt, dos, sj3help, sj3graph, sj3lang, maki, lumi, sj3pcx, sdlport, x87, SysUtils;
 
 {var osote : array [0..4000] of byte; }
 
@@ -1472,9 +1472,9 @@ begin
      readln(f1,hill.bkmirror);
      readln(f1,hill.vxfinal);
      readln(f1,b);
-      hill.pk:=(b/100);
+      hill.pk:=(Ext(b)/100);
      readln(f1,a);
-     hill.plsave:=(a/10000);
+     hill.plsave:=(Ext(a)/10000);
      readln(f1,hill.author);
      readln(f1,l2); { checksum }
      readln(f1,hill.profile);
@@ -1757,12 +1757,12 @@ begin
   8 : begin
        temp:=round(h2.pk*100);
        getint(temp,50,150);
-       h2.pk:=temp/100;
+       h2.pk:=Ext(temp)/100;
       end;
   9 : begin
        temp:=round(h2.plsave*10000)-3204;
        getint(temp,0,30);
-       h2.plsave:=(temp+3204)/10000;
+       h2.plsave:=Ext(temp+3204)/10000;
       end;
   10 : h2.author:=getstr(xx2,yy,150,h2.author,242);
   11 : begin

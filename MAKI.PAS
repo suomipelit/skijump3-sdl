@@ -34,6 +34,8 @@ INTERFACE {ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ}
 
 IMPLEMENTATION {ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ}
 
+uses X87;
+
   const     SiirtoOsoite:LongInt=0; { m„en piirt„mist„ varten }
 
 procedure KopioiKirjoitusSivu;
@@ -164,7 +166,7 @@ begin
 
    hp:=round(sqrt((x2*x2)+(y2*y2))*pk*0.5)*5;  { +10? }
 
-   if (hp>=(2/3*kr)*10) and (hp<=(kr*12)) then
+   if (hp>=(Ext(2)/3*kr)*10) and (hp<=(kr*12)) then
     begin
      if (hp<kr*10) then c:=238 else c:=239;
 

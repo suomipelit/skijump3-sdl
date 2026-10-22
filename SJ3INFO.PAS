@@ -4,7 +4,7 @@ unit sj3info; { pelaaja & profiili-infoa }
 
 interface { -------------------------------------------------------------- }
 
-uses maki, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx, sdlport, SysUtils;
+uses maki, sj3unit, sj3help, sj3graph, sj3lang, sj3pcx, sdlport, x87, SysUtils;
 
 procedure Init;
 
@@ -2275,7 +2275,7 @@ begin
   writeln(f2,'ahi: ',ahi);
   writeln(f2,'laskuri: ',laskuri);
 }
-  ahi:=round((ahi/laskuri)*10000);
+  ahi:=round((Ext(ahi)/laskuri)*10000);
   str1:=txt(ahi); insert('.',str1,length(str1)-1); str1:=str1+' %';
 
   writeln(f2,str1:10);
