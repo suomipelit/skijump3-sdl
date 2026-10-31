@@ -64,9 +64,9 @@ begin
            (Buffer[offset+1]<TaustaMax) then
 
            if (Style=1) then begin
-              Buffer[offset]:=c1;
+              Buffer[offset]:=c1 mod $100;
               Buffer[offset+1]:=c1 shr 8;
-              Buffer[offset+320]:=c2;
+              Buffer[offset+320]:=c2 mod $100;
               Buffer[offset+320+1]:=c2 shr 8;
 
               end else Buffer[offset]:=byte(c1);
