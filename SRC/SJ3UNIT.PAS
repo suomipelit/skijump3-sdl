@@ -607,12 +607,12 @@ begin
 
   oldindex:=index;
 
-  if ((ch2=#75) or (ch='-')) and (goals[index]>4) then dec(goals[index],5);
-  if ((ch2=#77) or (ch='+')) and (goals[index]<2500) then inc(goals[index],5);
+  if ((ch2=#75) or (ch='-')) and (index<=NumWcHills) and (goals[index]>4) then dec(goals[index],5);
+  if ((ch2=#77) or (ch='+')) and (index<=NumWcHills) and (goals[index]<2500) then inc(goals[index],5);
   if (ch2=#72) and (index>1) then dec(index);
-  if (ch2=#80) and (index<21) then inc(index);
-  if ((ch=#13) and (index=21)) or (ch2=#68) then leave:=true;
-  if (ch=#27) or (ch2=#79) then index:=21;
+  if (ch2=#80) and (index<(NumWcHills+1)) then inc(index);
+  if ((ch=#13) and (index=(NumWcHills+1))) or (ch2=#68) then leave:=true;
+  if (ch=#27) or (ch2=#79) then index:=(NumWcHills+1);
   if (ch2=#71) then index:=1;
 
   drawgoal(oldindex,0);
