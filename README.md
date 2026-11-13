@@ -64,14 +64,11 @@ Compiler.
 Compilation process on Ubuntu is following
 
 ``` sh
-# Install compiler and SDL2
-$ sudo apt-get install fpc libsdl2-dev
-
-# Clone Pascal SDL2 headers
-$ git clone https://github.com/ev1313/Pascal-SDL-2-Headers
+# Install Free Pascal Compiler, SDL2 development files, git, and clone Pascal SDL2 headers
+$ make install-build-deps
 
 # Compile in Turbo Pascal mode
-$ fpc -Mtp -Fu./Pascal-SDL-2-Headers/ -FU./SRC -o./SJ3 ./SRC/SJ3.PAS
+$ make build
 ```
 
 You can find full instructions how to compile Pascal SDL2 applications
