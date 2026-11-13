@@ -192,8 +192,8 @@ procedure ConfigureKeys(var K:array of word);
 function crypt(arvo:longint;jarj:integer):string;
 function uncrypt(str0:string;jarj:integer):longint;
 
-function valuestr(str0:string;arvo:integer):word;
-function svaluestr(str0:string;arvo:integer):word;
+function valuestr(str0:string;arvo:word):word;
+function svaluestr(str0:string;arvo:word):word;
 function choosehill(mmaara:byte):byte;
 procedure kothchallenge(x:integer;kothpack:byte);
 function kothtitle(temp:integer):string;
@@ -2805,7 +2805,7 @@ begin
 end;
 
 
-function valuestr(str0:string;arvo:integer):word;
+function valuestr(str0:string;arvo:word):word;
 var word1,index:word;
 begin
 
@@ -2815,17 +2815,17 @@ begin
   begin
 {    inc(word1,(ord(str0[index]))); }
 {   inc(word1,((ord(str0[index])-63)*((index mod 5)+41))); }
-    inc(word1,((ord(str0[index]))*((index mod 5)+41)))
+    word1:=(word1+((ord(str0[index]))*((index mod 5)+41))) mod $10000;
 {   write(index mod 5,':',ord(str0[index]),':',word1,', ');}
 
   end;
 
- valuestr:=word1*(arvo mod 7+1)+arvo;
+ valuestr:=(word1*(arvo mod 7+1)+arvo) mod $10000;
 
 end;
 
 
-function svaluestr(str0:string;arvo:integer):word;
+function svaluestr(str0:string;arvo:word):word;
 var word1,index:word;
 begin
 
@@ -2837,15 +2837,15 @@ begin
 {   inc(word1,((ord(str0[index])-63)*((index mod 5)+41))); }
    case str0[index] of
 {   'A'..'Z','a'..'z','0'..'9',' ','.' : inc(word1,((ord(str0[index]))*((index mod 5)+41))); }
-   'A'..'Z','a'..'z','0'..'9' : inc(word1,((ord(str0[index]))*((index mod 5)+41))); { v3.10 }
-   else inc(word1,3);
+   'A'..'Z','a'..'z','0'..'9' : word1:=(word1+((ord(str0[index]))*((index mod 5)+41))) mod $10000; { v3.10 }
+   else word1:=(word1+3) mod $10000;
    end;
 
 {   write(index mod 5,':',ord(str0[index]),':',word1,', ');}
 
   end;
 
- svaluestr:=word1*(arvo mod 7+1)+arvo;
+ svaluestr:=(word1*(arvo mod 7+1)+arvo) mod $10000;
 
 end;
 

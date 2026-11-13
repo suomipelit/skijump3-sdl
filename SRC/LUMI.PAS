@@ -56,7 +56,7 @@ begin
          inc(sin_pos); sin_pos:=sin_pos and (SineLgt-1);
          inc(y,gravity+DeltaY shl 8);
          end;
-         offset:=(x shr 10)+(Y shr 10)*320;
+         offset:=((x shr 10)+(Y shr 10)*320) mod $10000;
          if (offset<63679) and
            (Buffer[offset]>=TaustaMin) and
            (Buffer[offset+1]>=TaustaMin) and
@@ -64,9 +64,9 @@ begin
            (Buffer[offset+1]<TaustaMax) then
 
            if (Style=1) then begin
-              Buffer[offset]:=c1;
+              Buffer[offset]:=c1 mod $100;
               Buffer[offset+1]:=c1 shr 8;
-              Buffer[offset+320]:=c2;
+              Buffer[offset+320]:=c2 mod $100;
               Buffer[offset+320+1]:=c2 shr 8;
 
               end else Buffer[offset]:=byte(c1);
